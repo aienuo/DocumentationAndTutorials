@@ -74,7 +74,7 @@
 	# 日志缓存大小
 	binlog_cache_size = 128K
 	# 需要同步的数据库名字，如果是多个，就以此格式在写一行即可。
-	binlog-do-db = database_test
+	# binlog-do-db = database_test
 	# 不需要同步的数据库名字，如果是多个，就以此格式在写一行即可。（binlog-do-db,binlog-ignore-db 为互斥关系，只需设置其中一项即可）
 	binlog-ignore-db = mysql,information_schema,performance_schema,sys
 	# 当Slave从Master数据库读取日志时更新新写入日志中，如果只启动log-bin 而没有启动log-slave-updates则Slave（从）只记录针对自己数据库操作的更新。
