@@ -12,8 +12,11 @@
 ### 3、修改mycat目录所属的用户和组为mycat用户 ###
 	chown -R mycat.mycat /usr/local/mycat/
 ## 四、配置文件配置 ##
+### 切换到Mycat的 `conf` 目录下 ###
+	cd /usr/local/mycat/conf/
 ##### `schema`标签内的内容大小写问题：必须统一一致 #####
-### 1、schema.xml文件 ###
+### 1、`schema.xml` 文件 ###
+	vim /schema.xml
 ##### 注意修改 `schema` `dataNode` `dataHost`标签内的内容 #####
 	<?xml version="1.0"?>
 	<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
@@ -75,7 +78,8 @@
 			</writeHost>
 		</dataHost>
 	</mycat:schema>
-### 2、server.xml文件 ###
+### 2、`server.xml` 文件 ###
+	vim /server.xml
 ##### 注意修改 `firewall` `user` 标签内的内容 #####
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!-- - - Licensed under the Apache License, Version 2.0 (the "License"); 
@@ -230,7 +234,8 @@
 		</user>
 		
 	</mycat:server>
-### 3、wrapper.conf文件 ###
+### 3、`wrapper.conf` 文件 ###
+	vim /wrapper.conf
 ##### 注意修改 `wrapper.java.command` 配置项
 	#********************************************************************
 	# Wrapper Properties
@@ -349,11 +354,13 @@
 
 	wrapper.ping.timeout=3600
 	configuration.directory.in.classpath.first=conf
-### 4、log4j2.xml文件 ###
+### 4、`log4j2.xml` 文件 ###
+	vim /log4j2.xml
 ##### 调整日志输出级别 #####
 	<?xml version="1.0" encoding="UTF-8"?>
 	<!-- DEBUG -->
 	<Configuration status="WARN">
+	<!-- <Configuration status="DEBUG"> -->
 		<Appenders>
 			<Console name="Console" target="SYSTEM_OUT">
 				<PatternLayout pattern="%d [%-5p][%t] %m %throwable{full} (%C:%F:%L) %n"/>
@@ -385,6 +392,7 @@
 		</Loggers>
 	</Configuration>
 ### 5、保存退出 ###
+#### 按一下 `Esc` 键
 	:wq
 ## 三、启动Mycat服务 ##
 ### 1、切换到Mycat的bin目录下 ###

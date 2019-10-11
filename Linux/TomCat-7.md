@@ -58,11 +58,12 @@
 ##### `:wq` 保存退出 #####
 ##### 修改立即生效： #####
 	source /etc/rc.d/rc.local
-</del> 
+</del>
 
-## Add
+## 六、防火墙端口开放 ##
+### 1、Add 添加开放端口 ###
 	firewall-cmd --permanent --zone=public --add-port=8080/tcp
-## Reload
+### 2、Reload 重新加载 ###
 	firewall-cmd --reload
-## 检查是否生效
+### 2、检查是否生效 ####
 	firewall-cmd --zone=public --query-port=8080/tcp
