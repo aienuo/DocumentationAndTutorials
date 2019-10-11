@@ -394,7 +394,7 @@
 ### 5、保存退出 ###
 #### 按一下 `Esc` 键
 	:wq
-## 三、启动Mycat服务 ##
+## 五、启动Mycat服务 ##
 ### 1、切换到Mycat的bin目录下 ###
 	cd /usr/local/mycat/bin/
 ### 2、查看启动状态 ###
@@ -405,3 +405,11 @@
 	./mycat restart
 ### 5、停止服务 ###
 	./mycat stop
+
+## 六、防火墙端口开放 ##
+### 1、Add 添加开放端口 ###
+	firewall-cmd --permanent --zone=public --add-port=8066/tcp
+### 2、Reload 重新加载 ###
+	firewall-cmd --reload
+### 2、检查是否生效 ####
+	firewall-cmd --zone=public --query-port=8066/tcp

@@ -9,9 +9,9 @@
 	wget http://www-eu.apache.org/dist/tomcat/tomcat-7/v7.0.96/bin/apache-tomcat-7.0.96.tar.gz 
 ## 二、解压操作文件 ##
 ### 解压（找到压缩文件） ###
-	tar -zxvf apache-tomcat-7.0.96.tar.gz -C /dataone/
+	tar -zxvf apache-tomcat-7.0.96.tar.gz -C /usr/local/
 #### 切换到解压目录下 ####
-	cd /dataone/
+	cd /usr/local/
 #### 查看是否剪切成功 ####
 	ls -a	
 ## 三、配置环境变量 ###
@@ -19,13 +19,13 @@
 	vim /etc/profile
 ##### 按一下键盘字母`i`进行编辑 #####
 #### 2、输入以下内容： ####
-	CATALINA_HOME=/dataone/apache-tomcat-7.0.96
+	CATALINA_HOME=/usr/local/apache-tomcat-7.0.96
 	PATH=$PATH:$CATALINA_HOME/bin
 	export CATALINA_HOME
 ##### 如果有JDK环境变量请使用如下 #####
 	JAVA_HOME=/usr/local/jdk1.8.0_191
 	JRE_HOME=/usr/local/jdk1.8.0_191/jre
-	CATALINA_HOME=/dataone/apache-tomcat-7.0.96
+	CATALINA_HOME=/usr/local/apache-tomcat-7.0.96
 	CLASS_PATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
 	PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin:$CATALINA_HOME/bin
 	export JAVA_HOME JRE_HOME CLASS_PATH CATALINA_HOME PATH
@@ -35,9 +35,9 @@
 	source /etc/profile
 ## 四、查看是否生效 ##
 ### 启动TomCat ###
-	/dataone/apache-tomcat-7.0.96/bin/startup.sh
+	/usr/local//apache-tomcat-7.0.96/bin/startup.sh
 ### 关闭TomCat ###	
-	/dataone/apache-tomcat-7.0.96/bin/shutdown.sh
+	/usr/local/apache-tomcat-7.0.96/bin/shutdown.sh
 ### 验证 ###
 ##### 重启计算机 #####
 	shutdown -r now
@@ -53,7 +53,7 @@
 #### 添加 ####
 ##### 按一下键盘字母`i`进行编辑 #####
 	export JAVA_HOME=/usr/local/jdk1.8.0_191/
-	/dataone/apache-tomcat-7.0.96/bin/startup.sh
+	/usr/local/apache-tomcat-7.0.96/bin/startup.sh
 ##### 按一下`esc`键 退出编辑 #####
 ##### `:wq` 保存退出 #####
 ##### 修改立即生效： #####
