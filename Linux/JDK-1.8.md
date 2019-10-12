@@ -32,3 +32,5 @@
 	java -version
 #### 编译器 ####	
 	javac
+#### 修改目录所属的用户和组 ###
+	chown -R root.root /usr/local/jdk1.8.0_191/

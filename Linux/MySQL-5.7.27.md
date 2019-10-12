@@ -148,7 +148,8 @@
     quit
 ##### 或者 #####
 	exit
-## 六、开机服务启动设置 ## `注意mysql.server文件中66行-73行的数据库安装路径`
+## 六、开机服务启动设置 ##
+`注意mysql.server文件中66行-73行的数据库安装路径`
 ### 1、把support-files/mysql.server 拷贝为/etc/init.d/mysql-5.7.27 ###
 	cp -a /usr/local/mysql-5.7.27/support-files/mysql.server /etc/init.d/mysql-5.7.27
 </del>cp -a /data/mysql-5.7.27/support-files/mysql.server /etc/init.d/mysql-5.7.27</del>
@@ -200,9 +201,17 @@
 	2、
 ### 2、防火墙端口开放 ###
 #### 解决 ####
-##### Add 添加开放端口 #####
+##### 1、查看防火墙状态 #####
+	firewall-cmd --state
+##### 2、关闭防火墙 #####
+	systemctl stop firewalld.service
+##### 3、禁止防火墙开机自启 #####
+	systemctl disable firewalld.service
+##### 4、开启防火墙 #####
+	systemctl start firewalld.service
+##### 5、Add 添加开放端口 #####
 	firewall-cmd --permanent --zone=public --add-port=3306/tcp
-##### 2、Reload 重新加载 #####
+##### 6、Reload 重新加载 #####
 	firewall-cmd --reload
-##### 2、检查是否生效 ######
+##### 7、检查是否生效 ######
 	firewall-cmd --zone=public --query-port=3306/tcp

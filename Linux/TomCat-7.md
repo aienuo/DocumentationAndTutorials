@@ -7,13 +7,23 @@
     rpm -e 已经存在的TomCat全名	
 ### 3、下载 ###
 	wget http://www-eu.apache.org/dist/tomcat/tomcat-7/v7.0.96/bin/apache-tomcat-7.0.96.tar.gz 
-## 二、解压操作文件 ##
+## 二、解压、操作文件 ##
 ### 解压（找到压缩文件） ###
 	tar -zxvf apache-tomcat-7.0.96.tar.gz -C /usr/local/
 #### 切换到解压目录下 ####
 	cd /usr/local/
 #### 查看是否剪切成功 ####
-	ls -a	
+<del>mv /usr/local/apache-tomcat-7.0.96 /data</del>
+	ls -a
+	ll
+#### 将当前文件夹授权给 tomcat ####
+##### 创建mysql组 #####
+	groupadd tomcat
+##### 创建mysql用户添加到mysql组 #####
+	useradd -g tomcat tomcat
+##### 授权 #####
+    chown -R tomcat:tomcat /usr/local/apache-tomcat-7.0.96/
+<del>chown -R root:root /data/apache-tomcat-7.0.96/</del>
 ## 三、配置环境变量 ###
 #### 1、修改配置文件 ####
 	vim /etc/profile
@@ -35,7 +45,7 @@
 	source /etc/profile
 ## 四、查看是否生效 ##
 ### 启动TomCat ###
-	/usr/local//apache-tomcat-7.0.96/bin/startup.sh
+	/usr/local/apache-tomcat-7.0.96/bin/startup.sh
 ### 关闭TomCat ###	
 	/usr/local/apache-tomcat-7.0.96/bin/shutdown.sh
 ### 验证 ###
@@ -61,9 +71,17 @@
 </del>
 
 ## 六、防火墙端口开放 ##
-### 1、Add 添加开放端口 ###
+### 1、查看防火墙状态 ###
+	firewall-cmd --state
+### 2、关闭防火墙 ###
+	systemctl stop firewalld.service
+### 3、禁止防火墙开机自启 ###
+	systemctl disable firewalld.service
+### 4、开启防火墙 ###
+	systemctl start firewalld.service
+### 5、Add 添加开放端口 ###
 	firewall-cmd --permanent --zone=public --add-port=8080/tcp
-### 2、Reload 重新加载 ###
+### 6、Reload 重新加载 ###
 	firewall-cmd --reload
-### 2、检查是否生效 ####
+### 7、检查是否生效 ####
 	firewall-cmd --zone=public --query-port=8080/tcp

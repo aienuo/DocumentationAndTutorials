@@ -407,9 +407,17 @@
 	./mycat stop
 
 ## 六、防火墙端口开放 ##
-### 1、Add 添加开放端口 ###
+### 1、查看防火墙状态 ###
+	firewall-cmd --state
+### 2、关闭防火墙 ###
+	systemctl stop firewalld.service
+### 3、禁止防火墙开机自启 ###
+	systemctl disable firewalld.service
+### 4、开启防火墙 ###
+	systemctl start firewalld.service
+### 5、Add 添加开放端口 ###
 	firewall-cmd --permanent --zone=public --add-port=8066/tcp
-### 2、Reload 重新加载 ###
+### 6、Reload 重新加载 ###
 	firewall-cmd --reload
-### 2、检查是否生效 ####
+### 7、检查是否生效 ####
 	firewall-cmd --zone=public --query-port=8066/tcp
