@@ -34,3 +34,10 @@
 	javac
 #### 修改目录所属的用户和组 ###
 	chown -R root.root /usr/local/jdk1.8.0_191/
+	
+### 五、问题解决 ###
+#### 1、 `-bash: vim: command not found` 问题： ####
+##### 执行以下命令 #####
+```
+yum -y install vim
+```

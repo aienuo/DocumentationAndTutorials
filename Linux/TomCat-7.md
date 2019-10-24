@@ -14,10 +14,13 @@
 	cd /usr/local/
 #### 查看是否剪切成功 ####
 <del>mv /usr/local/apache-tomcat-7.0.96 /data</del>
-	ls -a
-	ll
+```	
+ls -a
+
+ll
+```
 #### 将当前文件夹授权给 tomcat ####
-##### 创建mysql组 #####
+##### 创建tomcat组 #####
 	groupadd tomcat
 ##### 创建mysql用户添加到mysql组 #####
 	useradd -g tomcat tomcat
@@ -85,3 +88,23 @@
 	firewall-cmd --reload
 ### 7、检查是否生效 ####
 	firewall-cmd --zone=public --query-port=8080/tcp
+	
+## 七、Tomcat正常启动，页面访问不到 ##
+	 tail -f -n 500 /usr/local/apache-tomcat-7.0.85/logs/catalina.out
+	 tail -f -n 500 /data/apache-tomcat-7.0.85/logs/catalina.out 
+
+## 八、Tomcat启动一直卡在信息: `Deploying web application directory /root/sunshine/apache-tomcat-7.0.86/webapps/ROOT` ##
+### 查看 `catalina.out` 文件 ###
+	tail -f -n 500 /data/apache-tomcat-7.0.96/logs/catalina.out
+### 解决 ###
+##### 1、找到文件 #####
+	cd /usr/local/jdk1.8.0_191/jre/lib/security
+##### 2、编辑文件 #####
+	vim java.security
+###### 第118行附近 ######
+	#securerandom.source=file:/dev/random
+	securerandom.source=file:/dev/./urandom
+##### 3、重启服务 #####
+	/usr/local/apache-tomcat-7.0.96/bin/startup.sh
+### 原因 ###
+> linux或者部分unix系统提供随机数设备是/dev/random 和/dev/urandom，其中urandom安全性没有random高，但random需要时间间隔生成随机数，jdk默认调用random，从而生成随机数时间间隔长从而到时Tomcat启动速度慢

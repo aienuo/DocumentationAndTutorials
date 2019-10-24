@@ -20,13 +20,18 @@
 ## 四、配置启动文件 ###
 ### 1、切换到 mysql-5.7.27 的support-files目录下 ###
     cd mysql-5.7.27/support-files/
+#### 修改 `mysqld_multi.server` 文件第17-18行
+```
+basedir=/usr/local/mysql-5.7.27
+bindir=/usr/local/mysql-5.7.27/bin
+```
 ### 2、复制 my-default.cnf 到 /etc/my.cnf（MySQL启动时自动读取）
     cp my-default.cnf /etc/my.cnf
     cp: overwrite ‘/etc/my.cnf’? yes
 ##### 注意： 如果你在安装时Linux虚拟机时同时安装了默认的mysql，此时操作以上步骤，终端将会提示你文件已存在是否覆盖，输入yes覆盖即可。 #####
 ### 3、配置my.cnf文件 ###
     vim /etc/my.cnf
-##### 参考：（注意修改： `server-id`  `binlog-do-db`） #####
+##### 参考：（注意修改：`basedir` `datadir` `server-id` `log-bin` `log-error` `binlog-do-db`） #####
 ###### PS：修改配置文件前手动在安装路径下新建 `logs` 文件夹，在其下分别创建两个名为 `binlog` `errlog` 的文件夹 ######
 	# For advice on how to change settings please see
 	# http://dev.mysql.com/doc/refman/5.6/en/server-configuration-defaults.html
@@ -56,9 +61,9 @@
 	# 配置允许连接失败的次数。这是为了防止有人从该主机试图攻击数据库系统
 	max_connect_errors = 10
 	# 配置mysql在关闭一个非交互的连接之前所要等待的秒数，其取值范围为1-2147483(Windows)，1-31536000(linux)，默认值28800。
-	#wait_timeout = 28800
+	#wait_timeout = 31536000
 	# 配置mysql在关闭一个交互的连接之前所要等待的秒数(交互连接如mysql gui tool中的连接)，其取值范围随wait_timeout变动，默认值28800。
-	#interactive_timeout = 28800
+	#interactive_timeout = 31536000
 	# 添加默认数据引擎项
 	default-storage-engine = InnoDB
 	# 添加字符集参数
@@ -142,6 +147,7 @@
      set password=password("root");
 ### 4、设置远程登录权限（`#`造成用户名改变，记得使用 `#root`作为账号） ###
     grant all privileges on *.* to '#root'@'%' identified by 'root';
+    grant all privileges on *.* to 'root'@'%' identified by 'root';
 ### 5、立即生效 ###
     flush privileges;
 ### 6、退出登录 ###
@@ -195,10 +201,10 @@
 <del>mysql -u root -p</del>
 	
 ## 九、问题解决 ##
-### 1、 `ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)` ###
+### 1、 `ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)` 忘记密码 ###
 #### 解决 ####
 	1、修改 /etc/my.cnf 文件 第63行，绕过所有的权限验证
-	2、
+	2、还没写完......
 ### 2、防火墙端口开放 ###
 #### 解决 ####
 ##### 1、查看防火墙状态 #####
@@ -215,3 +221,11 @@
 	firewall-cmd --reload
 ##### 7、检查是否生效 ######
 	firewall-cmd --zone=public --query-port=3306/tcp
+
+### 3、`temporary failure in name resolution` 问题，或者是服务正常启动，访问效率特别慢（适用于MySQL\MyCat\TomCat） ###
+#### 解决（DNS的问题） ####
+##### 1、查看主机名称 #####
+	hostname
+##### 2、配置 `vim /etc/hosts`	#####
+	127.0.0.1   主机名称 localhost localhost.localdomain localhost4 localhost4.localdomain4
+	::1         localhost localhost.localdomain localhost6 localhost6.localdomain6

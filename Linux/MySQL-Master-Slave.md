@@ -97,6 +97,9 @@
 
 ### 2、授权用户对数据库的操作(如果仅仅为了主从复制创建账号，只需要授予 `REPLICATION SLAVE`权限,绕过本步骤直接进行第3步) ###
 	GRANT INSERT,DELETE,UPDATE,SELECT ON 数据库名称.* TO '用户名'@'IP地址' IDENTIFIED BY '密码';
+#### 授权用户创建数据库的操作 ####
+	GRANT CREATE ON *.* TO '用户名'@'IP地址' IDENTIFIED BY '密码';
+	
 <del>GRANT INSERT,DELETE,UPDATE,SELECT ON anbao.* TO '101033136'@'10.10.33.136' IDENTIFIED BY '101033136';</del>
 
 ### 3、授权 `REPLICATION SLAV` ###
