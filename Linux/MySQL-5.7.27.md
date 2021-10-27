@@ -13,10 +13,8 @@
 ## 三、解压操作文件 ##
 ### 1、解压 ###
     tar -zxvf mysql-5.7.27-linux-glibc2.12-x86_64.tar.gz -C /usr/local/
-<del>tar -zxvf mysql-5.7.27-linux-glibc2.12-x86_64.tar.gz -C /data/</del>
 ### 2、修改名称 ###
     mv mysql-5.7.27-linux-glibc2.12-x86_64 /usr/local/mysql-5.7.27
-<del>mv mysql-5.7.27-linux-glibc2.12-x86_64 /data/mysql-5.7.27</del>
 ## 四、配置启动文件 ###
 ### 1、切换到 mysql-5.7.27 的support-files目录下 ###
     cd mysql-5.7.27/support-files/
@@ -26,9 +24,12 @@ basedir=/usr/local/mysql-5.7.27
 bindir=/usr/local/mysql-5.7.27/bin
 ```
 ### 2、复制 my-default.cnf 到 /etc/my.cnf（MySQL启动时自动读取）
-    cp my-default.cnf /etc/my.cnf
-    cp: overwrite ‘/etc/my.cnf’? yes
+#### （1）、切换目录	
+	cd /usr/local/mysql-5.7.27/
+#### （2）、复制
+    cp my-default.cnf /etc/my.cnf  
 ##### 注意： 如果你在安装时Linux虚拟机时同时安装了默认的mysql，此时操作以上步骤，终端将会提示你文件已存在是否覆盖，输入yes覆盖即可。 #####
+	cp: overwrite ‘/etc/my.cnf’? yes
 ### 3、配置my.cnf文件 ###
     vim /etc/my.cnf
 ##### 参考：（注意修改：`basedir` `datadir` `server-id` `log-bin` `log-error` `binlog-do-db`） #####
@@ -123,15 +124,11 @@ bindir=/usr/local/mysql-5.7.27/bin
 	useradd -g mysql mysql
 #### 授权 ####
     chown -R mysql:mysql /usr/local/mysql-5.7.27/
-<del>chown -R mysql:mysql /data/mysql-5.7.27/</del>
-
 ## 五、初始化 ##
 ### 1、进入bin目录 ###
     cd /usr/local/mysql-5.7.27/bin/
-<del>cd /data/mysql-5.7.27/bin/</del>
 ### 2、初始化数据库 ###
     ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql-5.7.27 --datadir=/usr/local/mysql-5.7.27/data
-<del>./mysqld --initialize --user=mysql --basedir=/data/mysql-5.7.27 --datadir=/data/mysql-5.7.27/data</del>
 ### 3、安全启动 ###
     ./mysqld_safe --user=mysql &
 ### 4、验证是否安全启动 ###
@@ -139,14 +136,12 @@ bindir=/usr/local/mysql-5.7.27/bin
 ## 六、登录 ##
 ### 1、进入bin目录 ###
     cd /usr/local/mysql-5.7.27/bin/
- <del>cd /data/mysql-5.7.27/bin/</del>
 ### 2、登录 ###
     ./mysql -u root -p
 ##### PS:密码在 `/usr/local/mysql-5.7.27/logs/errlog/master-error.log` 大约八行左右
 ### 3、重置密码 ###
      set password=password("root");
-### 4、设置远程登录权限（`#`造成用户名改变，记得使用 `#root`作为账号） ###
-    grant all privileges on *.* to '#root'@'%' identified by 'root';
+### 4、设置远程登录权限 ###
     grant all privileges on *.* to 'root'@'%' identified by 'root';
 ### 5、立即生效 ###
     flush privileges;
@@ -158,7 +153,6 @@ bindir=/usr/local/mysql-5.7.27/bin
 `注意mysql.server文件中66行-73行的数据库安装路径`
 ### 1、把support-files/mysql.server 拷贝为/etc/init.d/mysql-5.7.27 ###
 	cp -a /usr/local/mysql-5.7.27/support-files/mysql.server /etc/init.d/mysql-5.7.27
-</del>cp -a /data/mysql-5.7.27/support-files/mysql.server /etc/init.d/mysql-5.7.27</del>
 ### 2、查看mysql-5.7.27服务是否在服务配置中 ###
 	chkconfig --list mysql-5.7.27
 ### 3、若没有注意看提示语，手动把把mysql-5.7.27注册为开机启动的服务
@@ -191,7 +185,6 @@ bindir=/usr/local/mysql-5.7.27/bin
 ## 七、创建快捷方式 ##
 ### 服务启动后，直接运行mysql -u root -p即可登录，不需要进入到对应的目录 ###
 	ln -s /usr/local/mysql-5.7.27/bin/mysql /usr/bin
-<del>ln -s /data/mysql-5.7.27/bin/mysql /usr/bin</del>
 ### 重启计算机 ###
 	shutdown -r now
 	
