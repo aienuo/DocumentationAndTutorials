@@ -1,5 +1,5 @@
-# Contos7环境下MyCat-1.6.7.1安装配置 #
-## 一、下载Mycat ##
+# Centos7 环境下 MyCat-1.6.7.1 安装配置 #
+## 一、下载 MyCat ##
 	wget http://dl.mycat.io/1.6.7.1/Mycat-server-1.6.7.1-release-20190627191042-linux.tar.gz
 ## 二、解压操作文件 ##
 ### 1、解压 ###
@@ -9,7 +9,7 @@
 	groupadd mycat
 ### 2、添加用户 ###
 	adduser -r -g mycat mycat
-### 3、修改mycat目录所属的用户和组为mycat用户 ###
+### 3、修改MyCat目录所属的用户和组为mycat用户 ###
 	chown -R mycat.mycat /usr/local/mycat/
 ## 四、配置文件配置 ##
 ### 切换到Mycat的 `conf` 目录下 ###
@@ -394,8 +394,8 @@
 ### 5、保存退出 ###
 #### 按一下 `Esc` 键
 	:wq
-## 五、启动Mycat服务 ##
-### 1、切换到Mycat的bin目录下 ###
+## 五、启动MyCat服务 ##
+### 1、切换到MyCat的bin目录下 ###
 	cd /usr/local/mycat/bin/
 ### 2、查看启动状态 ###
 	./mycat status

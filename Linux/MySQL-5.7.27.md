@@ -1,4 +1,4 @@
-# Contos7环境下MySql-5.7.27的安装配置 #
+# Centos8 环境下 MySql-5.7.27 的安装配置 #
 ### 注意看我的标题！！！！我这是针对5.7.27版本 ###
 ## 一、检查本地是否安装 ##
 ### 1、检查 ###
@@ -194,12 +194,10 @@ bindir=/usr/local/mysql-5.7.27/bin
 	ln -s /usr/local/mysql-5.7.27/bin/mysql /usr/bin
 ### 重启计算机 ###
 	shutdown -r now
-	
 ## 八、测试完整性 ##
 ### 1、登录 ###
 	mysql -h [host] -u [username] -p [password]
 <del>mysql -u root -p</del>
-	
 ## 九、问题解决 ##
 ### 1、 `ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)` 忘记密码 ###
 #### 解决 ####
@@ -221,7 +219,6 @@ bindir=/usr/local/mysql-5.7.27/bin
 	firewall-cmd --reload
 ##### 7、检查是否生效 ######
 	firewall-cmd --zone=public --query-port=3306/tcp
-
 ### 3、`temporary failure in name resolution` 问题，或者是服务正常启动，访问效率特别慢（适用于MySQL\MyCat\TomCat） ###
 #### 解决（DNS的问题） ####
 ##### 1、查看主机名称 #####

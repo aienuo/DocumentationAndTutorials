@@ -1,4 +1,4 @@
-# Contos7环境下Redis的安装配置 #
+# Centos7环境下Redis的安装配置 #
 ## 一、检查本地是否安装 ##
 ### 1、检查 ###
     rpm -qa | grep redis

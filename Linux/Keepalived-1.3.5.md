@@ -1,4 +1,4 @@
-### yum安装keepalived  125-128
+### yum安装 KeepaLived  125-128
 > keepalived与haproxy配置在相同的机器上
 
 ` yum -y install keepalived `
