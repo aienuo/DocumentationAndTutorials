@@ -1,0 +1,974 @@
+<div class="rich_media_content " id="js_content" style="visibility: visible;">
+    <section data-tool="mdnice编辑器" data-website="https://www.mdnice.com"
+             style="font-size: 16px;padding-right: 10px;padding-left: 10px;word-break: break-word;text-align: left;line-height: 1.25;color: rgb(43, 43, 43);font-family: Optima-Regular, Optima, PingFangTC-Light, PingFangSC-light, PingFangTC-light;letter-spacing: 2px;background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.04) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.04) 3%, rgba(0, 0, 0, 0) 3%);background-size: 20px 20px;background-position: center center;"
+             data-mpa-powered-by="yiban.io"><h3 data-tool="mdnice编辑器"
+                                                style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+        <span style="display: none;"></span><span
+            style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+            style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>前言</span><span
+            style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            最近看了极客时间的《Java业务开发常见错误100例》，再结合平时踩的一些代码坑，写写总结，希望对大家有帮助，感谢阅读</p>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>1. 六类典型空指针问题</span><span
+                style="display: none;"></span></h3>
+        <ul data-tool="mdnice编辑器"
+            style="margin-top: 8px;margin-bottom: 8px;padding-left: 25px;font-size: 15px;color: #595959;list-style-type: circle;"
+            class="list-paddingleft-2">
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">包装类型的空指针问题
+                </section>
+            </li>
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">级联调用的空指针问题
+                </section>
+            </li>
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">
+                    Equals方法左边的空指针问题
+                </section>
+            </li>
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">ConcurrentHashMap
+                    这样的容器不支持 Key 和 Value 为 null。
+                </section>
+            </li>
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">集合，数组直接获取元素
+                </section>
+            </li>
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">对象直接获取属性
+                </section>
+            </li>
+        </ul>
+        <h4 data-tool="mdnice编辑器"
+            style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;"><span
+                style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>1.1包装类型的空指针问题</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;NullPointTest&nbsp;{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;throws&nbsp;InterruptedException&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(testInteger(null));<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;static&nbsp;Integer&nbsp;testInteger(Integer&nbsp;i)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;i&nbsp;+&nbsp;1;&nbsp;&nbsp;//包装类型，传参可能为null，直接计算，则会导致空指针问题<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <h4 data-tool="mdnice编辑器"
+            style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;"><span
+                style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>1.2 级联调用的空指针问题</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;NullPointTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//fruitService.getAppleService()&nbsp;可能为空，会导致空指针问题<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fruitService.getAppleService().getWeight().equals(<span
+                style="color: #98c379;line-height: 26px;">"OK"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <h4 data-tool="mdnice编辑器"
+            style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;"><span
+                style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>1.3 Equals方法左边的空指针问题</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;NullPointTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;s&nbsp;=&nbsp;null;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">if</span>&nbsp;(s.equals(<span
+                style="color: #98c379;line-height: 26px;">"666"</span>))&nbsp;{&nbsp;//s可能为空，会导致空指针问题<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"公众号：捡田螺的小男孩，666"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <h4 data-tool="mdnice编辑器"
+            style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;"><span
+                style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>1.4 ConcurrentHashMap 这样的容器不支持 Key，Value 为 null。</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;NullPointTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map&nbsp;map&nbsp;=&nbsp;new&nbsp;ConcurrentHashMap&lt;&gt;();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;key&nbsp;=&nbsp;null;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;value&nbsp;=&nbsp;null;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map.put(key,&nbsp;value);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <h4 data-tool="mdnice编辑器"
+            style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;"><span
+                style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>1.5 &nbsp;集合，数组直接获取元素</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;NullPointTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;[]&nbsp;array=null;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List&nbsp;list&nbsp;=&nbsp;null;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(array[0]);&nbsp;//空指针异常<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(list.get(0));&nbsp;//空指针一场<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <h4 data-tool="mdnice编辑器"
+            style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;"><span
+                style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>1.6 对象直接获取属性</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;NullPointTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User&nbsp;user=null;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(user.getAge());&nbsp;//空指针异常<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>2. 日期YYYY格式设置的坑</span><span
+                style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            日常开发，经常需要对日期格式化，但是呢，年份设置为YYYY大写的时候，是有坑的哦。</p>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            反例：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">Calendar&nbsp;calendar&nbsp;=&nbsp;Calendar.getInstance();<br>calendar.set(2019,&nbsp;Calendar.DECEMBER,&nbsp;31);<br><br>Date&nbsp;testDate&nbsp;=&nbsp;calendar.getTime();<br><br>SimpleDateFormat&nbsp;dtf&nbsp;=&nbsp;new&nbsp;SimpleDateFormat(<span
+                style="color: #98c379;line-height: 26px;">"YYYY-MM-dd"</span>);<br>System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"2019-12-31&nbsp;转&nbsp;YYYY-MM-dd&nbsp;格式后&nbsp;"</span>&nbsp;+&nbsp;dtf.format(testDate));<br><br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            运行结果：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">2019-12-31&nbsp;转&nbsp;YYYY-MM-dd&nbsp;格式后&nbsp;2020-12-31<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            <strong style="color: rgb(53, 148, 247);">「解析：」</strong></p>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            为什么明明是2019年12月31号，就转了一下格式，就变成了2020年12月31号了？因为YYYY是基于周来计算年的，它指向当天所在周属于的年份，一周从周日开始算起，周六结束，只要本周跨年，那么这一周就算下一年的了。正确姿势是使用yyyy格式。</p>
+        <figure data-tool="mdnice编辑器"
+                style="margin-top: 10px;margin-bottom: 10px;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+            <img data-ratio="1"
+                 data-src="https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWzLXmavEQPHdHQlDs4Nm0YIdmdofUicsJLY2WBcmtmXNTvbG5GYT8KHA/640?wx_fmt=png"
+                 data-type="png" data-w="553"
+                 style="border-radius: 6px; display: block; margin: 20px auto; object-fit: contain; box-shadow: rgb(153, 153, 153) 2px 4px 7px; width: 553px !important; height: auto !important; visibility: visible !important;"
+                 _width="553px" class=""
+                 src="https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWzLXmavEQPHdHQlDs4Nm0YIdmdofUicsJLY2WBcmtmXNTvbG5GYT8KHA/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1"
+                 crossorigin="anonymous" alt="图片" data-fail="0"></figure>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            正例：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">Calendar&nbsp;calendar&nbsp;=&nbsp;Calendar.getInstance();<br>calendar.set(2019,&nbsp;Calendar.DECEMBER,&nbsp;31);<br><br>Date&nbsp;testDate&nbsp;=&nbsp;calendar.getTime();<br><br>SimpleDateFormat&nbsp;dtf&nbsp;=&nbsp;new&nbsp;SimpleDateFormat(<span
+                style="color: #98c379;line-height: 26px;">"yyyy-MM-dd"</span>);<br>System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"2019-12-31&nbsp;转&nbsp;yyyy-MM-dd&nbsp;格式后&nbsp;"</span>&nbsp;+&nbsp;dtf.format(testDate));<br><br></code></pre>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>3.金额数值计算精度的坑</span><span
+                style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            看下这个浮点数计算的例子吧：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;DoubleTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(0.1+0.2);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(1.0-0.8);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(4.015*100);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(123.3/100);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;amount1&nbsp;=&nbsp;3.15;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;double&nbsp;amount2&nbsp;=&nbsp;2.10;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">if</span>&nbsp;(amount1&nbsp;-&nbsp;amount2&nbsp;==&nbsp;1.05){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"OK"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            运行结果：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">0.30000000000000004<br>0.19999999999999996<br>401.49999999999994<br>1.2329999999999999<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            可以发现，结算结果跟我们预期不一致，其实是因为计算机是以二进制存储数值的，对于浮点数也是。对于计算机而言，0.1无法精确表达，这就是为什么浮点数会导致精确度缺失的。因此，<strong
+                style="color: rgb(53, 148, 247);">「金额计算，一般都是用BigDecimal 类型」</strong></p>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            对于以上例子，我们改为BigDecimal，再看看运行效果：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">System.out.println(new&nbsp;BigDecimal(0.1).add(new&nbsp;BigDecimal(0.2)));<br>System.out.println(new&nbsp;BigDecimal(1.0).subtract(new&nbsp;BigDecimal(0.8)));<br>System.out.println(new&nbsp;BigDecimal(4.015).multiply(new&nbsp;BigDecimal(100)));<br>System.out.println(new&nbsp;BigDecimal(123.3).divide(new&nbsp;BigDecimal(100)));<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            运行结果：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">0.3000000000000000166533453693773481063544750213623046875<br>0.1999999999999999555910790149937383830547332763671875<br>401.49999999999996802557689079549163579940795898437500<br>1.232999999999999971578290569595992565155029296875<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            发现结果还是不对，<strong style="color: rgb(53, 148, 247);">「其实」</strong>，使用 BigDecimal 表示和计算浮点数，必须使用<strong
+                style="color: rgb(53, 148, 247);">「字符串的构造方法」</strong>来初始化 BigDecimal，正例如下：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;DoubleTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(new&nbsp;BigDecimal(<span
+                style="color: #98c379;line-height: 26px;">"0.1"</span>).add(new&nbsp;BigDecimal(<span
+                style="color: #98c379;line-height: 26px;">"0.2"</span>)));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(new&nbsp;BigDecimal(<span
+                style="color: #98c379;line-height: 26px;">"1.0"</span>).subtract(new&nbsp;BigDecimal(<span
+                style="color: #98c379;line-height: 26px;">"0.8"</span>)));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(new&nbsp;BigDecimal(<span
+                style="color: #98c379;line-height: 26px;">"4.015"</span>).multiply(new&nbsp;BigDecimal(<span
+                style="color: #98c379;line-height: 26px;">"100"</span>)));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(new&nbsp;BigDecimal(<span
+                style="color: #98c379;line-height: 26px;">"123.3"</span>).divide(new&nbsp;BigDecimal(<span
+                style="color: #98c379;line-height: 26px;">"100"</span>)));<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            在进行金额计算，使用BigDecimal的时候，我们还需要<strong
+                style="color: rgb(53, 148, 247);">「注意BigDecimal的几位小数点，还有它的八种舍入模式哈」</strong>。</p>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>4. FileReader默认编码导致乱码问题</span><span
+                style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            看下这个例子：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;FileReaderTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;throws&nbsp;IOException&nbsp;{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Files.deleteIfExists(Paths.get(<span
+                style="color: #98c379;line-height: 26px;">"jay.txt"</span>));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Files.write(Paths.get(<span
+                style="color: #98c379;line-height: 26px;">"jay.txt"</span>),&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"你好,捡田螺的小男孩"</span>.getBytes(Charset.forName(<span
+                style="color: #98c379;line-height: 26px;">"GBK"</span>)));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"系统默认编码："</span>+Charset.defaultCharset());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char[]&nbsp;chars&nbsp;=&nbsp;new&nbsp;char[10];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;content&nbsp;=&nbsp;<span
+                style="color: #98c379;line-height: 26px;">""</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;(FileReader&nbsp;fileReader&nbsp;=&nbsp;new&nbsp;FileReader(<span
+                style="color: #98c379;line-height: 26px;">"jay.txt"</span>))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;count;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">while</span>&nbsp;((count&nbsp;=&nbsp;fileReader.read(chars))&nbsp;!=&nbsp;-1)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content&nbsp;+=&nbsp;new&nbsp;String(chars,&nbsp;0,&nbsp;count);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(content);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            运行结果：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">系统默认编码：UTF-8<br>���,�����ݵ�С�к�<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            从运行结果，可以知道，系统默认编码是utf8，demo中读取出来，出现乱码了。为什么呢？</p>
+        <blockquote data-tool="mdnice编辑器"
+                    style="font-size: 0.9em;overflow: auto;padding: 10px 10px 10px 20px;margin-bottom: 20px;margin-top: 20px;text-size-adjust: 100%;line-height: 1.55em;border-radius: 6px;color: rgb(89, 89, 89);box-sizing: inherit;border-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-color: rgba(64, 184, 250, 0.4);background: rgba(64, 184, 250, 0.1);">
+            <span style="color: RGBA(64, 184, 250, .5);font-size: 34px;line-height: 1;font-weight: 700;">❝</span>
+            <p style="padding-top: 8px;padding-bottom: 8px;font-size: 14px;word-spacing: 2px;line-height: 26px;">
+                FileReader 是以当<strong style="color: rgb(53, 148, 247);">「前机器的默认字符集」</strong>来读取文件的，如果希望指定字符集的话，需要直接使用
+                InputStreamReader 和 FileInputStream。</p><span
+                style="float: right;color: RGBA(64, 184, 250, .5);">❞</span></blockquote>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            正例如下：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;FileReaderTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;throws&nbsp;IOException&nbsp;{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Files.deleteIfExists(Paths.get(<span
+                style="color: #98c379;line-height: 26px;">"jay.txt"</span>));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Files.write(Paths.get(<span
+                style="color: #98c379;line-height: 26px;">"jay.txt"</span>),&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"你好,捡田螺的小男孩"</span>.getBytes(Charset.forName(<span
+                style="color: #98c379;line-height: 26px;">"GBK"</span>)));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"系统默认编码："</span>+Charset.defaultCharset());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;char[]&nbsp;chars&nbsp;=&nbsp;new&nbsp;char[10];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;content&nbsp;=&nbsp;<span
+                style="color: #98c379;line-height: 26px;">""</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;(FileInputStream&nbsp;fileInputStream&nbsp;=&nbsp;new&nbsp;FileInputStream(<span
+                style="color: #98c379;line-height: 26px;">"jay.txt"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;InputStreamReader&nbsp;inputStreamReader&nbsp;=&nbsp;new&nbsp;InputStreamReader(fileInputStream,&nbsp;Charset.forName(<span
+                style="color: #98c379;line-height: 26px;">"GBK"</span>)))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int&nbsp;count;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">while</span>&nbsp;((count&nbsp;=&nbsp;inputStreamReader.read(chars))&nbsp;!=&nbsp;-1)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;content&nbsp;+=&nbsp;new&nbsp;String(chars,&nbsp;0,&nbsp;count);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(content);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>5. Integer缓存的坑</span><span
+                style="display: none;"></span></h3>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;IntegerTest&nbsp;{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Integer&nbsp;a&nbsp;=&nbsp;127;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Integer&nbsp;b&nbsp;=&nbsp;127;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"a==b:"</span>+&nbsp;(a&nbsp;==&nbsp;b));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Integer&nbsp;c&nbsp;=&nbsp;128;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Integer&nbsp;d&nbsp;=&nbsp;128;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"c==d:"</span>+&nbsp;(c&nbsp;==&nbsp;d));<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            运行结果：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">a==b:<span
+                style="color: #56b6c2;line-height: 26px;">true</span><br>c==d:<span
+                style="color: #56b6c2;line-height: 26px;">false</span><br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            为什么Integer值如果是128就不相等了呢？<strong style="color: rgb(53, 148, 247);">「编译器会把 Integer a = 127 转换为
+            Integer.valueOf(127)。」</strong> 我们看下源码。</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;static&nbsp;Integer&nbsp;valueOf(int&nbsp;i)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">if</span>&nbsp;(i&nbsp;&gt;=&nbsp;IntegerCache.low&nbsp;&amp;&amp;&nbsp;i&nbsp;&lt;=&nbsp;IntegerCache.high)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;IntegerCache.cache[i&nbsp;+&nbsp;(-IntegerCache.low)];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;new&nbsp;Integer(i);<br>&nbsp;}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            可以发现，i在一定范围内，是会返回缓存的。</p>
+        <blockquote data-tool="mdnice编辑器"
+                    style="font-size: 0.9em;overflow: auto;padding: 10px 10px 10px 20px;margin-bottom: 20px;margin-top: 20px;text-size-adjust: 100%;line-height: 1.55em;border-radius: 6px;color: rgb(89, 89, 89);box-sizing: inherit;border-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-color: rgba(64, 184, 250, 0.4);background: rgba(64, 184, 250, 0.1);">
+            <span style="color: RGBA(64, 184, 250, .5);font-size: 34px;line-height: 1;font-weight: 700;">❝</span>
+            <p style="padding-top: 8px;padding-bottom: 8px;font-size: 14px;word-spacing: 2px;line-height: 26px;">
+                默认情况下呢，这个缓存区间就是[-128, 127]，所以我们业务日常开发中，如果涉及Integer值的比较，需要注意这个坑哈。还有呢，设置 JVM 参数加上
+                -XX:AutoBoxCacheMax=1000，是可以调整这个区间参数的，大家可以自己试一下哈</p><span
+                style="float: right;color: RGBA(64, 184, 250, .5);">❞</span></blockquote>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>6. static静态变量依赖spring实例化变量，可能导致初始化出错</span><span
+                style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            之前看到过类似的代码。静态变量依赖于spring容器的bean。</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">&nbsp;private&nbsp;static&nbsp;SmsService&nbsp;smsService&nbsp;=&nbsp;SpringContextUtils.getBean(SmsService.class);<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            这个静态的smsService有可能获取不到的，因为类加载顺序不是确定的，正确的写法可以这样，如下：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">&nbsp;private&nbsp;static&nbsp;SmsService&nbsp;&nbsp;smsService&nbsp;=null;<br>&nbsp;<br>&nbsp;//使用到的时候采取获取<br>&nbsp;public&nbsp;static&nbsp;SmsService&nbsp;<span
+                style="line-height: 26px;"><span style="color: #61aeee;line-height: 26px;">getSmsService</span></span>(){<br>&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">if</span>(smsService==null){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;smsService&nbsp;=&nbsp;SpringContextUtils.getBean(SmsService.class);<br>&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;smsService;<br>&nbsp;}<br></code></pre>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>7. 使用ThreadLocal，线程重用导致信息错乱的坑</span><span
+                style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            使用ThreadLocal缓存信息，有可能出现信息错乱的情况。看下下面这个例子吧。</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">private&nbsp;static&nbsp;final&nbsp;ThreadLocal&lt;Integer&gt;&nbsp;currentUser&nbsp;=&nbsp;ThreadLocal.withInitial(()&nbsp;-&gt;&nbsp;null);<br><br>@GetMapping(<span
+                style="color: #98c379;line-height: 26px;">"wrong"</span>)<br>public&nbsp;Map&nbsp;wrong(@RequestParam(<span
+                style="color: #98c379;line-height: 26px;">"userId"</span>)&nbsp;Integer&nbsp;userId)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;//设置用户信息之前先查询一次ThreadLocal中的用户信息<br>&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;before&nbsp;&nbsp;=&nbsp;Thread.currentThread().getName()&nbsp;+&nbsp;<span
+                style="color: #98c379;line-height: 26px;">":"</span>&nbsp;+&nbsp;currentUser.get();<br>&nbsp;&nbsp;&nbsp;&nbsp;//设置用户信息到ThreadLocal<br>&nbsp;&nbsp;&nbsp;&nbsp;currentUser.set(userId);<br>&nbsp;&nbsp;&nbsp;&nbsp;//设置用户信息之后再查询一次ThreadLocal中的用户信息<br>&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;after&nbsp;&nbsp;=&nbsp;Thread.currentThread().getName()&nbsp;+&nbsp;<span
+                style="color: #98c379;line-height: 26px;">":"</span>&nbsp;+&nbsp;currentUser.get();<br>&nbsp;&nbsp;&nbsp;&nbsp;//汇总输出两次查询结果<br>&nbsp;&nbsp;&nbsp;&nbsp;Map&nbsp;result&nbsp;=&nbsp;new&nbsp;HashMap();<br>&nbsp;&nbsp;&nbsp;&nbsp;result.put(<span
+                style="color: #98c379;line-height: 26px;">"before"</span>,&nbsp;before);<br>&nbsp;&nbsp;&nbsp;&nbsp;result.put(<span
+                style="color: #98c379;line-height: 26px;">"after"</span>,&nbsp;after);<br>&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;result;<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            按理说，每次获取的before应该都是null，但是呢，程序运行在 Tomcat 中，执行程序的线程是 Tomcat 的工作线程，而 Tomcat 的工作线程是基于线程池的。</p>
+        <blockquote data-tool="mdnice编辑器"
+                    style="font-size: 0.9em;overflow: auto;padding: 10px 10px 10px 20px;margin-bottom: 20px;margin-top: 20px;text-size-adjust: 100%;line-height: 1.55em;border-radius: 6px;color: rgb(89, 89, 89);box-sizing: inherit;border-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-color: rgba(64, 184, 250, 0.4);background: rgba(64, 184, 250, 0.1);">
+            <span style="color: RGBA(64, 184, 250, .5);font-size: 34px;line-height: 1;font-weight: 700;">❝</span>
+            <p style="padding-top: 8px;padding-bottom: 8px;font-size: 14px;word-spacing: 2px;line-height: 26px;">
+                线程池会重用固定的几个线程，一旦线程重用，那么很可能首次从 ThreadLocal 获取的值是之前其他用户的请求遗留的值。这时，ThreadLocal 中的用户信息就是其他用户的信息。</p><span
+                style="float: right;color: RGBA(64, 184, 250, .5);">❞</span></blockquote>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            把tomcat的工作线程设置为1</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">server.tomcat.max-threads=1<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            用户1，请求过来，会有以下结果，符合预期：</p>
+        <figure data-tool="mdnice编辑器"
+                style="margin-top: 10px;margin-bottom: 10px;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+            <img data-ratio="0.3179190751445087"
+                 data-src="https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWibe0fqRv3onL25bYE4BQlkBY693p87N7KKibibNRcZxa4MNzcgNWL4aLw/640?wx_fmt=png"
+                 data-type="png" data-w="1038"
+                 style="border-radius: 6px; display: block; margin: 20px auto; object-fit: contain; box-shadow: rgb(153, 153, 153) 2px 4px 7px; width: 677px !important; height: auto !important; visibility: visible !important;"
+                 _width="677px" class=""
+                 src="https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWibe0fqRv3onL25bYE4BQlkBY693p87N7KKibibNRcZxa4MNzcgNWL4aLw/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1"
+                 crossorigin="anonymous" alt="图片" data-fail="0"></figure>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            用户2请求过来，会有以下结果，<strong style="color: rgb(53, 148, 247);">「不符合预期」</strong>：</p>
+        <figure data-tool="mdnice编辑器"
+                style="margin-top: 10px;margin-bottom: 10px;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+            <img data-ratio="0.31861804222648754"
+                 data-src="https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWibabBQQNH1v3y1ycHOZu41WZVRRwicoqibL3G2CpF38Uter43iaVlGcWaQ/640?wx_fmt=png"
+                 data-type="png" data-w="1042"
+                 style="border-radius: 6px; display: block; margin: 20px auto; object-fit: contain; box-shadow: rgb(153, 153, 153) 2px 4px 7px; width: 677px !important; height: auto !important; visibility: visible !important;"
+                 _width="677px" class=""
+                 src="https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWibabBQQNH1v3y1ycHOZu41WZVRRwicoqibL3G2CpF38Uter43iaVlGcWaQ/640?wx_fmt=png&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1"
+                 crossorigin="anonymous" alt="图片" data-fail="0"></figure>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            因此，使用类似 ThreadLocal 工具来存放一些数据时，需要特别注意在代码运行完后，显式地去清空设置的数据，正例如下：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">@GetMapping(<span
+                style="color: #98c379;line-height: 26px;">"right"</span>)<br>public&nbsp;Map&nbsp;right(@RequestParam(<span
+                style="color: #98c379;line-height: 26px;">"userId"</span>)&nbsp;Integer&nbsp;userId)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;before&nbsp;&nbsp;=&nbsp;Thread.currentThread().getName()&nbsp;+&nbsp;<span
+                style="color: #98c379;line-height: 26px;">":"</span>&nbsp;+&nbsp;currentUser.get();<br>&nbsp;&nbsp;&nbsp;&nbsp;currentUser.set(userId);<br>&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;after&nbsp;=&nbsp;Thread.currentThread().getName()&nbsp;+&nbsp;<span
+                style="color: #98c379;line-height: 26px;">":"</span>&nbsp;+&nbsp;currentUser.get();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map&nbsp;result&nbsp;=&nbsp;new&nbsp;HashMap();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.put(<span
+                style="color: #98c379;line-height: 26px;">"before"</span>,&nbsp;before);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.put(<span
+                style="color: #98c379;line-height: 26px;">"after"</span>,&nbsp;after);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;result;<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;finally&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//在finally代码块中删除ThreadLocal中的数据，确保数据不串<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;currentUser.remove();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>8. 疏忽switch的return和break</span><span
+                style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            这一点严格来说，应该不算坑，但是呢，大家写代码的时候，有些朋友容易疏忽了。直接看例子吧</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">/*<br>&nbsp;*&nbsp;关注公众号：<br>&nbsp;*&nbsp;捡田螺的小男孩<br>&nbsp;*/<br>public&nbsp;class&nbsp;SwitchTest&nbsp;{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;throws&nbsp;InterruptedException&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"testSwitch结果是："</span>+testSwitch(<span
+                style="color: #98c379;line-height: 26px;">"1"</span>));<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;static&nbsp;String&nbsp;testSwitch(String&nbsp;key)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch&nbsp;(key)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">case</span>&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"1"</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"1"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">case</span>&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"2"</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(2);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"2"</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">case</span>&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"3"</span>:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"3"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"返回默认值"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"4"</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            输出结果：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">测试switch<br>1<br>2<br>testSwitch结果是：2<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            switch 是会<strong style="color: rgb(53, 148, 247);">「沿着case一直往下匹配的，知道遇到return或者break。」</strong>
+            所以，在写代码的时候留意一下，是不是你要的结果。</p>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>9. Arrays.asList的几个坑</span><span
+                style="display: none;"></span></h3><h4 data-tool="mdnice编辑器"
+                                                       style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;">
+            <span style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>9.1 基本类型不能作为 Arrays.asList方法的参数，否则会被当做一个参数。</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;ArrayAsListTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;int[]&nbsp;array&nbsp;=&nbsp;{1,&nbsp;2,&nbsp;3};<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List&nbsp;list&nbsp;=&nbsp;Arrays.asList(array);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(list.size());<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            运行结果：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">1<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            Arrays.asList源码如下：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;static&nbsp;&lt;T&gt;&nbsp;List&lt;T&gt;&nbsp;asList(T...&nbsp;a)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;new&nbsp;ArrayList&lt;&gt;(a);<br>}<br></code></pre>
+        <h4 data-tool="mdnice编辑器"
+            style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;"><span
+                style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>9.2 Arrays.asList 返回的 List 不支持增删操作。</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;ArrayAsListTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String[]&nbsp;array&nbsp;=&nbsp;{<span
+                style="color: #98c379;line-height: 26px;">"1"</span>,&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"2"</span>,&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"3"</span>};<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List&nbsp;list&nbsp;=&nbsp;Arrays.asList(array);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list.add(<span
+                style="color: #98c379;line-height: 26px;">"5"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(list.size());<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            运行结果：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">Exception&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">in</span>&nbsp;thread&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"main"</span>&nbsp;java.lang.UnsupportedOperationException<br>&nbsp;at&nbsp;java.util.AbstractList.add(AbstractList.java:148)<br>&nbsp;at&nbsp;java.util.AbstractList.add(AbstractList.java:108)<br>&nbsp;at&nbsp;object.ArrayAsListTest.main(ArrayAsListTest.java:11)<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            Arrays.asList 返回的 List 并不是我们期望的 java.util.ArrayList，而是 Arrays 的内部类
+            ArrayList。内部类的ArrayList没有实现add方法，而是父类的add方法的实现，是会抛出异常的呢。</p><h4 data-tool="mdnice编辑器"
+                                                                            style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;">
+            <span style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>9.3 使用Arrays.asLis的时候，对原始数组的修改会影响到我们获得的那个List</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;ArrayAsListTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String[]&nbsp;arr&nbsp;=&nbsp;{<span
+                style="color: #98c379;line-height: 26px;">"1"</span>,&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"2"</span>,&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"3"</span>};<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List&nbsp;list&nbsp;=&nbsp;Arrays.asList(arr);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;arr[1]&nbsp;=&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"4"</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"原始数组"</span>+Arrays.toString(arr));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"list数组"</span>&nbsp;+&nbsp;list);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            运行结果：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">原始数组[1,&nbsp;4,&nbsp;3]<br>list数组[1,&nbsp;4,&nbsp;3]<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            从运行结果可以看到，原数组改变，Arrays.asList转化来的list也跟着改变啦，大家使用的时候要注意一下哦，可以用new ArrayList(Arrays.asList(arr))包一下的。</p><h4
+                data-tool="mdnice编辑器"
+                style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;"><span
+                style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>10. ArrayList.toArray() 强转的坑</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;ArrayListTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List&lt;String&gt;&nbsp;list&nbsp;=&nbsp;new&nbsp;ArrayList&lt;String&gt;(1);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list.add(<span
+                style="color: #98c379;line-height: 26px;">"公众号：捡田螺的小男孩"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String[]&nbsp;array21&nbsp;=&nbsp;(String[])list.toArray();//类型转换异常<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            因为返回的是Object类型，Object类型数组强转String数组，会发生ClassCastException。解决方案是，使用toArray()重载方法toArray(T[] a)</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">String[]&nbsp;array1&nbsp;=&nbsp;list.toArray(new&nbsp;String[0]);//可以正常运行<br></code></pre>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>11. 异常使用的几个坑</span><span
+                style="display: none;"></span></h3><h4 data-tool="mdnice编辑器"
+                                                       style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;">
+            <span style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>11.1 不要弄丢了你的堆栈异常信息</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;void&nbsp;<span
+                style="line-height: 26px;"><span style="color: #61aeee;line-height: 26px;">wrong1</span></span>(){<br>&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;readFile();<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;catch&nbsp;(IOException&nbsp;e)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//没有把异常e取出来，原始异常信息丢失&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;RuntimeException(<span
+                style="color: #98c379;line-height: 26px;">"系统忙请稍后再试"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>public&nbsp;void&nbsp;<span
+                style="line-height: 26px;"><span style="color: #61aeee;line-height: 26px;">wrong2</span></span>(){<br>&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;readFile();<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;catch&nbsp;(IOException&nbsp;e)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//只保留了异常消息，栈没有记录啦<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.error(<span
+                style="color: #98c379;line-height: 26px;">"文件读取错误,&nbsp;{}"</span>,&nbsp;e.getMessage());<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;RuntimeException(<span
+                style="color: #98c379;line-height: 26px;">"系统忙请稍后再试"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            正确的打印方式，应该酱紫</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;void&nbsp;<span
+                style="line-height: 26px;"><span style="color: #61aeee;line-height: 26px;">right</span></span>(){<br>&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;readFile();<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;catch&nbsp;(IOException&nbsp;e)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//把整个IO异常都记录下来，而不是只打印消息<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.error(<span
+                style="color: #98c379;line-height: 26px;">"文件读取错误"</span>,&nbsp;e);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;RuntimeException(<span
+                style="color: #98c379;line-height: 26px;">"系统忙请稍后再试"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <h4 data-tool="mdnice编辑器"
+            style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;"><span
+                style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>11.2 不要把异常定义为静态变量</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;void&nbsp;testStaticExeceptionOne{<br>&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceptionOne();<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;catch&nbsp;(Exception&nbsp;ex)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.error(<span
+                style="color: #98c379;line-height: 26px;">"exception&nbsp;one&nbsp;error"</span>,&nbsp;ex);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exceptionTwo();<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;catch&nbsp;(Exception&nbsp;ex)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.error(<span
+                style="color: #98c379;line-height: 26px;">"exception&nbsp;two&nbsp;error"</span>,&nbsp;ex);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br><br>private&nbsp;void&nbsp;<span
+                style="line-height: 26px;"><span style="color: #61aeee;line-height: 26px;">exceptionOne</span></span>()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;//这里有问题<br>&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;Exceptions.ONEORTWO;<br>}<br><br>private&nbsp;void&nbsp;<span
+                style="line-height: 26px;"><span style="color: #61aeee;line-height: 26px;">exceptionTwo</span></span>()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;//这里有问题<br>&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;Exceptions.ONEORTWO;<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            exceptionTwo抛出的异常，很可能是 exceptionOne的异常哦。正确使用方法，应该是new 一个出来。</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">private&nbsp;void&nbsp;<span
+                style="line-height: 26px;"><span style="color: #61aeee;line-height: 26px;">exceptionTwo</span></span>()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;BusinessException(<span
+                style="color: #98c379;line-height: 26px;">"业务异常"</span>,&nbsp;0001);<br>}<br></code></pre>
+        <h4 data-tool="mdnice编辑器"
+            style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;"><span
+                style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>11.3 生产环境不要使用e.printStackTrace();</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;void&nbsp;<span
+                style="line-height: 26px;"><span style="color: #61aeee;line-height: 26px;">wrong</span></span>(){<br>&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;readFile();<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;catch&nbsp;(IOException&nbsp;e)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//生产环境别用它<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;e.printStackTrace();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            因为它占用太多内存，造成锁死，并且，日志交错混合，也不易读。正确使用如下：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">log.error(<span
+                style="color: #98c379;line-height: 26px;">"异常日志正常打印方式"</span>,e);<br></code></pre>
+        <h4 data-tool="mdnice编辑器"
+            style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;"><span
+                style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>11.4 线程池提交过程中，出现异常怎么办？</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;ThreadExceptionTest&nbsp;{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ExecutorService&nbsp;executorService&nbsp;=&nbsp;Executors.newFixedThreadPool(10);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IntStream.rangeClosed(1,&nbsp;10).forEach(i&nbsp;-&gt;&nbsp;executorService.submit(()-&gt;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">if</span>&nbsp;(i&nbsp;==&nbsp;5)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"发生异常啦"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;RuntimeException(<span
+                style="color: #98c379;line-height: 26px;">"error"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"当前执行第几:"</span>&nbsp;+&nbsp;Thread.currentThread().getName()&nbsp;);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;executorService.shutdown();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            运行结果：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">当前执行第几:pool-1-thread-1<br>当前执行第几:pool-1-thread-2<br>当前执行第几:pool-1-thread-3<br>当前执行第几:pool-1-thread-4<br>发生异常啦<br>当前执行第几:pool-1-thread-6<br>当前执行第几:pool-1-thread-7<br>当前执行第几:pool-1-thread-8<br>当前执行第几:pool-1-thread-9<br>当前执行第几:pool-1-thread-10<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            可以发现，如果是使用submit方法提交到线程池的异步任务，异常会被吞掉的，所以在日常发现中，如果会有可预见的异常，可以采取这几种方案处理：</p>
+        <ul data-tool="mdnice编辑器"
+            style="margin-top: 8px;margin-bottom: 8px;padding-left: 25px;font-size: 15px;color: #595959;list-style-type: circle;"
+            class="list-paddingleft-2">
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">
+                    1.在任务代码try/catch捕获异常
+                </section>
+            </li>
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">
+                    2.通过Future对象的get方法接收抛出的异常，再处理
+                </section>
+            </li>
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">
+                    3.为工作者线程设置UncaughtExceptionHandler，在uncaughtException方法中处理异常
+                </section>
+            </li>
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">
+                    4.重写ThreadPoolExecutor的afterExecute方法，处理传递的异常引用
+                </section>
+            </li>
+        </ul>
+        <h4 data-tool="mdnice编辑器"
+            style="margin-top: 30px;margin-bottom: 15px;font-weight: bold;color: black;font-size: 18px;"><span
+                style="display: none;"></span><span style="height: 16px;line-height: 16px;font-size: 16px;"><span
+                style="background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUW9oGriaU6zufWqealot3f2H0bqKARcHuh1w5yNMee0y96t1MTibrGGrLQ/640?wx_fmt=png&quot;);display: inline-block;background-size: 100%;background-position: left bottom;background-repeat: no-repeat;width: 16px;height: 15px;line-height: 15px;margin-right: 6px;margin-bottom: -2px;"></span>11.5 finally重新抛出的异常也要注意啦</span><span
+                style="display: none;"></span></h4>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;void&nbsp;<span
+                style="line-height: 26px;"><span
+                style="color: #61aeee;line-height: 26px;">wrong</span></span>()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.info(<span
+                style="color: #98c379;line-height: 26px;">"try"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//异常丢失<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;RuntimeException(<span
+                style="color: #98c379;line-height: 26px;">"try"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;finally&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.info(<span
+                style="color: #98c379;line-height: 26px;">"finally"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;RuntimeException(<span
+                style="color: #98c379;line-height: 26px;">"finally"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            一个方法是不会出现两个异常的呢，所以finally的异常会把try的<strong style="color: rgb(53, 148, 247);">「异常覆盖」</strong>。正确的使用方式应该是，finally
+            代码块<strong style="color: rgb(53, 148, 247);">「负责自己的异常捕获和处理」</strong>。</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;void&nbsp;<span
+                style="line-height: 26px;"><span
+                style="color: #61aeee;line-height: 26px;">right</span></span>()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.info(<span
+                style="color: #98c379;line-height: 26px;">"try"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;RuntimeException(<span
+                style="color: #98c379;line-height: 26px;">"try"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;finally&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.info(<span
+                style="color: #98c379;line-height: 26px;">"finally"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;throw&nbsp;new&nbsp;RuntimeException(<span
+                style="color: #98c379;line-height: 26px;">"finally"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;catch&nbsp;(Exception&nbsp;ex)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;log.error(<span
+                style="color: #98c379;line-height: 26px;">"finally"</span>,&nbsp;ex);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>12.JSON序列化,Long类型被转成Integer类型！</span><span
+                style="display: none;"></span></h3>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;JSONTest&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Long&nbsp;idValue&nbsp;=&nbsp;3000L;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map&lt;String,&nbsp;Object&gt;&nbsp;data&nbsp;=&nbsp;new&nbsp;HashMap&lt;&gt;(2);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data.put(<span
+                style="color: #98c379;line-height: 26px;">"id"</span>,&nbsp;idValue);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data.put(<span
+                style="color: #98c379;line-height: 26px;">"name"</span>,&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"捡田螺的小男孩"</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.assertEquals(idValue,&nbsp;(Long)&nbsp;data.get(<span
+                style="color: #98c379;line-height: 26px;">"id"</span>));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;jsonString&nbsp;=&nbsp;JSON.toJSONString(data);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;反序列化时Long被转为了Integer<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map&nbsp;map&nbsp;=&nbsp;JSON.parseObject(jsonString,&nbsp;Map.class);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Object&nbsp;idObj&nbsp;=&nbsp;map.get(<span
+                style="color: #98c379;line-height: 26px;">"id"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"反序列化的类型是否为Integer："</span>+(idObj&nbsp;instanceof&nbsp;Integer));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assert.assertEquals(idValue,&nbsp;(Long)&nbsp;idObj);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            <strong style="color: rgb(53, 148, 247);">「运行结果：」</strong></p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">Exception&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">in</span>&nbsp;thread&nbsp;<span
+                style="color: #98c379;line-height: 26px;">"main"</span>&nbsp;反序列化的类型是否为Integer：<span
+                style="color: #56b6c2;line-height: 26px;">true</span><br>java.lang.ClassCastException:&nbsp;java.lang.Integer&nbsp;cannot&nbsp;be&nbsp;cast&nbsp;to&nbsp;java.lang.Long<br>&nbsp;at&nbsp;object.JSONTest.main(JSONTest.java:24)<br></code></pre>
+        <blockquote data-tool="mdnice编辑器"
+                    style="font-size: 0.9em;overflow: auto;padding: 10px 10px 10px 20px;margin-bottom: 20px;margin-top: 20px;text-size-adjust: 100%;line-height: 1.55em;border-radius: 6px;color: rgb(89, 89, 89);box-sizing: inherit;border-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-color: rgba(64, 184, 250, 0.4);background: rgba(64, 184, 250, 0.1);">
+            <span style="color: RGBA(64, 184, 250, .5);font-size: 34px;line-height: 1;font-weight: 700;">❝</span>
+            <p style="padding-top: 8px;padding-bottom: 8px;font-size: 14px;word-spacing: 2px;line-height: 26px;"><strong
+                    style="color: rgb(53, 148, 247);">「注意啦」</strong>，序列化为Json串后，Josn串是没有Long类型呢。而且反序列化回来如果也是Object接收，数字小于Interger最大值的话，给转成Integer啦！
+            </p><span style="float: right;color: RGBA(64, 184, 250, .5);">❞</span></blockquote>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>13. 使用Executors声明线程池，newFixedThreadPool的OOM问题</span><span
+                style="display: none;"></span></h3>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">ExecutorService&nbsp;executor&nbsp;=&nbsp;Executors.newFixedThreadPool(10);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">for</span>&nbsp;(int&nbsp;i&nbsp;=&nbsp;0;&nbsp;i&nbsp;&lt;&nbsp;Integer.MAX_VALUE;&nbsp;i++)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;executor.execute(()&nbsp;-&gt;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thread.sleep(10000);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;catch&nbsp;(InterruptedException&nbsp;e)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//<span
+                style="color: #c678dd;line-height: 26px;">do</span>&nbsp;nothing<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            <strong style="color: rgb(53, 148, 247);">「IDE指定JVM参数：-Xmx8m -Xms8m :」</strong></p>
+        <p style="text-align: center;"><img class="rich_pages img_loading" data-ratio="0.6923076923076923"
+                                            data-s="300,640"
+                                            data-src="https://mmbiz.qpic.cn/mmbiz_jpg/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWsZL3ojL4D95OvJm6VE25wSKEuQwQjD6LuicKBFqmU2AHIM7UiaKOwOoA/640?wx_fmt=jpeg"
+                                            data-type="jpeg" data-w="1105"
+                                            style="width: 657px !important; height: 455.462px !important;"
+                                            _width="677px"
+                                            src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="
+                                            crossorigin="anonymous"></p>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            运行结果：<br></p>
+        <p style="text-align: center;"><img class="rich_pages img_loading" data-ratio="0.553125" data-s="300,640"
+                                            data-src="https://mmbiz.qpic.cn/mmbiz_jpg/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWO1uJkiaHbQrbOGCJTbichh7lauxI5Jiada0vkgV2sJwicE6xy5TOhChNcQ/640?wx_fmt=jpeg"
+                                            data-type="jpeg" data-w="1280"
+                                            style="width: 657px !important; height: 364.297px !important;"
+                                            _width="677px"
+                                            src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="
+                                            crossorigin="anonymous"></p>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            我们看下源码，其实newFixedThreadPool使用的是无界队列！<br></p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;static&nbsp;ExecutorService&nbsp;newFixedThreadPool(int&nbsp;nThreads)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;new&nbsp;ThreadPoolExecutor(nThreads,&nbsp;nThreads,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0L,&nbsp;TimeUnit.MILLISECONDS,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new&nbsp;LinkedBlockingQueue&lt;Runnable&gt;());<br>}<br><br>public&nbsp;class&nbsp;LinkedBlockingQueue&lt;E&gt;&nbsp;extends&nbsp;AbstractQueue&lt;E&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;implements&nbsp;BlockingQueue&lt;E&gt;,&nbsp;java.io.Serializable&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Creates&nbsp;a&nbsp;{@code&nbsp;LinkedBlockingQueue}&nbsp;with&nbsp;a&nbsp;capacity&nbsp;of<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;{@link&nbsp;Integer<span
+                style="color: #5c6370;font-style: italic;line-height: 26px;">#MAX_VALUE}.</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/<br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;<span
+                style="line-height: 26px;"><span
+                style="color: #61aeee;line-height: 26px;">LinkedBlockingQueue</span></span>()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this(Integer.MAX_VALUE);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>...<br>}<br></code></pre>
+        <blockquote data-tool="mdnice编辑器"
+                    style="font-size: 0.9em;overflow: auto;padding: 10px 10px 10px 20px;margin-bottom: 20px;margin-top: 20px;text-size-adjust: 100%;line-height: 1.55em;border-radius: 6px;color: rgb(89, 89, 89);box-sizing: inherit;border-width: 1px;border-top-style: solid;border-right-style: solid;border-bottom-style: solid;border-color: rgba(64, 184, 250, 0.4);background: rgba(64, 184, 250, 0.1);">
+            <span style="color: RGBA(64, 184, 250, .5);font-size: 34px;line-height: 1;font-weight: 700;">❝</span>
+            <p style="padding-top: 8px;padding-bottom: 8px;font-size: 14px;word-spacing: 2px;line-height: 26px;">
+                newFixedThreadPool线程池的核心线程数是固定的，它使用了近乎于无界的LinkedBlockingQueue阻塞队列。当核心线程用完后，任务会入队到阻塞队列，如果任务执行的时间比较长，没有释放，会导致越来越多的任务堆积到阻塞队列，最后导致机器的内存使用不停的飙升，造成JVM
+                OOM。</p><span style="float: right;color: RGBA(64, 184, 250, .5);">❞</span></blockquote>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>14. 直接大文件或者一次性从数据库读取太多数据到内存，可能导致OOM问题</span><span
+                style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            如果一次性把大文件或者数据库太多数据达到内存，是会导致OOM的。所以，为什么查询DB数据库，一般都建议分批。</p>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            读取文件的话，一般问文件不会太大，才使用<code
+                style="margin-right: 2px;margin-left: 2px;font-family: &quot;Operator Mono&quot;, Consolas, Monaco, Menlo, monospace;word-break: break-all;color: rgb(53, 148, 247);background: rgba(59, 170, 250, 0.1);padding-right: 2px;padding-left: 2px;border-radius: 2px;height: 21px;line-height: 22px;">Files.readAllLines()</code>。为什么呢？因为它是直接把文件都读到内存的，预估下不会OOM才使用这个吧，可以看下它的源码：
+        </p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;static&nbsp;List&lt;String&gt;&nbsp;readAllLines(Path&nbsp;path,&nbsp;Charset&nbsp;cs)&nbsp;throws&nbsp;IOException&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;try&nbsp;(BufferedReader&nbsp;reader&nbsp;=&nbsp;newBufferedReader(path,&nbsp;cs))&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List&lt;String&gt;&nbsp;result&nbsp;=&nbsp;new&nbsp;ArrayList&lt;&gt;();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">for</span>&nbsp;(;;)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;line&nbsp;=&nbsp;reader.readLine();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #c678dd;line-height: 26px;">if</span>&nbsp;(line&nbsp;==&nbsp;null)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">break</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result.add(line);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;result;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            如果是太大的文件，可以使用Files.line()按需读取，当时读取文件这些，一般是使用完需要<strong style="color: rgb(53, 148, 247);">「关闭资源流」</strong>的哈
+        </p>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>15. 先查询，再更新/删除的并发一致性问题</span><span
+                style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            再日常开发中，这种代码实现经常可见：先查询是否有剩余可用的票，再去更新票余量。</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;"><span
+                style="color: #c678dd;line-height: 26px;">if</span>(selectIsAvailable(ticketId){&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;1、deleteTicketById(ticketId)&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;2、给现金增加操作&nbsp;<br>}<span
+                style="color: #c678dd;line-height: 26px;">else</span>{&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;“没有可用现金券”&nbsp;<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            如果是并发执行，很可能有问题的，应该利用数据库的更新/删除的原子性，正解如下：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;"><span
+                style="color: #c678dd;line-height: 26px;">if</span>(deleteAvailableTicketById(ticketId)&nbsp;==&nbsp;1){&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;1、给现金增加操作&nbsp;<br>}<span
+                style="color: #c678dd;line-height: 26px;">else</span>{&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span
+                style="color: #e6c07b;line-height: 26px;">return</span>&nbsp;“没有可用现金券”&nbsp;<br>}<br></code></pre>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>16. 数据库使用utf-8存储， 插入表情异常的坑</span><span
+                style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            低版本的MySQL支持的utf8编码，最大字符长度为 3 字节，但是呢，存储表情需要4个字节，因此如果用utf8存储表情的话，会报<code
+                style="margin-right: 2px;margin-left: 2px;font-family: &quot;Operator Mono&quot;, Consolas, Monaco, Menlo, monospace;word-break: break-all;color: rgb(53, 148, 247);background: rgba(59, 170, 250, 0.1);padding-right: 2px;padding-left: 2px;border-radius: 2px;height: 21px;line-height: 22px;">SQLException:
+            Incorrect string value: '\xF0\x9F\x98\x84' for column</code>，所以一般用utf8mb4编码去存储表情。</p>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>17. 事务未生效的坑</span><span
+                style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            日常业务开发中，我们经常跟事务打交道，<strong style="color: rgb(53, 148, 247);">「事务失效」</strong>主要有以下几个场景：</p>
+        <ul data-tool="mdnice编辑器"
+            style="margin-top: 8px;margin-bottom: 8px;padding-left: 25px;font-size: 15px;color: #595959;list-style-type: circle;"
+            class="list-paddingleft-2">
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">底层数据库引擎不支持事务
+                </section>
+            </li>
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">在非public修饰的方法使用
+                </section>
+            </li>
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">
+                    rollbackFor属性设置错误
+                </section>
+            </li>
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">本类方法直接调用
+                </section>
+            </li>
+            <li>
+                <section style="margin-top: 5px;margin-bottom: 5px;line-height: 26px;font-size: 14px;">
+                    异常被try...catch吃了，导致事务失效。
+                </section>
+            </li>
+        </ul>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            其中，最容易踩的坑就是后面两个，<strong style="color: rgb(53, 148, 247);">「注解的事务方法给本类方法直接调用」</strong>，伪代码如下：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">public&nbsp;class&nbsp;TransactionTest{<br>&nbsp;&nbsp;public&nbsp;void&nbsp;<span
+                style="line-height: 26px;"><span style="color: #61aeee;line-height: 26px;">A</span></span>(){<br>&nbsp;&nbsp;&nbsp;&nbsp;//插入一条数据<br>&nbsp;&nbsp;&nbsp;&nbsp;//调用方法B&nbsp;(本地的类调用，事务失效了)<br>&nbsp;&nbsp;&nbsp;&nbsp;B();<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;<br>&nbsp;&nbsp;@Transactional<br>&nbsp;&nbsp;public&nbsp;void&nbsp;<span
+                style="line-height: 26px;"><span style="color: #61aeee;line-height: 26px;">B</span></span>(){<br>&nbsp;&nbsp;&nbsp;&nbsp;//插入数据<br>&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            如果异常被catch住，<strong style="color: rgb(53, 148, 247);">「那事务也是会失效呢」</strong>~，伪代码如下：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">@Transactional<br>public&nbsp;void&nbsp;<span
+                style="line-height: 26px;"><span style="color: #61aeee;line-height: 26px;">method</span></span>(){<br>&nbsp;&nbsp;try{<br>&nbsp;&nbsp;&nbsp;&nbsp;//插入一条数据<br>&nbsp;&nbsp;&nbsp;&nbsp;insertA();<br>&nbsp;&nbsp;&nbsp;&nbsp;//更改一条数据<br>&nbsp;&nbsp;&nbsp;&nbsp;updateB();<br>&nbsp;&nbsp;}catch(Exception&nbsp;e){<br>&nbsp;&nbsp;&nbsp;&nbsp;logger.error(<span
+                style="color: #98c379;line-height: 26px;">"异常被捕获了，那你的事务就失效咯"</span>,e);<br>&nbsp;&nbsp;}<br>}<br></code></pre>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>18. 当反射遇到方法重载的坑</span><span
+                style="display: none;"></span></h3>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">/**<br>&nbsp;*&nbsp;&nbsp;反射demo<br>&nbsp;*&nbsp;&nbsp;@author&nbsp;捡田螺的小男孩<br>&nbsp;*/<br>public&nbsp;class&nbsp;ReflectionTest&nbsp;{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;void&nbsp;score(int&nbsp;score)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"int&nbsp;grade&nbsp;="</span>&nbsp;+&nbsp;score);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;void&nbsp;score(Integer&nbsp;score)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span
+                style="color: #98c379;line-height: 26px;">"Integer&nbsp;grade&nbsp;="</span>&nbsp;+&nbsp;score);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;static&nbsp;void&nbsp;main(String[]&nbsp;args)&nbsp;throws&nbsp;Exception&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ReflectionTest&nbsp;reflectionTest&nbsp;=&nbsp;new&nbsp;ReflectionTest();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reflectionTest.score(100);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reflectionTest.score(Integer.valueOf(100));<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reflectionTest.getClass().getDeclaredMethod(<span
+                style="color: #98c379;line-height: 26px;">"score"</span>,&nbsp;Integer.TYPE).invoke(reflectionTest,&nbsp;Integer.valueOf(<span
+                style="color: #98c379;line-height: 26px;">"60"</span>));<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reflectionTest.getClass().getDeclaredMethod(<span
+                style="color: #98c379;line-height: 26px;">"score"</span>,&nbsp;Integer.class).invoke(reflectionTest,&nbsp;Integer.valueOf(<span
+                style="color: #98c379;line-height: 26px;">"60"</span>));<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            运行结果：</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">int&nbsp;grade&nbsp;=100<br>Integer&nbsp;grade&nbsp;=100<br>int&nbsp;grade&nbsp;=60<br>Integer&nbsp;grade&nbsp;=60<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            如果<strong style="color: rgb(53, 148, 247);">「不通过反射」</strong>，传入<code
+                style="margin-right: 2px;margin-left: 2px;font-family: &quot;Operator Mono&quot;, Consolas, Monaco, Menlo, monospace;word-break: break-all;color: rgb(53, 148, 247);background: rgba(59, 170, 250, 0.1);padding-right: 2px;padding-left: 2px;border-radius: 2px;height: 21px;line-height: 22px;">Integer.valueOf(100)</code>，走的是Integer重载。但是呢，反射不是根据入参类型确定方法重载的，而是<strong
+                style="color: rgb(53, 148, 247);">「以反射获取方法时传入的方法名称和参数类型来确定」</strong>的</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">getClass().getDeclaredMethod(<span
+                style="color: #98c379;line-height: 26px;">"score"</span>,&nbsp;Integer.class)<br>getClass().getDeclaredMethod(<span
+                style="color: #98c379;line-height: 26px;">"score"</span>,&nbsp;Integer.TYPE)<br></code></pre>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>19. mysql 时间 timestamp的坑</span><span
+                style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            有更新语句的时候，timestamp可能会自动更新为当前时间，看个demo</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">CREATE&nbsp;TABLE&nbsp;`t`&nbsp;(<br>&nbsp;&nbsp;`a`&nbsp;int(11)&nbsp;DEFAULT&nbsp;NULL,<br>&nbsp;&nbsp;`b`&nbsp;timestamp&nbsp;&nbsp;NOT&nbsp;NULL,<br>&nbsp;&nbsp;`c`&nbsp;timestamp&nbsp;NOT&nbsp;NULL&nbsp;DEFAULT&nbsp;CURRENT_TIMESTAMP&nbsp;ON&nbsp;UPDATE&nbsp;CURRENT_TIMESTAMP<br>)&nbsp;ENGINE=InnoDB&nbsp;DEFAULT&nbsp;CHARSET=utf8<br></code></pre>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            我们可以发现 <strong style="color: rgb(53, 148, 247);">「c列」</strong> 是有<code
+                style="margin-right: 2px;margin-left: 2px;font-family: &quot;Operator Mono&quot;, Consolas, Monaco, Menlo, monospace;word-break: break-all;color: rgb(53, 148, 247);background: rgba(59, 170, 250, 0.1);padding-right: 2px;padding-left: 2px;border-radius: 2px;height: 21px;line-height: 22px;">CURRENT_TIMESTAMP
+            ON UPDATE CURRENT_TIMESTAMP</code>，所以c列会随着记录更新而<strong style="color: rgb(53, 148, 247);">「更新为当前时间」</strong>。但是b列也会随着有记录更新为而<strong
+                style="color: rgb(53, 148, 247);">「更新为当前时间」</strong>。</p>
+        <figure data-tool="mdnice编辑器"
+                style="margin-top: 10px;margin-bottom: 10px;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+            <img data-ratio="1.0187319884726225"
+                 data-src="https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZr2kyuBF4ZlfzVE8p4odNrSCWOe8es4q6Mes94k4WHu9bibicS4krmEw/640?wx_fmt=png"
+                 data-type="png" data-w="694"
+                 style="border-radius: 6px; display: block; margin: 20px auto; object-fit: contain; box-shadow: rgb(153, 153, 153) 2px 4px 7px; width: 657px !important; height: 669.269px !important;"
+                 _width="677px" class="img_loading"
+                 src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="
+                 crossorigin="anonymous"></figure>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            可以使用datetime代替它,需要更新为当前时间，就把<code
+                style="margin-right: 2px;margin-left: 2px;font-family: &quot;Operator Mono&quot;, Consolas, Monaco, Menlo, monospace;word-break: break-all;color: rgb(53, 148, 247);background: rgba(59, 170, 250, 0.1);padding-right: 2px;padding-left: 2px;border-radius: 2px;height: 21px;line-height: 22px;">now()</code>赋值进来，或者修改mysql的这个参数<code
+                style="margin-right: 2px;margin-left: 2px;font-family: &quot;Operator Mono&quot;, Consolas, Monaco, Menlo, monospace;word-break: break-all;color: rgb(53, 148, 247);background: rgba(59, 170, 250, 0.1);padding-right: 2px;padding-left: 2px;border-radius: 2px;height: 21px;line-height: 22px;">explicit_defaults_for_timestamp</code>。
+        </p>
+        <h3 data-tool="mdnice编辑器"
+            style="color: black;font-size: 17px;font-weight: bold;text-align: center;margin-top: 20px;margin-bottom: 20px;">
+            <span style="display: none;"></span><span
+                style="border-bottom: 2px solid RGBA(79, 177, 249, .65);color: #2b2b2b;padding-bottom: 2px;"><span
+                style="width: 30px;height: 30px;display: block;background-image: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWicC2htyYXwjozZOD1piaYT7G11IVp9wHoICsywibuvtvNlDXKsIaiaj7fQ/640?wx_fmt=png&quot;);background-position: center center;background-size: 30px;margin: auto auto -8px;opacity: 1;background-repeat: no-repeat;"></span>20. mysql8数据库的时区坑</span><span
+                style="display: none;"></span></h3>
+        <p data-tool="mdnice编辑器"
+           style="padding-top: 8px;padding-bottom: 8px;line-height: 26px;margin-top: 10px;margin-bottom: 10px;font-size: 14px;word-spacing: 2px;">
+            之前我们对mysql数据库进行升级，新版本为8.0.12。但是升级完之后，发现now()函数，获取到的时间比北京时间晚8小时，原来是因为mysql8默认为美国那边的时间，需要指定下时区</p>
+        <pre data-tool="mdnice编辑器"
+             style="margin-top: 10px;margin-bottom: 10px;border-radius: 5px;box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;"><span
+                style="display: block;background: url(&quot;https://mmbiz.qpic.cn/mmbiz_png/sMmr4XOCBzGUOnbdeJbrOt8PIYbmmlUWZfNq3icH5zgNbFL0zSJKFo6L9yEBWRWQybGug0Fg8j3sBib89GhItGYQ/640?wx_fmt=png&quot;) 10px 10px / 40px no-repeat rgb(40, 44, 52);height: 30px;width: 100%;margin-bottom: -7px;border-radius: 5px;"></span><code
+                style="overflow-x: auto;padding: 16px;color: #abb2bf;display: -webkit-box;font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;font-size: 12px;-webkit-overflow-scrolling: touch;letter-spacing: 0px;padding-top: 15px;background: #282c34;border-radius: 5px;">jdbc:mysql://localhost:3306/<span
+                style="color: #e6c07b;line-height: 26px;">test</span>?useUnicode=<span
+                style="color: #56b6c2;line-height: 26px;">true</span>&amp;characterEncoding=UTF-8&amp;<br>serverTimezone=Asia/Shanghai<br></code></pre>
+    </section>
+    <p><br></p>
+</div>

@@ -27,7 +27,7 @@ bindir=/usr/local/mysql-5.7.27/bin
 #### （1）、切换目录	
 	cd /usr/local/mysql-5.7.27/
 #### （2）、复制
-    cp my-default.cnf /etc/my.cnf  
+    cp my-default.cnf /etc/my.cnf
 ##### 注意： 如果你在安装时Linux虚拟机时同时安装了默认的mysql，此时操作以上步骤，终端将会提示你文件已存在是否覆盖，输入yes覆盖即可。 #####
 	cp: overwrite ‘/etc/my.cnf’? yes
 ### 3、配置my.cnf文件 ###
@@ -137,8 +137,15 @@ bindir=/usr/local/mysql-5.7.27/bin
 ### 1、进入bin目录 ###
     cd /usr/local/mysql-5.7.27/bin/
 ### 2、登录 ###
-    ./mysql -u root -p
+    ./mysql -u root -p	
 ##### PS:密码在 `/usr/local/mysql-5.7.27/logs/errlog/master-error.log` 大约八行左右
+
+#### 报错
+	./mysql: error while loading shared libraries: libncurses.so.5: cannot open shared object file: No such file or directory
+	
+##### 解决
+	yum install libncurses*
+
 ### 3、重置密码 ###
      set password=password("root");
 ### 4、设置远程登录权限 ###
