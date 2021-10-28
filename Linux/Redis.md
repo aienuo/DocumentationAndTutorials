@@ -6,26 +6,26 @@
     rpm -e redis
 ## 二、下载 ##
 ### 1、wget方式下载 ###
-    wget http://download.redis.io/releases/redis-6.0.5.tar.gz
+    wget http://download.redis.io/releases/redis-6.2.6.tar.gz
 ##### 若报错：`-bash: wget: command not found` 表明没有安装wget，需要执行如下命令安装： #####
     yum -y install wget
 ## 三、解压操作文件 ##
 ### 1、解压 ###
-    tar -zxvf redis-6.0.5.tar.gz -C /usr/local/
+    tar -zxvf redis-6.2.65.tar.gz -C /usr/local/
 ### 2、编译文件 ###
-    cd /usr/local/redis-6.0.5/
+    cd /usr/local/redis-6.2.6/
 	ll
 	make
 #### 3、出现问题 ####
 	cd src && make all
-	make[1]: 进入目录“/software/redis-5.0.5/src”
+	make[1]: 进入目录“/software/redis-6.2.6/src”
 		CC Makefile.dep
-	make[1]: 离开目录“/software/redis-5.0.5/src”
-	make[1]: 进入目录“/software/redis-5.0.5/src”
+	make[1]: 离开目录“/software/redis-6.2.6/src”
+	make[1]: 进入目录“/software/redis-6.2.6/src”
 		CC adlist.o
 	/bin/sh: cc: 未找到命令
 	make[1]: *** [adlist.o] 错误 127
-	make[1]: 离开目录“/software/redis-5.0.5/src”
+	make[1]: 离开目录“/software/redis-6.2.6/src”
 	make: *** [all] 错误 2
 #### 4、解决方案 ####
 ##### 安装gcc环境 #####
@@ -49,7 +49,7 @@
 
 ## 五、启动 ##
 
-	cd /usr/local/redis-6.0.5/
+	cd /usr/local/redis-6.2.6/
 	
 	src/redis-server  redis.conf
 	
