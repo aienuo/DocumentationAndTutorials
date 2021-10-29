@@ -45,7 +45,13 @@
 	firewall-cmd --reload
 ##### 7、检查是否生效 ######
 	firewall-cmd --zone=public --query-port=80/tcp
-### 10、维护
+### 10、开机自启
+
+### 重启计算机 ###
+	shutdown -r now
+#### 查看是否有 Nginx
+	ps -ef | grep nginx
+### 11、维护
 #### 进入安装路径
 	cd /usr/local/nginx
 #### 启动
