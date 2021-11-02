@@ -10,11 +10,12 @@
 4. ##### [MyCat-1.6.7.1](Linux/MyCat-1.6.7.1.md) #####
 5. ##### [Nginx](Linux/Nginx.md) #####
 6. ##### [Redis](Linux/Redis.md) #####
-7. ##### [Haproxy-1.5.18](Linux/Haproxy-1.5.18.md) #####
-8. ##### [Keepalived-1.3.5](Linux/Keepalived-1.3.5.md) #####
-9. ##### [MySQL-Master-Slave](Linux/MySQL-Master-Slave.md) #####
-10. ##### [SpringBoot自动部署脚本](Linux/SpringBoot自动部署脚本.md) #####
-11. ##### [在线安装CentOS-8.2.2004-x86_64](Linux/在线安装CentOS-8.2.2004-x86_64.md) #####
+7. ##### [GitBlit](Linux/GitBlit.md) #####
+8. ##### [Haproxy-1.5.18](Linux/Haproxy-1.5.18.md) #####
+9. ##### [Keepalived-1.3.5](Linux/Keepalived-1.3.5.md) #####
+10. ##### [MySQL-Master-Slave](Linux/MySQL-Master-Slave.md) #####
+11. ##### [SpringBoot自动部署脚本](Linux/SpringBoot自动部署脚本.md) #####
+12. ##### [在线安装CentOS-8.2.2004-x86_64](Linux/在线安装CentOS-8.2.2004-x86_64.md) #####
 
 ## Windows： ##
 1. ##### [JDK_Maven 配置](Windows/JDK-Maven.md) #####
