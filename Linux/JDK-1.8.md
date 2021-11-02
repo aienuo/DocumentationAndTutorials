@@ -9,9 +9,9 @@
 ### 2、卸载 ###
     rpm -e 已经存在的JDK全名	
 ## 二、解压操作文件 ##
-
-### 下载
-	wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "https://download.oracle.com/otn/java/jdk/8u311-b11/4d5417147a92418ea8b615e228bb6935/jdk-8u311-linux-x64.tar.gz?AuthParam=1635320304_17cf7349201b870b16e773bf4e06d3b7"
+### 下载并上传到 /usr/local/ 文件夹下
+#### 下载地址 ####
+    https://repo.huaweicloud.com/java/jdk/
 ### 解压（找到压缩文件） ###
 	tar -zxvf jdk-8u191-linux-x64.tar.gz -C /usr/local/
 #### 切换到解压目录下 ####
