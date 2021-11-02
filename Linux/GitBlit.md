@@ -20,8 +20,8 @@
 	vim /usr/local/gitblit-1.9.1/data/default.properties
 ##### 按一下键盘字母`i`进行编辑 #####
 #### 2、修改以下内容： ####
-	server.httpPort = 81
-	server.httpsPort = 80
+	server.httpPort = 80
+	server.httpsPort = 0
     server.storePassword = ssl加密密码，不能包含“#”
     git.packedGitLimit = 1024m
 ##### 按一下`esc`键 退出编辑 #####
@@ -54,12 +54,10 @@
 ##### 4、开启防火墙 #####
 	systemctl start firewalld.service
 ##### 5、Add 添加开放端口 #####
-	firewall-cmd --permanent --zone=public --add-port=81/tcp
 	firewall-cmd --permanent --zone=public --add-port=80/tcp
 ##### 6、Reload 重新加载 #####
 	firewall-cmd --reload
 ##### 7、检查是否生效 ######
-	firewall-cmd --zone=public --query-port=81/tcp
 	firewall-cmd --zone=public --query-port=80/tcp
 ##### 8、重启计算机 #####
 	shutdown -r now
