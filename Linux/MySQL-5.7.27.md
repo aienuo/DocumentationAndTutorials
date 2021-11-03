@@ -219,6 +219,8 @@ bindir=/usr/local/mysql-5.7.27/bin
 	firewall-cmd --reload
 ##### 7、检查是否生效 ######
 	firewall-cmd --zone=public --query-port=3306/tcp
+##### 8、删除开放端口 ######
+    firewall-cmd --zone=public --remove-port=8088/tcp --permanent
 ### 3、`temporary failure in name resolution` 问题，或者是服务正常启动，访问效率特别慢（适用于MySQL\MyCat\TomCat） ###
 #### 解决（DNS的问题） ####
 ##### 1、查看主机名称 #####

@@ -45,6 +45,8 @@
 	firewall-cmd --reload
 ##### 7、检查是否生效 ######
 	firewall-cmd --zone=public --query-port=80/tcp
+##### 8、删除开放端口 ######
+    firewall-cmd --zone=public --remove-port=8088/tcp --permanent
 ### 10、开机自启
 
 ### 重启计算机 ###

@@ -88,7 +88,9 @@ ll
 	firewall-cmd --reload
 ### 7、检查是否生效 ####
 	firewall-cmd --zone=public --query-port=8080/tcp
-	
+### 8、删除开放端口 ###
+    firewall-cmd --zone=public --remove-port=8088/tcp --permanent
+
 ## 七、Tomcat正常启动，页面访问不到 ##
 	 tail -f -n 500 /usr/local/apache-tomcat-7.0.85/logs/catalina.out
 	 tail -f -n 500 /data/apache-tomcat-7.0.85/logs/catalina.out 

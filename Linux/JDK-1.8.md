@@ -1,5 +1,8 @@
 # Centos8 环境下 JDK1.8 安装配置 #
 ### 注意看我的标题！！！！我这是针对1.8版本 ###
+
+> Oracle JDK从2019年4月16号开始商用收费 jdk-8u202 以上的版本商用需要付费
+
 ## 一、检查本地是否安装 ##
 ### 1、检查 ###
 	
@@ -13,7 +16,7 @@
 #### 下载地址 ####
     https://repo.huaweicloud.com/java/jdk/
 ### 解压（找到压缩文件） ###
-	tar -zxvf jdk-8u191-linux-x64.tar.gz -C /usr/local/
+	tar -zxvf jdk-8u201-linux-x64.tar.gz -C /usr/local/
 #### 切换到解压目录下 ####
 	cd /usr/local/
 #### 查看是否剪切成功 ####
@@ -24,8 +27,8 @@
 	vim /etc/profile
 ##### 按一下键盘字母`i`进行编辑 #####
 #### 2、输入以下内容： ####
-	JAVA_HOME=/usr/local/jdk1.8.0_191
-	JRE_HOME=/usr/local/jdk1.8.0_191/jre
+	JAVA_HOME=/usr/local/jdk1.8.0_201
+	JRE_HOME=/usr/local/jdk1.8.0_201/jre
 	CLASS_PATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
 	PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
 	export JAVA_HOME JRE_HOME CLASS_PATH PATH
@@ -39,7 +42,7 @@
 #### 编译器 ####	
 	javac
 #### 修改目录所属的用户和组 ###
-	chown -R root.root /usr/local/jdk1.8.0_191/
+	chown -R root.root /usr/local/jdk1.8.0_201/
 	
 ### 五、问题解决 ###
 #### 1、 `-bash: vim: command not found` 问题： ####
