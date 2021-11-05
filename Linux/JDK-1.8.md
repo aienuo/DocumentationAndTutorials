@@ -14,7 +14,7 @@
 ## 二、解压操作文件 ##
 ### 下载并上传到 /usr/local/ 文件夹下
 #### 下载地址 ####
-    https://repo.huaweicloud.com/java/jdk/
+    wget https://repo.huaweicloud.com/java/jdk/8u201-b09/jdk-8u201-linux-x64.tar.gz
 ### 解压（找到压缩文件） ###
 	tar -zxvf jdk-8u201-linux-x64.tar.gz -C /usr/local/
 #### 切换到解压目录下 ####

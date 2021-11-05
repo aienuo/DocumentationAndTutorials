@@ -11,7 +11,7 @@
 ## 二、解压操作文件 ##
 ### 下载并上传到 /usr/local/ 文件夹下
 #### 下载地址 ####
-    https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+    wget https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 ### 解压（找到压缩文件） ###
 	tar -zxvf apache-maven-3.6.3-bin.tar.gz -C /usr/local/
 #### 切换到解压目录下 ####

@@ -9,7 +9,7 @@
 ## 二、解压操作文件 ##
 ### 下载并上传到 /usr/local/ 文件夹下
 #### 下载地址 ####
-    https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.33.1.tar.gz
+    wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.33.1.tar.gz
 ### 解压（找到压缩文件） ###
 	tar -zxvf git-2.33.1.tar.gz -C /usr/local/
 #### 切换到解压目录下 ####
@@ -32,8 +32,3 @@
     git --version
 #### 查找Git ####
     whereis git
-
-##### 2、关闭防火墙 #####
-	systemctl stop firewalld.service
-##### 4、开启防火墙 #####
-	systemctl start firewalld.service
