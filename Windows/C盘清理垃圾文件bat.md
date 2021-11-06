@@ -3,6 +3,10 @@
 > 将此一下内容存为 .bat 文件管理员运行
 
 	@ECHO OFF
+    REM 
+    chcp 65001
+    CLS
+    echo
 	@echo 
 	@echo 年少轻狂、幸福时光
 	@echo 　　
