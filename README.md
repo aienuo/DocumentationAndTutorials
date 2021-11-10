@@ -8,17 +8,19 @@
 2. ##### [Linux命令参考](Linux/Linux命令参考.html) #####
 3. ##### [JDK-1.8](Linux/JDK-1.8.md) #####
 4. ##### [Maven](Linux/Maven.md) #####
-5. ##### [MySQL-5.7.27](Linux/MySQL-5.7.27.md) #####
+5. ##### [MySQL](Linux/MySQL.md) #####
 6. ##### [TomCat](Linux/TomCat.md)  #####
-7. ##### [MyCat-1.6.7.1](Linux/MyCat-1.6.7.1.md) #####
-8. ##### [Nginx](Linux/Nginx.md) #####
-9. ##### [Redis](Linux/Redis.md) #####
-10. ##### [Git](Linux/Git.md) #####
-11. ##### [GitBlit](Linux/GitBlit.md) #####
-12. ##### [Haproxy-1.5.18](Linux/Haproxy-1.5.18.md) #####
-13. ##### [Keepalived-1.3.5](Linux/Keepalived-1.3.5.md) #####
-14. ##### [MySQL-数据库互为主从搭建](Linux/MySQL-Master-Slave.md) #####
-15. ##### [SpringBoot自动部署脚本](Linux/SpringBoot自动部署脚本.md) #####
+7. ##### [Nginx](Linux/Nginx.md) #####
+8. ##### [Redis](Linux/Redis.md) #####
+9. ##### [Git](Linux/Git.md) #####
+10. ##### [GitBlit](Linux/GitBlit.md) #####
+11. ##### [Jenkins](Linux/Jenkins.md) #####
+12. ##### [Nacos](Linux/Nacos.md) #####
+13. ##### [MyCat-1.6.7.1](Linux/MyCat-1.6.7.1.md) #####
+14. ##### [Haproxy-1.5.18](Linux/Haproxy-1.5.18.md) #####
+15. ##### [Keepalived-1.3.5](Linux/Keepalived-1.3.5.md) #####
+16. ##### [MySQL-数据库互为主从搭建](Linux/MySQL-Master-Slave.md) #####
+17. ##### [SpringBoot自动部署脚本](Linux/SpringBoot自动部署脚本.md) #####
 
 ## Windows： ##
 1. ##### [JDK_Maven 配置](Windows/JDK-Maven.md) #####
