@@ -2,65 +2,108 @@
 ### 注意看我的标题！！！！我这是针对8.5.72版本 ###
 ## 一、检查本地是否安装 ##
 ### 1、检查 ###
+```shell
     rpm -qa | grep tomcat
+```
 ### 2、卸载 ###
+```shell
     rpm -e 已经存在的TomCat全名	
+```
 ### 3、下载 ###
+```shell
 	wget https://downloads.apache.org/tomcat/tomcat-8/v8.5.72/bin/apache-tomcat-8.5.72.tar.gz
+```
 ## 二、解压、操作文件 ##
 ### 解压（找到压缩文件） ###
+```shell
 	tar -zxvf apache-tomcat-8.5.72.tar.gz -C /usr/local/
+```
 #### 切换到解压目录下 ####
+```shell
 	cd /usr/local/
+```
 #### 查看是成功 ####
-```	
+```shell
 ls -a
 ```
 #### 将当前文件夹授权给 tomcat ####
 ##### 创建tomcat组 #####
+#### 查看是成功 ####
+```shell
 	groupadd tomcat
+```
 ##### 创建mysql用户添加到mysql组 #####
+#### 查看是成功 ####
+```shell
 	useradd -g tomcat tomcat
+```
 ##### 授权 #####
+#### 查看是成功 ####
+```shell
     chown -R tomcat:tomcat /usr/local/apache-tomcat-8.5.72/
+```
 ## 三、配置环境变量 ###
 #### 1、修改配置文件 ####
+#### 查看是成功 ####
+```shell
 	vim /etc/profile
+```
 ##### 按一下键盘字母`i`进行编辑 #####
 #### 2、输入以下内容： ####
+#### 查看是成功 ####
+```shell
 	CATALINA_HOME=/usr/local/apache-tomcat-8.5.72
 	PATH=$PATH:$CATALINA_HOME/bin
 	export CATALINA_HOME
+```
 ##### 如果有JDK环境变量请使用如下 #####
+#### 查看是成功 ####
+```shell
 	JAVA_HOME=/usr/local/jdk1.8.0_201
 	JRE_HOME=/usr/local/jdk1.8.0_201/jre
 	CATALINA_HOME=/usr/local/apache-tomcat-8.5.72
 	CLASS_PATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
 	PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin:$CATALINA_HOME/bin
 	export JAVA_HOME JRE_HOME CLASS_PATH CATALINA_HOME PATH
+```
 ##### 按一下`esc`键 退出编辑 #####
 ##### `:wq` 保存退出 #####
 #### 3、修改立即生效： ####
+#### 查看是成功 ####
+```shell
 	source /etc/profile
+```
 #### 4、配置Tomcat ####
-#### 1、修改配置文件 ####
+##### 1、修改配置文件 #####
+```shell
 	vim /usr/local/apache-tomcat-8.5.72/conf/server.xml
-##### 按一下键盘字母`i`进行编辑 #####
-#### 2、修改以下内容： ####
+```
+###### 按一下键盘字母`i`进行编辑 ######
+##### 2、修改以下内容： #####
+```text
     <Connector port="80" protocol="HTTP/1.1"
                connectionTimeout="20000"
 			   URIEncoding="UTF-8"
                redirectPort="8443" />
+```
 ## 四、查看是否生效 ##
 ### 启动TomCat ###
+```shell
 	/usr/local/apache-tomcat-8.5.72/bin/startup.sh
+```
 ### 验证 ###
 ##### 输入以下指令如果出现一大堆东西说明成功 #####
+```shell
 	ps -ef|grep tomcat
+```
 ##### 输入以下指令返回页面代码 #####
+```shell
 	curl 127.0.0.1:80
-### 关闭TomCat ###	
+```
+### 关闭TomCat ###
+```shell
 	/usr/local/apache-tomcat-8.5.72/bin/shutdown.sh
+```
 ## 五、防火墙端口开放 ##
 ### 1、查看防火墙状态 ###
 	firewall-cmd --state
