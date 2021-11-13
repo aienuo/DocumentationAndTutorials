@@ -1,5 +1,6 @@
 # Centos8 环境下 Nginx 安装配置 #
 ### 注意看我的标题！！！！我这是针对 1.21.3 版本 ###
+> 偶数版本-稳定版本（两个稳定版本之间的跨越时间越长、补丁发布频率越少），奇数版本-开发测、试版本
 ## 一、检查本地是否安装 ##
 ### 1、检查 ###
     rpm -qa | grep nginx
@@ -11,17 +12,68 @@
 	wget https://nginx.org/download/nginx-1.21.3.tar.gz
 ### 4、解压（找到压缩文件） ###
 	tar -zxvf nginx-1.21.3.tar.gz  -C /usr/local/
+## 一、Nginx 调优 ##
+> 修改源代码文件
+### 1、隐藏版本信息 ###
+    vim /usr/local/nginx-1.21.3/src/core/nginx.h
+#### 按一下键盘字母`i`进行编辑 ####
+#### 修改以下内容（13行 显示的版本号） ####
+    #define NGINX_VERSION      "996"
+#### 修改以下内容（14行 显示的软件名） ####
+    #define NGINX_VER          "www.lau.xin/" NGINX_VERSION
+#### 修改以下内容（22行 显示的软件名） ####
+    #define NGINX_VAR          "www.lau.xin"
+#### 按一下`esc`键 退出编辑 ####
+#### `:wq` 保存退出 ####
+### 2、隐藏软件名 ###
+    vim /usr/local/nginx-1.21.3/src/http/ngx_http_header_filter_module.c
+#### 按一下键盘字母`i`进行编辑 ####
+#### 修改以下内容（49行 修改为想要显示的软件名） ####
+    static u_char ngx_http_server_string[] = "Server: www.lau.xin" CRLF;
+#### 按一下`esc`键 退出编辑 ####
+#### `:wq` 保存退出 ####
+### 3、定义对外展示内容 ###
+    vim /usr/local/nginx-1.21.3/src/http/ngx_http_special_response.c
+#### 按一下键盘字母`i`进行编辑 ####
+#### 修改以下内容（22行 此行定义对外展示的内容） ####
+    "<hr><center>" NGINX_VER "(www.lau.xin)</center>" CRLF
+#### 修改以下内容（36行 此行定义对外展示的软件名） ####
+    "<hr><center>www.lau.xin</center>" CRLF
+#### 按一下`esc`键 退出编辑 ####
+#### `:wq` 保存退出 ####
+> 配置Linux系统参数
+### 4、设置 ulimit 设置句柄数 ###
+    vim /etc/security/limits.conf
+#### 按一下键盘字母`i`进行编辑 ####
+#### 新增以下内容 ####
+    * soft nofile 65535
+    * hard nofile 65535
+#### 按一下`esc`键 退出编辑 ####
+#### `:wq` 保存退出 ####
+### 5、设置 login ###
+    vim /etc/pam.d/login
+#### 按一下键盘字母`i`进行编辑 ####
+#### 新增以下内容 ####
+> /lib/security/pam_limits.so 这个路径根据实际情况填写，32位系统是/lib下 64位系统是/lin64下
+
+    session    required     /lib/security/pam_limits.so
+#### 按一下`esc`键 退出编辑 ####
+#### `:wq` 保存退出 ####
 ## 二、编译安装 ##
 ### 1、下载依赖 ###
+> 缺少 xxxlibrany，缺少.c.h文件 安装开发组包  xxx-devel
+
 	yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel pcre pcre-devel
 ### 2、切换到解压目录下 ###
 	cd /usr/local/nginx-1.21.3
 ### 3、运行./configure 进行初始化配置 [参考](image/configure.md) ###
-	./configure --prefix=/usr/local/nginx --pid-path=/usr/local/nginx/log/nginx.pid --error-log-path=/usr/local/nginx/log/error.log --http-log-path=/usr/local/nginx/log/access.log --with-http_gzip_static_module --http-client-body-temp-path=/usr/local/nginx/temp/client --http-proxy-temp-path=/usr/local/nginx/temp/proxy --http-fastcgi-temp-path=/usr/local/nginx/temp/fastcgi --http-uwsgi-temp-path=/usr/local/nginx/temp/uwsgi --http-scgi-temp-path=/usr/local/nginx/temp/scgi --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_addition_module --with-http_flv_module --with-http_mp4_module --with-http_stub_status_module
+	./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --pid-path=/usr/local/nginx/log/nginx.pid --error-log-path=/usr/local/nginx/log/error.log --http-log-path=/usr/local/nginx/log/access.log --with-http_gzip_static_module --http-client-body-temp-path=/usr/local/nginx/temp/client --http-proxy-temp-path=/usr/local/nginx/temp/proxy --http-fastcgi-temp-path=/usr/local/nginx/temp/fastcgi --http-uwsgi-temp-path=/usr/local/nginx/temp/uwsgi --http-scgi-temp-path=/usr/local/nginx/temp/scgi --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_gzip_static_module --with-http_addition_module --with-http_flv_module --with-http_mp4_module --with-http_stub_status_module --with-pcre
 ### 4、执行编译操作 ###
-	make
+> -j8 多线程操作，加速编译
+
+	make -j8
 ### 5、执行安装操作 ###
-	make install
+	make install -j8
 ### 6、创建临时文件存放路径 ###
 #### 进入安装路径 ####
 	cd /usr/local/nginx
@@ -31,6 +83,11 @@
     cd /usr/local/nginx/temp
 #### 创建 二级 ####
     mkdir client proxy fastcgi uwsgi scgi
+### 7、创建 用户，用户组 ###
+#### 用户组 ####
+    groupadd nginx
+#### 用户 ####
+    useradd -g nginx nginx
 ## 三、Nginx 运行维护 ##
 ### 进入安装路径 ###
 	cd /usr/local/nginx
@@ -100,51 +157,133 @@
 ##### 将证书与key上传到此目录 #####
 ### 2、切换到安装目录的配置文件目录下 ###
 	cd /usr/local/nginx/conf/
+#### 查看CPU核数（记下来留作备用） ####
+    grep -c processor /proc/cpuinfo
 ### 3、编辑 `nginx.conf` 配置文件
     vim nginx.conf
 #### 按一下键盘字母`i`进行编辑 ####
-#### 添加以下内容： ####
-	# 以上均为 nginx.conf 文件的默认配置，不需要更改，直接在下面添加即可
-    # another virtual host using mix of IP-, name-, and port-based configuration
-    # HTTPS
-    server {
-        # HTTPS 默认端口
-        listen 443 ssl;
-        # 填写绑定证书的域名
-        server_name www.lau.xin;
-        # 填写你的证书所在的位置
-        ssl_certificate /usr/local/nginx/cert/lauxin.pem;
-        # 填写你的key所在的位置
-        ssl_certificate_key /usr/local/nginx/cert/lauxin.key;
-        # 会话超时
-        ssl_session_timeout 5m;
-        # 按照这个协议配置
-        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-        # 按照这个套件配置
-        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-        ssl_prefer_server_ciphers on;
-        location / {
+#### 修改为以下内容： ####
+    # 指定Nginx服务的用户和用户组
+    user nginx nginx;
+    # 设置 Worker 进程数
+    # #默认
+    # worker_processes 1;
+    # #2核CPU的配置
+    worker_processes  2;
+    worker_cpu_affinity 01 10;
+    # #4核CPU的配置
+    # worker_processes  4;
+    # worker_cpu_affinity 0001 0010 0100 1000;
+    # #8核CPU的配置
+    # worker_processes 8;
+    # worker_cpu_affinity 00000001 00000010 00000100 00001000 00010000 00100000 01000000 1000000;
+    # 进程最大打开文件数，可设置为优化后的 ulimit -HSn 的结果
+    worker_rlimit_nofile 65535;
+    events {
+        # 在Linux下，Nginx使用 epoll 的I/O多路复用模型
+        use epoll;
+        # 进程的最大连接数受 Linux 系统进程的最大打开文件数限制，只有执行 "ulimit -HSn 65535" 修改最大打开文件数限制之后，worker_connections 才能生效
+        # Nginx总并发连接数 = worker_processes * worker_connections。总数保持在 3w 左右即可。
+        worker_connections 15000;
+    }
+    http {
+        include mime.types;
+        # 配置在 http 区块，默认是 512kb ，一般设置为 cpu 一级缓存的 4-5 倍，一级缓存大小可以用 lscpu 命令查看
+        server_names_hash_bucket_size 512;
+        # 默认类型
+        default_type application/octet-stream;
+        # 开启文件的高效传输模式
+        sendfile on;
+        # 激活 TCP_CORK socket 选择
+        tcp_nopush on;
+        # 数据在传输的过程中不进缓存
+        tcp_nodelay on;
+        # 设置客户端连接保持会话的超时时间，超过这个时间服务器会关闭该连接
+        keepalive_timeout 65;
+        # 设置读取客户端请求头数据的超时时间，如果超时客户端还没有发送完整的 header 数据，服务器将返回 "Request time out (408)" 错误
+        client_header_timeout 15;
+        # 设置读取客户端请求主体数据的超时时间，如果超时客户端还没有发送完整的主体数据，服务器将返回 "Request time out (408)" 错误
+        client_body_timeout 15;
+        # 指定响应客户端的超时时间，如果超过这个时间，客户端没有任何活动，Nginx 将会关闭连接
+        send_timeout 25;
+        # 设置客户端最大的请求主体大小为8M，超过了此配置项，客户端会收到 413 错误，即请求的条目过大
+        client_max_body_size 8m;
+        # 压缩功能
+        gzip  on;
+        # 允许压缩的对象的最小字节
+        gzip_min_length 1k;
+        # 压缩缓冲区大小，表示申请4个单位为16k的内存作为压缩结果的缓存
+        gzip_buffers 4 32k;
+        # 压缩版本，用于设置识别HTTP协议版本
+        gzip_http_version 1.1;
+        # 压缩级别，1级压缩比最小但处理速度最快，9级压缩比最高但处理速度最慢
+        gzip_comp_level 9;
+        # 允许压缩的媒体类型
+        gzip_types text/css text/xml application/javascript;
+        # 该选项可以让前端的缓存服务器缓存经过gzip压缩的页面，例如用代理服务器缓存经过Nginx压缩的数据
+        gzip_vary on;
+        # 用于设置共享内存区域，addr 是共享内存区域的名称，10m 表示共享内存区域的大小
+        limit_conn_zone $binary_remote_addr zone=addr:10m;
+        # HTTPS
+        server {
+            # HTTPS 默认端口
+            listen 443 ssl;
+            # 填写绑定证书的域名
+            server_name www.lau.xin;
+            # 填写你的证书所在的位置
+            ssl_certificate /usr/local/nginx/cert/lauxin.pem;
+            # 填写你的key所在的位置
+            ssl_certificate_key /usr/local/nginx/cert/lauxin.key;
+            # 会话超时
+            ssl_session_timeout 5m;
+            # 按照这个协议配置
+            ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+            # 按照这个套件配置
+            ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+            ssl_prefer_server_ciphers on;
+            # 默认访问资源
+            location / {
                 # 填写你的你的站点目录
                 root html;
                 # 网站首页
-                index index.html;
+                index index.html index.htm;
+                # 限制单个IP的并发连接数为 1
+                limit_conn addr 1;
+            }
+            # 缓存的对象
+            location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css)$ {
+                # 缓存的时间，30天 当用户第一次访问这些内容时，会把这些内容存储在用户浏览器本地，这样用户第二次及以后继续访问该网站时，浏览器会检查加载已经缓存在用户浏览器本地的内容，就不会去服务器下载了，直到缓存的内容过期或被清除为止
+                expires 30d;
+                # 不记录访问日志
+                access_log off;
+            }
+            # 500 错误页面
+            error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+                root html;
+            }
+            # 404 错误页面
+            error_page 404 /404.html;
+            location = /404.html {
+                root html;
             }
         }
-    server {
-        # Nginx 默认端口
-        listen 80;
-        # 填写绑定证书的域名
-        server_name www.lau.xin;
-        # 将 http 转到 https
-        rewrite ^ https://$http_host$request_uri? permanent;
-    }
-    server {
-        # Nginx 默认端口
-        listen 80;
-        # 填写绑定证书的域名
-        server_name lau.xin;
-        # 将 http 转到 https
-        rewrite ^ https://$http_host$request_uri? permanent;
+        server {
+            # Nginx 默认端口
+            listen 80;
+            # 填写绑定证书的域名
+            server_name www.lau.xin;
+            # 将 http 转到 https
+            rewrite ^ https://$http_host$request_uri? permanent;
+        }
+        server {
+            # Nginx 默认端口
+            listen 80;
+            # 填写绑定证书的域名
+            server_name lau.xin;
+            # 将 http 转到 https
+            rewrite ^ https://$http_host$request_uri? permanent;
+        }
     }
 ##### 按一下`esc`键 退出编辑 #####
 ##### `:wq` 保存退出 #####
