@@ -38,6 +38,9 @@ sudo yum install --setopt=protected_multilib=false libstdc++
 ![libstdc](install-libstdc.png)
 > 出现下图显示，说明安装成功
 ![libstdc](installend-libstdc.png)
+
+yum -y install SDL2.i686
+
 ## 二、安装 SteamCMD ##
 > 进行到此步骤说明我们已经安装完依赖了，如果不放心可以去在检查一下依赖
 ### 1、安装前准备
@@ -88,12 +91,7 @@ cd ~/steamcmd
 login 帐号
 ```
 ![登录 steam](denglu.png)
-#### 2、创建文件夹 ####
-##### 切换到 SteamCMD 安装目录 #####
-```shell
-cd ~/steamcmd
-```
-##### 创建 Arma3 安装目录 #####
+#### 2、创建 Arma3 安装目录 ####
 ```shell
 force_install_dir ./arma3server/
 ```
