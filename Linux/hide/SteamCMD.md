@@ -11,7 +11,7 @@ yum list glibc
 ![glibc](glibc.png)
 #### 安装 ####
 ```shell
-sudo yum install glibc.i686
+sudo yum install glibc glibc.i686
 ```
 > 出现下图显示，输入 `y` 继续安装
 ![glibc](install-glibc.png)
@@ -26,7 +26,7 @@ yum list libstdc++
 ![libstdc](libstdc.png)
 #### 安装 ####
 ```shell
-sudo yum install libstdc++.i686
+sudo yum install libstdc++ libstdc++.i686
 ```
 > 出现下图显示，说明安装失败
 ![libstdc](installerr-libstdc.png)
@@ -38,9 +38,6 @@ sudo yum install --setopt=protected_multilib=false libstdc++
 ![libstdc](install-libstdc.png)
 > 出现下图显示，说明安装成功
 ![libstdc](installend-libstdc.png)
-
-yum -y install SDL2.i686
-
 ## 二、安装 SteamCMD ##
 > 进行到此步骤说明我们已经安装完依赖了，如果不放心可以去在检查一下依赖
 ### 1、安装前准备
@@ -55,7 +52,7 @@ su - steam
 ```
 #### 创建文件夹 ####
 ```shell
-mkdir ~/steamcmd && cd ~/steamcmd
+mkdir ~/Steam && cd ~/Steam
 ```
 ### 2、下载 SteamCMD 安装包
 > **依次**执行如下命令，进行 `安装包下载`，`安装包解压`，`安装包删除`
@@ -76,7 +73,7 @@ rm -f steamcmd_linux.tar.gz
 ### 1、启动 SteamCMD ###
 #### 切换到 SteamCMD 安装目录 ####
 ```shell
-cd ~/steamcmd
+cd ~/Steam
 ```
 #### 执行启动 ####
 ```shell
