@@ -88,11 +88,7 @@ cd ~/Steam
 login 帐号
 ```
 ![登录 steam](denglu.png)
-#### 2、创建 Arma3 安装目录 ####
-```shell
-force_install_dir ./arma3server/
-```
-#### 3、下载 Arma3 ####
+#### 2、下载 Arma3 ####
 > [点击查看 APP ID](https://developer.valvesoftware.com/wiki/Dedicated_Servers_List)
 ```shell
 app_update 233780 validate

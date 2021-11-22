@@ -1,6 +1,6 @@
 # Centos8 环境下 Nginx 安装配置 #
-### 注意看我的标题！！！！我这是针对 1.21.3 版本 ###
-> 偶数版本-稳定版本（两个稳定版本之间的跨越时间越长、补丁发布频率越少），奇数版本-开发测、试版本
+### 注意看我的标题！！！！我这是针对 1.20.2 版本 ###
+> 偶数版本-稳定版本（两个稳定版本之间的跨越时间越长、补丁发布频率越少），奇数版本-开发、测试版本
 ## 一、检查本地是否安装 ##
 ### 1、检查 ###
     rpm -qa | grep nginx
@@ -9,13 +9,13 @@
 #### 切换到下载目录下 ####
 	cd /usr/local/
 ### 3、下载 ###
-	wget https://nginx.org/download/nginx-1.21.3.tar.gz
+	wget https://nginx.org/download/nginx-1.20.2.tar.gz
 ### 4、解压（找到压缩文件） ###
-	tar -zxvf nginx-1.21.3.tar.gz  -C /usr/local/
+	tar -zxvf nginx-1.20.2.tar.gz  -C /usr/local/
 ## 一、Nginx 调优 ##
 > 修改源代码文件
 ### 1、隐藏版本信息 ###
-    vim /usr/local/nginx-1.21.3/src/core/nginx.h
+    vim /usr/local/nginx-1.20.2/src/core/nginx.h
 #### 按一下键盘字母`i`进行编辑 ####
 #### 修改以下内容（13行 显示的版本号） ####
     #define NGINX_VERSION      "996"
@@ -26,14 +26,14 @@
 #### 按一下`esc`键 退出编辑 ####
 #### `:wq` 保存退出 ####
 ### 2、隐藏软件名 ###
-    vim /usr/local/nginx-1.21.3/src/http/ngx_http_header_filter_module.c
+    vim /usr/local/nginx-1.20.2/src/http/ngx_http_header_filter_module.c
 #### 按一下键盘字母`i`进行编辑 ####
 #### 修改以下内容（49行 修改为想要显示的软件名） ####
     static u_char ngx_http_server_string[] = "Server: www.lau.xin" CRLF;
 #### 按一下`esc`键 退出编辑 ####
 #### `:wq` 保存退出 ####
 ### 3、定义对外展示内容 ###
-    vim /usr/local/nginx-1.21.3/src/http/ngx_http_special_response.c
+    vim /usr/local/nginx-1.20.2/src/http/ngx_http_special_response.c
 #### 按一下键盘字母`i`进行编辑 ####
 #### 修改以下内容（22行 此行定义对外展示的内容） ####
     "<hr><center>" NGINX_VER "(www.lau.xin)</center>" CRLF
@@ -65,7 +65,7 @@
 
 	yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel pcre pcre-devel
 ### 2、切换到解压目录下 ###
-	cd /usr/local/nginx-1.21.3
+	cd /usr/local/nginx-1.20.2
 ### 3、运行./configure 进行初始化配置 [参考](image/configure.md) ###
 	./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --pid-path=/usr/local/nginx/log/nginx.pid --error-log-path=/usr/local/nginx/log/error.log --http-log-path=/usr/local/nginx/log/access.log --with-http_gzip_static_module --http-client-body-temp-path=/usr/local/nginx/temp/client --http-proxy-temp-path=/usr/local/nginx/temp/proxy --http-fastcgi-temp-path=/usr/local/nginx/temp/fastcgi --http-uwsgi-temp-path=/usr/local/nginx/temp/uwsgi --http-scgi-temp-path=/usr/local/nginx/temp/scgi --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_gzip_static_module --with-http_addition_module --with-http_flv_module --with-http_mp4_module --with-http_stub_status_module --with-pcre
 ### 4、执行编译操作 ###
