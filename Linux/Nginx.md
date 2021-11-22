@@ -157,133 +157,168 @@
 ##### 将证书与key上传到此目录 #####
 ### 2、切换到安装目录的配置文件目录下 ###
 	cd /usr/local/nginx/conf/
+### 3、编辑默认配置文件 ###
 #### 查看CPU核数（记下来留作备用） ####
     grep -c processor /proc/cpuinfo
-### 3、编辑 `nginx.conf` 配置文件
+#### 编辑 `nginx.conf` 配置文件 ####
     vim nginx.conf
 #### 按一下键盘字母`i`进行编辑 ####
 #### 修改为以下内容： ####
-    # 指定Nginx服务的用户和用户组
-    user nginx nginx;
-    # 设置 Worker 进程数
-    # #默认
-    # worker_processes 1;
-    # #2核CPU的配置
-    worker_processes  2;
-    worker_cpu_affinity 01 10;
-    # #4核CPU的配置
-    # worker_processes  4;
-    # worker_cpu_affinity 0001 0010 0100 1000;
-    # #8核CPU的配置
-    # worker_processes 8;
-    # worker_cpu_affinity 00000001 00000010 00000100 00001000 00010000 00100000 01000000 1000000;
-    # 进程最大打开文件数，可设置为优化后的 ulimit -HSn 的结果
-    worker_rlimit_nofile 65535;
-    events {
-        # 在Linux下，Nginx使用 epoll 的I/O多路复用模型
-        use epoll;
-        # 进程的最大连接数受 Linux 系统进程的最大打开文件数限制，只有执行 "ulimit -HSn 65535" 修改最大打开文件数限制之后，worker_connections 才能生效
-        # Nginx总并发连接数 = worker_processes * worker_connections。总数保持在 3w 左右即可。
-        worker_connections 15000;
+```shell
+# 指定Nginx服务的用户和用户组
+user nginx nginx;
+# 设置 Worker 进程数
+# #默认
+# worker_processes 1;
+# #2核CPU的配置
+worker_processes  2;
+worker_cpu_affinity 01 10;
+# #4核CPU的配置
+# worker_processes  4;
+# worker_cpu_affinity 0001 0010 0100 1000;
+# #8核CPU的配置
+# worker_processes 8;
+# worker_cpu_affinity 00000001 00000010 00000100 00001000 00010000 00100000 01000000 1000000;
+# 进程最大打开文件数，可设置为优化后的 ulimit -HSn 的结果
+worker_rlimit_nofile 65535;
+events {
+    # 在Linux下，Nginx使用 epoll 的I/O多路复用模型
+    use epoll;
+    # 进程的最大连接数受 Linux 系统进程的最大打开文件数限制，只有执行 "ulimit -HSn 65535" 修改最大打开文件数限制之后，worker_connections 才能生效
+    # Nginx总并发连接数 = worker_processes * worker_connections。总数保持在 3w 左右即可。
+    worker_connections 15000;
+}
+http {
+    include mime.types;
+    # 配置在 http 区块，默认是 512kb ，一般设置为 cpu 一级缓存的 4-5 倍，一级缓存大小可以用 lscpu 命令查看
+    server_names_hash_bucket_size 512;
+    # 默认类型
+    default_type application/octet-stream;
+    # 默认编码格式
+    charset utf-8;
+    # 日志格式设置为Json格式，方便ELK日志分析，注意“使用日志中时间替换掉@timestamp默认的时间”配置要一致
+    log_format main '{"logdate":"$time_iso8601",'
+                     '"client_ip":"$remote_addr",'
+                     '"request":"$request",'
+                     '"request_time":"$request_time",'
+                     '"status":"$status",'
+                     '"size":"$body_bytes_sent",'
+                     '"upstream_addr":"$upstream_addr",'
+                     '"upstream_status":"$upstream_status",'
+                     '"upstream_time":"$upstream_response_time",'
+                     '"url":"$uri",'
+                     '"http_referrer":"$http_referer",'
+                     '"http_x_forwarded_for":"$http_x_forwarded_for",'
+                     '"http_user_agent":"$http_user_agent"}';
+    # 开启文件的高效传输模式
+    sendfile on;
+    # 激活 TCP_CORK socket 选择
+    tcp_nopush on;
+    # 数据在传输的过程中不进缓存
+    tcp_nodelay on;
+    # 设置客户端连接保持会话的超时时间，超过这个时间服务器会关闭该连接
+    keepalive_timeout 65;
+    # 设置读取客户端请求头数据的超时时间，如果超时客户端还没有发送完整的 header 数据，服务器将返回 "Request time out (408)" 错误
+    client_header_timeout 15;
+    # 设置读取客户端请求主体数据的超时时间，如果超时客户端还没有发送完整的主体数据，服务器将返回 "Request time out (408)" 错误
+    client_body_timeout 15;
+    # 指定响应客户端的超时时间，如果超过这个时间，客户端没有任何活动，Nginx 将会关闭连接
+    send_timeout 25;
+    # 设置客户端最大的请求主体大小为10M，超过了此配置项，客户端会收到 413 错误，即请求的条目过大
+    client_max_body_size 10m;
+    client_body_buffer_size 10m;
+    # 压缩功能
+    gzip  on;
+    # 允许压缩的对象的最小字节
+    gzip_min_length 1k;
+    # 低版本IE禁用Gzip压缩
+    gzip_disable "MSIE [1-6]\.";
+    # 压缩缓冲区大小，表示申请4个单位为16k的内存作为压缩结果的缓存
+    gzip_buffers 4 32k;
+    # 压缩版本，用于设置识别HTTP协议版本
+    gzip_http_version 1.1;
+    # 压缩级别，1级压缩比最小但处理速度最快，9级压缩比最高但处理速度最慢。级别越大压缩比越高，但浪费的CPU资源也越多
+    gzip_comp_level 9;
+    # 允许压缩的媒体类型
+    gzip_types text/plain text/css text/javascript text/xml application/json application/javascript application/x-javascript application/font-woff application/xml;
+    # 该选项可以让前端的缓存服务器缓存经过gzip压缩的页面，例如用代理服务器缓存经过Nginx压缩的数据
+    gzip_vary on;
+    # 用于设置共享内存区域，addr 是共享内存区域的名称，10m 表示共享内存区域的大小
+    limit_conn_zone $binary_remote_addr zone=addr:10m;
+    # 引入所有 server 配置文件
+    include /usr/local/nginx/conf/server/*.conf;
+}
+```
+### 4、配置 server 配置 ###
+#### 创建 server 文件夹 ####
+    mkdir server
+#### 进入 server 文件夹 ####
+    cd /usr/local/nginx/conf/server/
+#### 创建 自定义的 server 配置文件 ####
+    vim demo.conf
+#### 按一下键盘字母`i`进行编辑 ####
+#### 修改为以下内容： ####
+```shell
+# HTTPS
+server {
+    # HTTPS 默认端口
+    listen 443 ssl;
+    # 填写绑定证书的域名
+    server_name www.lau.xin;
+    # 填写你的证书所在的位置
+    ssl_certificate /usr/local/nginx/cert/lauxin.pem;
+    # 填写你的key所在的位置
+    ssl_certificate_key /usr/local/nginx/cert/lauxin.key;
+    # 会话超时
+    ssl_session_timeout 5m;
+    # 按照这个协议配置
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    # 按照这个套件配置
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+    ssl_prefer_server_ciphers on;
+    # 默认访问资源
+    location / {
+        # 填写你的你的站点目录
+        root html;
+        # 网站首页
+        index index.html index.htm;
+        # 限制单个IP的并发连接数为 1
+        limit_conn addr 1;
     }
-    http {
-        include mime.types;
-        # 配置在 http 区块，默认是 512kb ，一般设置为 cpu 一级缓存的 4-5 倍，一级缓存大小可以用 lscpu 命令查看
-        server_names_hash_bucket_size 512;
-        # 默认类型
-        default_type application/octet-stream;
-        # 开启文件的高效传输模式
-        sendfile on;
-        # 激活 TCP_CORK socket 选择
-        tcp_nopush on;
-        # 数据在传输的过程中不进缓存
-        tcp_nodelay on;
-        # 设置客户端连接保持会话的超时时间，超过这个时间服务器会关闭该连接
-        keepalive_timeout 65;
-        # 设置读取客户端请求头数据的超时时间，如果超时客户端还没有发送完整的 header 数据，服务器将返回 "Request time out (408)" 错误
-        client_header_timeout 15;
-        # 设置读取客户端请求主体数据的超时时间，如果超时客户端还没有发送完整的主体数据，服务器将返回 "Request time out (408)" 错误
-        client_body_timeout 15;
-        # 指定响应客户端的超时时间，如果超过这个时间，客户端没有任何活动，Nginx 将会关闭连接
-        send_timeout 25;
-        # 设置客户端最大的请求主体大小为8M，超过了此配置项，客户端会收到 413 错误，即请求的条目过大
-        client_max_body_size 8m;
-        # 压缩功能
-        gzip  on;
-        # 允许压缩的对象的最小字节
-        gzip_min_length 1k;
-        # 压缩缓冲区大小，表示申请4个单位为16k的内存作为压缩结果的缓存
-        gzip_buffers 4 32k;
-        # 压缩版本，用于设置识别HTTP协议版本
-        gzip_http_version 1.1;
-        # 压缩级别，1级压缩比最小但处理速度最快，9级压缩比最高但处理速度最慢
-        gzip_comp_level 9;
-        # 允许压缩的媒体类型
-        gzip_types text/css text/xml application/javascript;
-        # 该选项可以让前端的缓存服务器缓存经过gzip压缩的页面，例如用代理服务器缓存经过Nginx压缩的数据
-        gzip_vary on;
-        # 用于设置共享内存区域，addr 是共享内存区域的名称，10m 表示共享内存区域的大小
-        limit_conn_zone $binary_remote_addr zone=addr:10m;
-        # HTTPS
-        server {
-            # HTTPS 默认端口
-            listen 443 ssl;
-            # 填写绑定证书的域名
-            server_name www.lau.xin;
-            # 填写你的证书所在的位置
-            ssl_certificate /usr/local/nginx/cert/lauxin.pem;
-            # 填写你的key所在的位置
-            ssl_certificate_key /usr/local/nginx/cert/lauxin.key;
-            # 会话超时
-            ssl_session_timeout 5m;
-            # 按照这个协议配置
-            ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-            # 按照这个套件配置
-            ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-            ssl_prefer_server_ciphers on;
-            # 默认访问资源
-            location / {
-                # 填写你的你的站点目录
-                root html;
-                # 网站首页
-                index index.html index.htm;
-                # 限制单个IP的并发连接数为 1
-                limit_conn addr 1;
-            }
-            # 缓存的对象
-            location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css)$ {
-                # 缓存的时间，30天 当用户第一次访问这些内容时，会把这些内容存储在用户浏览器本地，这样用户第二次及以后继续访问该网站时，浏览器会检查加载已经缓存在用户浏览器本地的内容，就不会去服务器下载了，直到缓存的内容过期或被清除为止
-                expires 30d;
-                # 不记录访问日志
-                access_log off;
-            }
-            # 500 错误页面
-            error_page 500 502 503 504 /50x.html;
-            location = /50x.html {
-                root html;
-            }
-            # 404 错误页面
-            error_page 404 /404.html;
-            location = /404.html {
-                root html;
-            }
-        }
-        server {
-            # Nginx 默认端口
-            listen 80;
-            # 填写绑定证书的域名
-            server_name www.lau.xin;
-            # 将 http 转到 https
-            rewrite ^ https://$http_host$request_uri? permanent;
-        }
-        server {
-            # Nginx 默认端口
-            listen 80;
-            # 填写绑定证书的域名
-            server_name lau.xin;
-            # 将 http 转到 https
-            rewrite ^ https://$http_host$request_uri? permanent;
-        }
+    # 缓存的对象
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css)$ {
+        # 缓存的时间，30天 当用户第一次访问这些内容时，会把这些内容存储在用户浏览器本地，这样用户第二次及以后继续访问该网站时，浏览器会检查加载已经缓存在用户浏览器本地的内容，就不会去服务器下载了，直到缓存的内容过期或被清除为止
+        expires 30d;
+        # 不记录访问日志
+        access_log off;
     }
+    # 500 错误页面
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root html;
+    }
+    # 404 错误页面
+    error_page 404 /404.html;
+    location = /404.html {
+        root html;
+    }
+}
+server {
+    # Nginx 默认端口
+    listen 80;
+    # 填写绑定证书的域名
+    server_name www.lau.xin;
+    # 将 http 转到 https
+    rewrite ^ https://$http_host$request_uri? permanent;
+}
+server {
+    # Nginx 默认端口
+    listen 80;
+    # 填写绑定证书的域名
+    server_name lau.xin;
+    # 将 http 转到 https
+    rewrite ^ https://$http_host$request_uri? permanent;
+}
+```
 ##### 按一下`esc`键 退出编辑 #####
 ##### `:wq` 保存退出 #####
