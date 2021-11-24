@@ -197,11 +197,11 @@ http {
     # 默认编码格式
     charset utf-8;
     # 日志格式设置为Json格式，方便ELK日志分析，注意“使用日志中时间替换掉@timestamp默认的时间”配置要一致
-    log_format main '{"logdate":"$time_iso8601",'
+    log_format main_json '{"status":"$status",'
+                     '"log_date":"$time_iso8601",'
                      '"client_ip":"$remote_addr",'
                      '"request":"$request",'
                      '"request_time":"$request_time",'
-                     '"status":"$status",'
                      '"size":"$body_bytes_sent",'
                      '"upstream_addr":"$upstream_addr",'
                      '"upstream_status":"$upstream_status",'
@@ -210,6 +210,8 @@ http {
                      '"http_referrer":"$http_referer",'
                      '"http_x_forwarded_for":"$http_x_forwarded_for",'
                      '"http_user_agent":"$http_user_agent"}';
+    # 日志存放地址
+    access_log  /usr/local/nginx/log/access_json.log  main_json;
     # 开启文件的高效传输模式
     sendfile on;
     # 激活 TCP_CORK socket 选择
