@@ -216,6 +216,8 @@ http {
       default '';
     }
     access_log  /usr/local/nginx/log/access_json_$logdate.log  main_json;
+    # 每次日志写入都会打开和关闭该文件。但是，由于常用文件的描述符可以存储在缓存中，因此在 open_log_file_cache 指令的参数指定的时间内，可以继续写入旧文件
+    open_log_file_cache max=1000 inactive=20s valid=1m min_uses=2;
     # 开启文件的高效传输模式
     sendfile on;
     # 激活 TCP_CORK socket 选择
