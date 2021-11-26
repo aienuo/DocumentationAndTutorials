@@ -210,8 +210,12 @@ http {
                      '"http_referrer":"$http_referer",'
                      '"http_x_forwarded_for":"$http_x_forwarded_for",'
                      '"http_user_agent":"$http_user_agent"}';
-    # 日志存放地址
-    access_log  /usr/local/nginx/log/access_json.log  main_json;
+    # 日志存放地址 从Nginx 0.7.6版本开始 access_log 的路径配置可以包含变量，我们可以利用这个特性来实现日志分割。
+    map $time_iso8601 $logdate {
+      '~^(?<ymd>\d{4}-\d{2}-\d{2})' $ymd;
+      default '';
+    }
+    access_log  /usr/local/nginx/log/access_json_$logdate.log  main_json;
     # 开启文件的高效传输模式
     sendfile on;
     # 激活 TCP_CORK socket 选择
@@ -259,7 +263,7 @@ http {
 #### 创建 自定义的 server 配置文件 ####
     vim demo.conf
 #### 按一下键盘字母`i`进行编辑 ####
-#### 修改为以下内容： ####
+#### 添加以下内容： ####
 ```shell
 # HTTPS
 server {
