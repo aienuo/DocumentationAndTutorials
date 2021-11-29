@@ -42,7 +42,9 @@
 #### 按一下`esc`键 退出编辑 ####
 #### `:wq` 保存退出 ####
 > 配置Linux系统参数
-### 4、设置 ulimit 设置句柄数 ###
+### 4、修改文件打开数限制 ###
+> 操作系统默认单进程最大打开文件数为1024
+
     vim /etc/security/limits.conf
 #### 按一下键盘字母`i`进行编辑 ####
 #### 新增以下内容 ####
@@ -59,6 +61,14 @@
     session    required     /lib/security/pam_limits.so
 #### 按一下`esc`键 退出编辑 ####
 #### `:wq` 保存退出 ####
+### 6、设置 DNS缓存 ###
+> 开启 NSCD 服务，缓存 DNS，提高域名解析响应速度
+
+    vim /etc/resolv.conf
+#### 按一下键盘字母`i`进行编辑 ####
+#### 新增以下内容 ####
+    ststemetl start nscd.service    
+    ststemetl enable nscd.service
 ## 二、编译安装 ##
 ### 1、下载依赖 ###
 > 缺少 xxxlibrany，缺少.c.h文件 安装开发组包  xxx-devel
@@ -67,7 +77,7 @@
 ### 2、切换到解压目录下 ###
 	cd /usr/local/nginx-1.20.2
 ### 3、运行./configure 进行初始化配置 [参考](image/configure.md) ###
-	./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --pid-path=/usr/local/nginx/log/nginx.pid --error-log-path=/usr/local/nginx/log/error.log --http-log-path=/usr/local/nginx/log/access.log --with-http_gzip_static_module --http-client-body-temp-path=/usr/local/nginx/temp/client --http-proxy-temp-path=/usr/local/nginx/temp/proxy --http-fastcgi-temp-path=/usr/local/nginx/temp/fastcgi --http-uwsgi-temp-path=/usr/local/nginx/temp/uwsgi --http-scgi-temp-path=/usr/local/nginx/temp/scgi --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_gzip_static_module --with-http_addition_module --with-http_flv_module --with-http_mp4_module --with-http_stub_status_module --with-pcre
+	./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --pid-path=/usr/local/nginx/log/nginx.pid --error-log-path=/usr/local/nginx/log/error.log --http-log-path=/usr/local/nginx/log/access.log --with-http_gzip_static_module --http-client-body-temp-path=/usr/local/nginx/temp/client --http-proxy-temp-path=/usr/local/nginx/temp/proxy --http-fastcgi-temp-path=/usr/local/nginx/temp/fastcgi --http-uwsgi-temp-path=/usr/local/nginx/temp/uwsgi --http-scgi-temp-path=/usr/local/nginx/temp/scgi --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_gzip_static_module --with-http_addition_module --with-http_flv_module --with-http_mp4_module --with-http_stub_status_module --with-pcre --wuth--http_sub_module
 ### 4、执行编译操作 ###
 > -j8 多线程操作，加速编译
 
