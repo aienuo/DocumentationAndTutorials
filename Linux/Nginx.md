@@ -48,6 +48,8 @@
     vim /etc/security/limits.conf
 #### 按一下键盘字母`i`进行编辑 ####
 #### 新增以下内容 ####
+>  *号表示所用用户
+
     * soft nofile 65535
     * hard nofile 65535
 #### 按一下`esc`键 退出编辑 ####
@@ -175,11 +177,13 @@
 #### 按一下键盘字母`i`进行编辑 ####
 #### 修改为以下内容： ####
 ```shell
-# 指定Nginx服务的用户和用户组
+# 1、指定Nginx服务的用户和用户组
 user nginx nginx;
-# 设置 Worker 进程数
-# #默认
-# worker_processes 1;
+# 2、设置 Worker 进程数
+# 工作进程数指令；指令值有两种类型，分别为数字和 auto。指令值为 auto 时，Nginx 会根据 CPU 的内核数生成等数量的工作进程。
+# worker_processes auto;
+# 工作进程 CPU 绑定指令；指令值除了可以是 CPU 掩码外，还可以是 auto。当指令值为 auto 时，Nginx 会自动进行 CPU 绑定。
+# worker_cpu_affinity auto;
 # #2核CPU的配置
 worker_processes  2;
 worker_cpu_affinity 01 10;
@@ -189,15 +193,18 @@ worker_cpu_affinity 01 10;
 # #8核CPU的配置
 # worker_processes 8;
 # worker_cpu_affinity 00000001 00000010 00000100 00001000 00010000 00100000 01000000 1000000;
-# 进程最大打开文件数，可设置为优化后的 ulimit -HSn 的结果
+# 3、工作进程最大打开文件数，可设置为优化后的文件打开数限制
 worker_rlimit_nofile 65535;
+# 4、事件处理
 events {
-    # 在Linux下，Nginx使用 epoll 的I/O多路复用模型
+    # 在Linux下，Nginx使用 epoll 的I/O多路复用模型（支持的事件模型有 select、poll、kqueue、epoll、/dev/poll、eventport。）
     use epoll;
-    # 进程的最大连接数受 Linux 系统进程的最大打开文件数限制，只有执行 "ulimit -HSn 65535" 修改最大打开文件数限制之后，worker_connections 才能生效
+    # Linux 系统下，因为每个网络连接都将打开一个文件描述符，Nginx 可处理的并发连接数受限于操作系统的最大打开文件数，同时所有工作进程的并发数也受 worker_rlimit_nofile 指令值的限制。
+    # 进程的最大连接数受 Linux 系统进程的最大打开文件数限制，只有修改最大打开文件数限制之后，worker_connections 才能生效
     # Nginx总并发连接数 = worker_processes * worker_connections。总数保持在 3w 左右即可。
     worker_connections 15000;
 }
+# 5、HTTP 核心配置指令
 http {
     include mime.types;
     # 配置在 http 区块，默认是 512kb ，一般设置为 cpu 一级缓存的 4-5 倍，一级缓存大小可以用 lscpu 命令查看
@@ -234,8 +241,12 @@ http {
     tcp_nopush on;
     # 数据在传输的过程中不进缓存
     tcp_nodelay on;
+    # 对指定的浏览器关闭保持连接机制，如果指令值为 none，则对所有浏览器开启保持连接机制
+    keepalive_disable none;
+    # 同一 TCP 连接可复用的最大 HTTP 请求数，超过该数值后，TCP 连接将被关闭
+    keepalive_requests 1000;
     # 设置客户端连接保持会话的超时时间，超过这个时间服务器会关闭该连接
-    keepalive_timeout 65;
+    keepalive_timeout 65s;
     # 设置读取客户端请求头数据的超时时间，如果超时客户端还没有发送完整的 header 数据，服务器将返回 "Request time out (408)" 错误
     client_header_timeout 15;
     # 设置读取客户端请求主体数据的超时时间，如果超时客户端还没有发送完整的主体数据，服务器将返回 "Request time out (408)" 错误
@@ -265,6 +276,10 @@ http {
     limit_conn_zone $binary_remote_addr zone=addr:10m;
     # 引入所有 server 配置文件
     include /usr/local/nginx/conf/server/*.conf;
+    # 500 错误页面
+    error_page 500 502 503 504 /50x.html;
+    # 404 错误页面
+    error_page 404 /404.html;
 }
 ```
 ### 4、配置 server 配置 ###
@@ -310,24 +325,6 @@ server {
         # 不记录访问日志
         access_log off;
     }
-    # 500 错误页面
-    error_page 500 502 503 504 /50x.html;
-    location = /50x.html {
-        root html;
-    }
-    # 404 错误页面
-    error_page 404 /404.html;
-    location = /404.html {
-        root html;
-    }
-}
-server {
-    # Nginx 默认端口
-    listen 80;
-    # 填写绑定证书的域名
-    server_name www.lau.xin;
-    # 将 http 转到 https
-    rewrite ^ https://$http_host$request_uri? permanent;
 }
 server {
     # Nginx 默认端口
