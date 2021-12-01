@@ -5,106 +5,165 @@
 
 ## 一、检查本地是否安装 ##
 ### 1、检查 ###
-    rpm -qa | grep Nacos
+```shell
+rpm -qa | grep Nacos
+```
 ### 2、卸载 ###
-    rpm -e 已经存在的Nacos全名	
+```shell
+rpm -e 已经存在的Nacos全名
+```
 ## 二、解压操作文件 ##
 ### 下载并上传到 /usr/local/ 文件夹下
 #### 下载地址 ####
-    wget https://github.com/alibaba/nacos/releases/alibaba/nacos/releases/download/2.0.3/nacos-server-2.0.3.tar.gz
+```shell
+wget https://github.com/alibaba/nacos/releases/alibaba/nacos/releases/download/2.0.3/nacos-server-2.0.3.tar.gz
+```
 ### 解压（找到压缩文件） ###
-	tar -zxvf nacos-server-2.0.3.tar.gz -C /usr/local/
+```shell
+tar -zxvf nacos-server-2.0.3.tar.gz -C /usr/local/
+```
 #### 切换到解压目录下 ####
-	cd /usr/local/
+```shell
+cd /usr/local/
+```
 #### 查看是否剪切成功 ####
-	ls -a
-	ll
+```shell
+ls -a
+```
 ## 三、数据库配置 ###
 > Nacos 需要 MySql 存放用户、租户等配置信息，如果没有安装 MySql 请参考安装 [MySQL](MySQL.md)
 ### 创建数据库 ### 
-    nacos_config
+```shell
+nacos_config
+```
 ### 生成数据库表 ###
 > 运行 /usr/local/nacos/conf 下的 nacos-mysql.sql 文件
 ### 创建用户
-    mysql -h 192.168.211.131 -P 3306 -u root -proot 
+```shell
+mysql -h 192.168.211.131 -P 3306 -u root -proot 
+```
 > 根据个人所需 修改 用户名 以及 IP
-
-    CREATE USER `nacos`@`192.168.211.11` IDENTIFIED WITH mysql_native_password BY 'nacos' PASSWORD EXPIRE NEVER;
+```shell
+CREATE USER `nacos`@`192.168.211.11` IDENTIFIED WITH mysql_native_password BY 'nacos' PASSWORD EXPIRE NEVER;
+```
 ### 设置权限 ###
 > 根据个人所需 修改 用户名 以及 IP
-
-    GRANT Alter, Alter Routine, Create, Create Routine, Create Temporary Tables, Create View, Delete, Drop, Event, Execute, Grant Option, Index, Insert, Lock Tables, References, Select, Show View, Trigger, Update ON `nacos\_config`.* TO `nacos`@`192.168.211.11`;
-
+```shell
+GRANT Alter, Alter Routine, Create, Create Routine, Create Temporary Tables, Create View, Delete, Drop, Event, Execute, Grant Option, Index, Insert, Lock Tables, References, Select, Show View, Trigger, Update ON `nacos\_config`.* TO `nacos`@`192.168.211.11`;
+```
 ## 四、配置环境变量 ###
 #### 1、切换到配置文件目录下 ####
-    cd /usr/local/nacos/conf
+```shell
+cd /usr/local/nacos/conf
+```
 #### 2、修改配置文件 ####
-    vim application.properties
+```shell
+vim application.properties
+```
 ##### 按一下键盘字母`i`进行编辑 #####
 #### 2、修改以下内容： ####
 ##### 19行 访问路径 #####
-	server.servlet.contextPath=/nacos
+```shell
+server.servlet.contextPath=/nacos
+```
 ##### 21行 访问端口 #####
-	server.port=8848
+```shell
+server.port=8848
+```
 ##### 33行 数据库类型（只支持MySQL）#####
-    spring.datasource.platform=mysql
+```shell
+spring.datasource.platform=mysql
+```
 ##### 36行 数据源 #####
-    db.num=1
+```shell
+db.num=1
+```
 ##### 39行 MySQL URL 只需要修改 IP、Port、数据库名其他不能动 #####
-    db.url.0=jdbc:mysql://192.168.211.131:3306/nacos_config?characterEncoding=utf8&connectTimeout=10000&socketTimeout=30000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
+```shell
+db.url.0=jdbc:mysql://192.168.211.131:3306/nacos_config?characterEncoding=utf8&connectTimeout=10000&socketTimeout=30000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
+```
 ##### 40行 数据库帐号 #####
-    db.user.0=nacos
+```shell
+db.user.0=nacos
+```
 ##### 41行 数据库密码 #####
-    db.password.0=nacos
+```shell
+db.password.0=nacos
+```
 ##### 按一下`esc`键 退出编辑 #####
 ##### `:wq` 保存退出 #####
 ## 五、开机自启 ##
 ### 配置 startup.sh 文件
-    vim /usr/local/nacos/bin/startup.sh
+```shell
+vim /usr/local/nacos/bin/startup.sh
+```
 ##### 按一下键盘字母`i`进行编辑 #####
 ### 修改 29行 ###
-    [ ! -e "$JAVA_HOME/bin/java" ] && JAVA_HOME=/usr/local/jdk1.8.0_201
+```shell
+[ ! -e "$JAVA_HOME/bin/java" ] && JAVA_HOME=/usr/local/jdk1.8.0_201
+```
 ### 30-32行注释掉 ### 
 ##### 按一下`esc`键 退出编辑 #####
 ##### `:wq` 保存退出 #####
 ### 创建配置文件 配置开机自启 ###
-    vim /lib/systemd/system/nacos.service
+```shell
+vim /lib/systemd/system/nacos.service
+```
 ##### 按一下键盘字母`i`进行编辑 #####
 #### 输入以下内容： ####
 > 本机Nacos的文件安装路径，-m standalone表示作为单机启动，不加的话表示集群启动，目前先作为单机启动。
+```shell
+[Unit]
+Description=nacos
+After=network.target
 
-    [Unit]
-    Description=nacos
-    After=network.target
-    
-    [Service]
-    Type=forking
-    ExecStart=/usr/local/nacos/bin/startup.sh -m standalone
-    ExecReload=/usr/local/nacos/bin/shutdown.sh
-    ExecStop=/usr/local/nacos/bin/shutdown.sh
-    PrivateTmp=true
-    
-    [Install]
-    WantedBy=multi-user.target
+[Service]
+Type=forking
+ExecStart=/usr/local/nacos/bin/startup.sh -m standalone
+ExecReload=/usr/local/nacos/bin/shutdown.sh
+ExecStop=/usr/local/nacos/bin/shutdown.sh
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+```
 ##### 按一下`esc`键 退出编辑 #####
 ##### `:wq` 保存退出 #####
 #### 设置开机自启
 ##### 先进行文件生效配置 #####
-    systemctl daemon-reload
+```shell
+systemctl daemon-reload
+```
 ##### 设置为开机启动 #####
-    systemctl enable nacos.service
+```shell
+systemctl enable nacos.service
+```
 ##### 启动 Nacos服务 #####
-    systemctl start nacos.service
+```shell
+systemctl start nacos.service
+```
 ##### 启动成功后进行查看 #####
-    systemctl status nacos.service
+```shell
+systemctl status nacos.service
+```
 ##### 关闭 Nacos服务 #####
-    systemctl stop nacos.service
+```shell
+systemctl stop nacos.service
+```
 ## 六、防火墙端口开放 ##
 ### 1、Add 添加开放端口 ###
-	firewall-cmd --permanent --zone=public --add-port=8848/tcp
+```shell
+firewall-cmd --permanent --zone=public --add-port=8848/tcp
+```
 ### 2、Reload 重新加载 ###
-	firewall-cmd --reload
+```shell
+firewall-cmd --reload
+```
 ### 3、检查是否生效 ####
-	firewall-cmd --zone=public --query-port=8848/tcp
+```shell
+firewall-cmd --zone=public --query-port=8848/tcp
+```
 ### 4、重启计算机 ###
-	shutdown -r now
+```shell
+shutdown -r now
+```
