@@ -9,10 +9,10 @@
 	groupadd mycat
 ### 2、添加用户 ###
 	adduser -r -g mycat mycat
-### 3、修改MyCat目录所属的用户和组为mycat用户 ###
+### 3、修改 MyCat 目录所属的用户和组为 mycat 用户 ###
 	chown -R mycat.mycat /usr/local/mycat/
 ## 四、配置文件配置 ##
-### 切换到Mycat的 `conf` 目录下 ###
+### 切换到 MyCat 的 `conf` 目录下 ###
 	cd /usr/local/mycat/conf/
 ##### `schema`标签内的内容大小写问题：必须统一一致 #####
 ### 1、`schema.xml` 文件 ###
