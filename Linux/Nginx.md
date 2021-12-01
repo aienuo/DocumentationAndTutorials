@@ -319,7 +319,7 @@ server {
         limit_conn addr 1;
     }
     # 缓存的对象
-    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css)$ {
+    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css|ico)$ {
         # 缓存的时间，30天 当用户第一次访问这些内容时，会把这些内容存储在用户浏览器本地，这样用户第二次及以后继续访问该网站时，浏览器会检查加载已经缓存在用户浏览器本地的内容，就不会去服务器下载了，直到缓存的内容过期或被清除为止
         expires 30d;
         # 不记录访问日志
