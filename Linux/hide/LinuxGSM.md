@@ -14,7 +14,7 @@ sudo yum install epel-release
 ### 2、必备工具 ###
 #### 安装 ####
 ```shell
-sudo yum install curl wget tar bzip2 gzip unzip python3 binutils bc jq tmux
+sudo yum install curl wget tar bzip2 gzip unzip python3 binutils bc jq tmux glibc.i686 libstdc++ libstdc++.i686
 ```
 ![必备工具](bibei_install.png)
 ## 二、安装 ##
