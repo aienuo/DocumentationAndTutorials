@@ -702,7 +702,7 @@ rpm -ivh /usr/src/redhat/RPMS/`arch`/package.rpm
 ```shell
 rpmbuild --rebuild package_name.src.rpm
 ```
-## 一二. YUM（Fedora, RedHat及类似系统） ##
+## 一三. YUM（Fedora, RedHat及类似系统） ##
 #### 1. 下载并安装一个rpm包 ####
 ```shell
 yum install package_name
