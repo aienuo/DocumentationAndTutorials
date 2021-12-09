@@ -512,7 +512,7 @@ chattr +u file1
 ```shell
 lsattr
 ```
-## 一一.打包和压缩文件 ##
+## 一一. 打包和压缩文件 ##
 #### 1. 解压一个叫做 `xxx.bz2` 的文件 ####
 ```shell
 bunzip2 xxx.bz2
@@ -596,6 +596,152 @@ zip -r file1.zip file1 file2 dir1
 #### 21. 解压一个zip格式压缩包 ####
 ```shell
 unzip file1.zip
+```
+## 一二. RPM包（Fedora, Redhat及类似系统） ##
+#### 1. 安装一个rpm包 ####
+```shell
+rpm -ivh package.rpm 
+```
+#### 2. 安装一个rpm包而忽略依赖关系警告 ####
+```shell
+rpm -ivh --nodeeps package.rpm
+```
+#### 3. 更新一个rpm包但不改变其配置文件 ####
+```shell
+rpm -U package.rpm
+```
+#### 4. 更新一个确定已经安装的rpm包 ####
+```shell
+rpm -F package.rpm
+```
+#### 5. 删除一个rpm包 ####
+```shell
+rpm -e package_name.rpm
+```
+#### 6. 显示系统中所有已经安装的rpm包 ####
+```shell
+rpm -qa
+```
+#### 7. 显示所有名称中包含 "httpd" 字样的rpm包 ####
+```shell
+rpm -qa | grep httpd
+```
+#### 8. 获取一个已安装包的特殊信息 ####
+```shell
+rpm -qi package_name
+```
+#### 9. 显示一个组件的rpm包 ####
+```shell
+rpm -qg "System Environment/Daemons"
+```
+#### 10. 显示一个已经安装的rpm包提供的文件列表 ####
+```shell
+rpm -ql package_name
+```
+#### 11. 显示一个已经安装的rpm包提供的配置文件列表 ####
+```shell
+rpm -qc package_name
+```
+#### 12. 显示与一个rpm包存在依赖关系的列表 ####
+```shell
+rpm -q package_name --whatrequires
+```
+#### 13. 显示一个rpm包所占的体积 ####
+```shell
+rpm -q package_name --whatprovides
+```
+#### 14. 显示在安装/删除期间所执行的脚本 ####
+```shell
+rpm -q package_name --scripts
+```
+#### 15. 显示一个rpm包的修改历史 ####
+```shell
+rpm -q package_name --changelog
+```
+#### 16. 确认所给的文件由哪个rpm包所提供 ####
+```shell
+rpm -qf /etc/httpd/conf/httpd.conf
+```
+#### 17. 显示由一个尚未安装的rpm包提供的文件列表 ####
+```shell
+rpm -qp package.rpm -l
+```
+#### 18. 导入公钥数字证书 ####
+```shell
+rpm --import /media/cdrom/RPM-GPG-KEY
+```
+#### 19. 确认一个rpm包的完整性 ####
+```shell
+rpm --checksig package.rpm
+```
+#### 20. 确认已安装的所有rpm包的完整性 ####
+```shell
+rpm -qa gpg-pubkey
+```
+#### 21. 检查文件尺寸、 许可、类型、所有者、群组、MD5检查以及最后修改时间 ####
+```shell
+rpm -V package_name
+```
+#### 22. 检查系统中所有已安装的rpm包- 小心使用 ####
+```shell
+rpm -Va
+```
+#### 23. 确认一个rpm包还未安装 ####
+```shell
+rpm -Vp package.rpm
+```
+#### 24. 从一个rpm包运行可执行文件 ####
+```shell
+rpm2cpio package.rpm | cpio --extract --make-directories *bin*
+```
+#### 25. 从一个rpm源码安装一个构建好的包 ####
+```shell
+rpm -ivh /usr/src/redhat/RPMS/`arch`/package.rpm
+```
+#### 26. 从一个rpm源码构建一个 rpm 包 ####
+```shell
+rpmbuild --rebuild package_name.src.rpm
+```
+## 一二. YUM（Fedora, RedHat及类似系统） ##
+#### 1. 下载并安装一个rpm包 ####
+```shell
+yum install package_name
+```
+#### 2. 将安装一个rpm包，使用你自己的软件仓库为你解决所有依赖关系 ####
+```shell
+yum localinstall package_name.rpm
+```
+#### 3. 更新当前系统中所有安装的rpm包 ####
+```shell
+yum update package_name.rpm
+```
+#### 4. 更新一个rpm包 ####
+```shell
+yum update package_name
+```
+#### 5. 删除一个rpm包 ####
+```shell
+yum remove package_name
+```
+#### 6. 列出当前系统中安装的所有包 ####
+```shell
+yum list
+```
+#### 7. 在rpm仓库中搜寻软件包 ####
+```shell
+yum search package_name
+```
+#### 8. 清理rpm缓存删除下载的包 ####
+```shell
+yum clean packages
+```
+#### 9. 删除所有头文件 ####
+```shell
+yum clean headers
+```
+#### 10. 删除所有缓存的包和头文件 ####
+```shell
+yum clean all
 ```
 
 
