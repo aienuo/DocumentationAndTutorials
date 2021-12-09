@@ -98,6 +98,7 @@ shutdown -h hours:minutes &
 shutdown -c
 ```
 #### 2. 重启 ####
+##### ① #####
 ```shell
 shutdown -r now 
 ```
@@ -510,6 +511,91 @@ chattr +u file1
 #### 8. 显示特殊的属性 ####
 ```shell
 lsattr
+```
+## 一一.打包和压缩文件 ##
+#### 1. 解压一个叫做 `xxx.bz2` 的文件 ####
+```shell
+bunzip2 xxx.bz2
+```
+#### 2. 压缩一个叫做 `xxx` 的文件 ####
+```shell
+bzip2 xxx
+```
+#### 3. 解压一个叫做 `xxx.gz`  的文件 ####
+```shell
+gunzip xxx.gz
+```
+#### 4. 压缩一个叫做 `xxx` 的文件 ####
+```shell
+gzip xxx
+```
+#### 5. 最大程度压缩 `xxx` 文件 ####
+```shell
+gzip -9 xxx
+```
+#### 6. 创建一个叫做 `file1.rar` 的包 ####
+```shell
+rar a file1.rar test_file
+```
+#### 7. 同时压缩 `file1`, `file2` 以及目录 `dir1` ####
+```shell
+rar a file1.rar file1 file2 dir1
+```
+#### 8. 解压rar包 ####
+```shell
+rar x file1.rar
+```
+#### 9. 解压rar包 ####
+```shell
+unrar x file1.rar
+```
+#### 10. 创建一个非压缩的 tarball ####
+```shell
+tar -cvf archive.tar file1
+```
+#### 11. 创建一个包含了 'file1', 'file2' 以及 'dir1'的档案文件 ####
+```shell
+tar -cvf archive.tar file1 file2 dir1
+```
+#### 12. 显示一个包中的内容 ####
+```shell
+tar -tf archive.tar
+```
+#### 13. 释放一个包 ####
+```shell
+tar -xvf archive.tar
+```
+#### 14. 将压缩包释放到 /tmp目录下 ####
+```shell
+tar -xvf archive.tar -C /tmp
+```
+#### 15. 创建一个bzip2格式的压缩包 ####
+```shell
+tar -cvfj archive.tar.bz2 dir1
+```
+#### 16. 解压一个bzip2格式的压缩包 ####
+```shell
+tar -jxvf archive.tar.bz2
+```
+#### 17. 创建一个gzip格式的压缩包 ####
+```shell
+tar -cvfz archive.tar.gz dir1
+```
+#### 18. 解压一个gzip格式的压缩包 ####
+```shell
+tar -zxvf archive.tar.gz
+```
+#### 19. 创建一个zip格式的压缩包 ####
+```shell
+zip file1.zip file1
+```
+#### 20. 将几个文件和目录同时压缩成一个zip格式的压缩包 ####
+```shell
+zip -r file1.zip file1 file2 dir1
+```
+#### 21. 解压一个zip格式压缩包 ####
+```shell
+unzip file1.zip
 ```
 
 
