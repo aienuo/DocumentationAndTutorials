@@ -1,44 +1,17 @@
-## Java：
+# Windows 环境下 Maven 安装配置 #
+### 注意看我的标题！！！！我这是针对3.6.3版本 ###
 
-### JAVA_HOME
+> Maven 安装需要JDK环境，如果没有安装JDK请参考安装 [JDK配置](/Windows/JDK.md)
 
-```
-JAVA_HOME
-```
+## Maven 下载地址：
 
-```
-Java安装目录
-```
+> 下载之后直接解压到想要安装的目录下
 
-### CLASSPATH
+[Maven](https://archive.apache.org/dist/maven/maven-3/)
 
-```
-CLASSPATH
-```
+## Maven 环境变量配置：
 
-```
-.;%JAVA_HOME%\lib\dt.jar;%JAVA_HOME%\lib\tools.jar
-```
-
-### Path
-
-```
-Path
-```
-
-```
-%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
-```
-
-### 测试
-
-```
-javac
-```
-
-## Maven：
-
-### MAVEN_HOME
+### 新建环境变量 `MAVEN_HOME`
 
 ```
 MAVEN_HOME
@@ -48,19 +21,39 @@ MAVEN_HOME
 Maven安装目录
 ```
 
-### Path
+![MAVEN_HOME](image/maven_home.png)
+
+### 修改环境变量 `Path`
 
 ```
 Path
 ```
 
+> 在后追加
+
 ```
-;%MYSQL_HOME%\bin
+;%MAVEN_HOME%\bin
 ```
+
+![Path](image/maven_path.png)
+
+### 新建环境变量 `MAVEN_OPTS` 配置 Maven 编码格式
+
+```
+MAVEN_OPTS
+```
+
+```
+-Xms256m -Xmx512m -Dfile.encoding=UTF-8
+```
+
+## Maven Setting 文件配置
+
+> 直接复制下的内容 覆盖掉 原来的 `apache-maven-x.x.x/conf/setting.xml` 内的内容
 
 ### Setting.xml
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8" ?>
  
 <!--
@@ -112,7 +105,7 @@ under the License.
     -->
 
     <!--自定义本地仓库路径-->
-    <localRepository>E:\JAVA\Maven</localRepository>
+    <localRepository>D:\MavenRepository</localRepository>
 
     <!-- 交互模式（interactiveMode）
      | 这将决定maven是否在需要输入时提示您。如果设置为false,maven将使用一个合理的默认值(可能基于其他设置)来处理相关参数。
@@ -364,6 +357,13 @@ under the License.
  
 ```
 
+## 验证
+
+``
+mvn -version
+``
+
+![验证](image/mvn_version.png)
 
 ### 手动导入Jar包
 

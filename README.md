@@ -23,7 +23,8 @@
 17. ##### [SpringBoot自动部署脚本](Linux/SpringBoot自动部署脚本.md) #####
 
 ## Windows： ##
-1. ##### [JDK_Maven 配置](Windows/JDK-Maven.md) #####
+1. ##### [JDK配置](Windows/JDK.md) #####
+1. ##### [Maven配置](Windows/Maven.md) #####
 2. ##### [MySQL备份bat](Windows/MySQL备份bat.md)  #####
 3. ##### [C盘清理垃圾文件bat](Windows/C盘清理垃圾文件bat.md)  #####
 4. ##### [sys_china_city_info 全国五级地名](Windows/sys_china_city_info.sql) #####
