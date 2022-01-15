@@ -365,7 +365,7 @@ mvn -version
 
 ![验证](image/mvn_version.png)
 
-### 手动导入Jar包
+## 手动导入Jar包
 
 > 黑窗口进入Maven的bin的文件夹下,运行如下代码
 
