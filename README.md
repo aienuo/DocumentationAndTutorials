@@ -25,10 +25,11 @@
 ## Windows： ##
 
 1. ##### [JDK配置](Windows/JDK.md) #####
-1. ##### [Maven配置](Windows/Maven.md) #####
-1. ##### [MySQL配置](Windows/MySQL.md) #####
-2. ##### [MySQL备份bat](Windows/MySQL备份bat.md)  #####
-3. ##### [C盘清理垃圾文件bat](Windows/C盘清理垃圾文件bat.md)  #####
-4. ##### [sys_china_city_info 全国五级地名](Windows/sys_china_city_info.sql) #####
-5. ##### [手动添加jar包进入本地仓库](Windows/手动添加jar包进入本地仓库.md) #####
-6. ##### [使用kettle实现多表数据全量抽取](Windows/使用kettle实现多表数据全量抽取/readMe.md) #####
+2. ##### [Maven配置](Windows/Maven.md) #####
+3. ##### [MySQL配置](Windows/MySQL.md) #####
+4. ##### [MySQL备份bat](Windows/MySQL备份bat.md)  #####
+5. ##### [Navicat Premium 无限使用脚本](Windows/NavicatPremium无限使用脚本.md)  #####
+6. ##### [C盘清理垃圾文件bat](Windows/C盘清理垃圾文件bat.md)  #####
+7. ##### [sys_china_city_info 全国五级地名](Windows/sys_china_city_info.sql) #####
+8. ##### [手动添加jar包进入本地仓库](Windows/手动添加jar包进入本地仓库.md) #####
+9. ##### [使用kettle实现多表数据全量抽取](Windows/使用kettle实现多表数据全量抽取/readMe.md) #####
