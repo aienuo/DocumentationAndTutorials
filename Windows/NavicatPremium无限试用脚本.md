@@ -1,4 +1,4 @@
-# Navicat Premium 无限使用脚本 
+# Navicat Premium 无限试用脚本 
 
 #### 该脚本是 Windows 脚本，不支持 Mac 和 Linux
 
