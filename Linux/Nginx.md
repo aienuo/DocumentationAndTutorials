@@ -90,7 +90,7 @@ vim /etc/pam.d/login
 ```
 #### 按一下键盘字母`i`进行编辑 ####
 #### 新增以下内容 ####
-> /lib/security/pam_limits.so 这个路径根据实际情况填写，32位系统是/lib下 64位系统是/lin64下
+> /lib/security/pam_limits.so 这个路径根据实际情况填写，32位系统是 `/lib` 下 64位系统是 `/lib64` 下
 ```shell
 session    required     /lib/security/pam_limits.so
 ```
@@ -107,6 +107,8 @@ vim /etc/resolv.conf
 ststemetl start nscd.service    
 ststemetl enable nscd.service
 ```
+#### 按一下`esc`键 退出编辑 ####
+#### `:wq` 保存退出 ####
 ## 三、编译安装 ##
 ### 1、下载依赖 ###
 > 缺少 xxxlibrany，缺少.c.h文件 安装开发组包  xxx-devel
@@ -119,7 +121,7 @@ cd /usr/local/nginx-1.20.2
 ```
 ### 3、运行./configure 进行初始化配置 [参考](image/configure.md) ###
 ```shell
-./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --pid-path=/usr/local/nginx/log/nginx.pid --error-log-path=/usr/local/nginx/log/error.log --http-log-path=/usr/local/nginx/log/access.log --with-http_gzip_static_module --http-client-body-temp-path=/usr/local/nginx/temp/client --http-proxy-temp-path=/usr/local/nginx/temp/proxy --http-fastcgi-temp-path=/usr/local/nginx/temp/fastcgi --http-uwsgi-temp-path=/usr/local/nginx/temp/uwsgi --http-scgi-temp-path=/usr/local/nginx/temp/scgi --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_gzip_static_module --with-http_addition_module --with-http_flv_module --with-http_mp4_module --with-http_stub_status_module --with-pcre --wuth--http_sub_module
+./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --pid-path=/usr/local/nginx/log/nginx.pid --error-log-path=/usr/local/nginx/log/error.log --http-log-path=/usr/local/nginx/log/access.log --with-http_gzip_static_module --http-client-body-temp-path=/usr/local/nginx/temp/client --http-proxy-temp-path=/usr/local/nginx/temp/proxy --http-fastcgi-temp-path=/usr/local/nginx/temp/fastcgi --http-uwsgi-temp-path=/usr/local/nginx/temp/uwsgi --http-scgi-temp-path=/usr/local/nginx/temp/scgi --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_gzip_static_module --with-http_addition_module --with-http_flv_module --with-http_mp4_module --with-http_stub_status_module --with-pcre --with-http_sub_module
 ```
 ### 4、执行编译操作 ###
 > -j8 多线程操作，加速编译
