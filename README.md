@@ -29,7 +29,8 @@
 3. ##### [MySQL配置](Windows/MySQL.md) #####
 4. ##### [MySQL备份bat](Windows/MySQL备份bat.md)  #####
 5. ##### [Navicat Premium 无限使用脚本](Windows/NavicatPremium无限试用脚本.md)  #####
-6. ##### [C盘清理垃圾文件bat](Windows/C盘清理垃圾文件bat.md)  #####
-7. ##### [sys_china_city_info 全国五级地名](Windows/sys_china_city_info.sql) #####
-8. ##### [手动添加jar包进入本地仓库](Windows/手动添加jar包进入本地仓库.md) #####
-9. ##### [使用kettle实现多表数据全量抽取](Windows/使用kettle实现多表数据全量抽取/readMe.md) #####
+6. ##### [Navicat Premium 中记录的密码破解](Windows/NavicatPremium中记录的密码破解.md)  #####
+7. ##### [C盘清理垃圾文件bat](Windows/C盘清理垃圾文件bat.md)  #####
+8. ##### [sys_china_city_info 全国五级地名](Windows/sys_china_city_info.sql) #####
+9. ##### [手动添加jar包进入本地仓库](Windows/手动添加jar包进入本地仓库.md) #####
+10. ##### [使用kettle实现多表数据全量抽取](Windows/使用kettle实现多表数据全量抽取/readMe.md) #####
