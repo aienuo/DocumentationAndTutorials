@@ -170,4 +170,4 @@ echo $decode."\n";
 
 > 如果解出来的是乱码，就修改 NavicatPassword 的版本 `11` 或者 `12`
 
-![img_1.png](img_1.png)
+![NavicatPassword.png](image/NavicatPassword.png)
