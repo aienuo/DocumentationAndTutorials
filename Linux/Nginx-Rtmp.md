@@ -267,13 +267,13 @@ mkdir client proxy fastcgi uwsgi scgi
 #### 用户组 ####
 
 ```shell
-groupadd nginx_group
+groupadd nginx
 ```
 
 #### 用户 ####
 
 ```shell
-useradd -g nginx_group nginx
+useradd -g nginx nginx
 ```
 
 ## 四、Nginx 运行维护 ##
