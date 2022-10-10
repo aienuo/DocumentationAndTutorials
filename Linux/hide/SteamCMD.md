@@ -87,8 +87,10 @@ cd ~/Steam
 ```shell
 login 帐号
 ```
+> ******如下图所示：******
+
 ![登录 steam](denglu.png)
-#### 2、下载 Arma3 ####
+#### 2、下载 Arma3 Server ####
 > [点击查看 APP ID](https://developer.valvesoftware.com/wiki/Dedicated_Servers_List)
 ```shell
 app_update 233780 validate
