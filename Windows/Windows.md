@@ -2,6 +2,8 @@
 
 ## 秘钥
 
+[参考](https://learn.microsoft.com/zh-cn/windows-server/get-started/kms-client-activation-keys)
+
 ### Windows 11
 
 #### 专业工作站版
