@@ -1,6 +1,6 @@
-# VMware Workstation ”¿æ√º§ªÓ√‹‘ø
+# VMware Workstation ”¿æ√√‹‘ø
 
-## VMware Workstation 15 ”¿æ√º§ªÓ√‹‘ø
+## VMware Workstation 15 ”¿æ√√‹‘ø
 
 ```text
 YG5H2-ANZ0H-M8ERY-TXZZZ-YKRV8
@@ -26,7 +26,7 @@ ZF582-0NW5N-H8D2P-0XZEE-Z22VA
 YA18K-0WY8P-H85DY-L4NZG-X7RAD
 ```
 
-## VMware Workstation 16 ”¿æ√º§ªÓ√‹‘ø
+## VMware Workstation 16 ”¿æ√√‹‘ø
 
 ```text
 ZF3R0-FHED2-M80TY-8QYGC-NPKYF

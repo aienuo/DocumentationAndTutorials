@@ -1,4 +1,4 @@
-# Windows 激活
+# Windows
 
 ## 秘钥
 
@@ -12,7 +12,7 @@
 8D2T7-WN7YB-8M4X7-8WVY7-94VBX
 ```
 
-## 激活脚本 
+## 脚本 
 
 ```text
 @echo off
