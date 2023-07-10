@@ -29,6 +29,9 @@ rm -rf ROOT
 ```
 #### 下载地址 ####
 ```shell
+
+http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+
 wget https://mirrors.tuna.tsinghua.edu.cn/jenkins/war/2.318/jenkins.war
 ```
 #### 重命名 jenkins 文件 ####
