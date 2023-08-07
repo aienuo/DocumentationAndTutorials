@@ -22,7 +22,7 @@
 16. ##### [MySQL-数据库互为主从搭建](Linux/MySQL-Master-Slave.md) #####
 17. ##### [SpringBoot自动部署脚本](Linux/SpringBoot自动部署脚本.md) #####
 18. ##### [Nginx-Rtmp](Linux/Nginx-Rtmp.md) #####
-19. ##### [FPR 内网穿透工具服务端配置](Linux/FPR.md) #####
+19. ##### [FPR 内网穿透工具服务端配置](Linux/FRP.md) #####
 
 ## Windows： ##
 
