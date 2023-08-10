@@ -81,7 +81,7 @@ authentication_timeout = 0
 ### 四、启动测试 ###
 #### 后台静默启动 ####
 ```shell
-nohup ~/frp/frps -c ~/frp/frps.ini &
+nohup ./frps -c ./frps.ini &
 ```
 #### 关闭服务 ####
 
