@@ -359,9 +359,9 @@ under the License.
 
 ## 验证
 
-``
+```shell
 mvn -version
-``
+```
 
 ![验证](image/mvn_version.png)
 
@@ -369,7 +369,7 @@ mvn -version
 
 > 黑窗口进入Maven的bin的文件夹下,运行如下代码
 
-```
+```shell
 mvn install:install-file -Dfile=[jar包的位置] -DgroupId=[pom文件的groupId标签] -DartifactId={pom文件的artifactId标签} -Dversion=[pom文件的version标签] -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
 ```
 
@@ -387,11 +387,38 @@ mvn install:install-file -Dfile=[jar包的位置] -DgroupId=[pom文件的groupId
 
 > 执行
 
-```
+```shell
 mvn install:install-file -Dfile=C:\Users\liuxin\Desktop\jbarcode-0.2.8.jar -DgroupId=org.jbarcode -DartifactId=jbarcode -Dversion=0.2.8 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
 ```
 
+## 清除本地仓库无效 Jar 包
 
+```shell
+@echo off
+echo @describe 找出所有 lastUpdated文件，并删除它。
+echo @author XinLau
+echo @date 2020年6月4日
+echo @tip 请把我放到 Maven仓库路径 下
+:again
+set REPOSITORY_PATH=%~dp0
+:: Remove all double quotes
+rem 正在搜索所有 lastUpdated文件...
+set REPOSITORY_PATH=%REPOSITORY_PATH:"=%
+if not exist "%REPOSITORY_PATH%" (
+   echo Maven warehouse address not found, please try again.
+   goto again
+)
+for /f "delims=" %%i in ('dir /b /s "%REPOSITORY_PATH%\*lastUpdated*"') do (
+	del /s /q "%%i"
+)
+for /f "delims=" %%i in ('dir /b /s "%REPOSITORY_PATH%\*.repositories*"') do (
+    echo %%i
+    del /s /q "%%i"
+)
+echo 过期文件删除成功.
+pause;
+
+```
 
 
 
