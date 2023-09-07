@@ -10,26 +10,29 @@
 
 ```shell
 @echo off
- 
-echo Delete HKEY_CURRENT_USER\Software\PremiumSoft\NavicatPremium\Registration[version and language]
-for /f %%i in ('"REG QUERY "HKEY_CURRENT_USER\Software\PremiumSoft\NavicatPremium" /s | findstr /L Registration"') do (
-    reg delete %%i /va /f
-)
-echo.
+set dn=Info
+set dn2=ShellFolder
+set rp=HKEY_CURRENT_USER\Software\Classes\CLSID
+:: reg delete HKEY_CURRENT_USER\Software\PremiumSoft\NavicatPremium\Registration14XCS /f  %针对<strong><font color="#FF0000">navicat</font></strong>15%
+reg delete HKEY_CURRENT_USER\Software\PremiumSoft\NavicatPremium\Registration16XCS /f
+reg delete HKEY_CURRENT_USER\Software\PremiumSoft\NavicatPremium\Update /f
+echo finding.....
 
-echo Delete HKEY_CURRENT_USER\Software\PremiumSoft\NavicatPremium\Registration[version and language]
-for /f %%i in ('"REG QUERY "HKEY_CURRENT_USER\Software\PremiumSoft\NavicatPremium" /s | findstr /L Registration16XCS"') do (
-    reg delete %%i /va /f
+for /f "tokens=*" %%a in ('reg query "%rp%"') do (
+ echo %%a
+for /f "tokens=*" %%l in ('reg query "%%a" /f "%dn%" /s /e ^|findstr /i "%dn%"') do (
+  echo deleteing: %%a
+  reg delete %%a /f
 )
-echo.
- 
-echo Delete Info folder under HKEY_CURRENT_USER\Software\Classes\CLSID
-for /f %%i in ('"REG QUERY "HKEY_CURRENT_USER\Software\Classes\CLSID" /s | findstr /E Info"') do (
-    reg delete %%i /va /f
+for /f "tokens=*" %%l in ('reg query "%%a" /f "%dn2%" /s /e ^|findstr /i "%dn2%"') do (
+  echo deleteing: %%a
+  reg delete %%a /f
 )
-echo.
-echo Finish
+)
+echo re trial done!
+  
 pause
+exit
 ```
 
 ### 保存之后 以管理员身份运行 `.bat` 脚本。可无限续杯14天试用
