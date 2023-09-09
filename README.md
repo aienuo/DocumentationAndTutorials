@@ -36,3 +36,4 @@
 8. ##### [sys_china_city_info 全国五级地名](Windows/sys_china_city_info.sql) #####
 9. ##### [手动添加jar包进入本地仓库](Windows/手动添加jar包进入本地仓库.md) #####
 10. ##### [使用kettle实现多表数据全量抽取](Windows/使用kettle实现多表数据全量抽取/readMe.md) #####
+11. ##### [WinSW 工具进行服务的安装](Windows/WinSW.md) #####
