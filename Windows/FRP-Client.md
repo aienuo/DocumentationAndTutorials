@@ -104,6 +104,10 @@ remote_port = 6001
     <executable>%BASE%\frpc.exe</executable>
     <!-- 可执行文件传递的参数 -->
     <arguments>-c .\frpc.ini</arguments>
+	<!-- 开机自启 -->
+    <startmode>Automatic</startmode>
+    <!-- 延时自启 -->
+    <delayedAutoStart/>
     <!-- <logmode>rotate</logmode> -->
     <logpath>%BASE%\logs</logpath>
     <log mode="roll-by-size-time">
