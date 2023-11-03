@@ -1,29 +1,29 @@
-# Windows »·¾³ÏÂ WinSW °²×°ÅäÖÃ #
+# Windows ç¯å¢ƒä¸‹ WinSW å®‰è£…é…ç½® #
 
-### ×¢Òâ¿´ÎÒµÄ±êÌâ£¡£¡£¡£¡ÎÒÕâÊÇÕë¶Ô WinSW v2.12.0 °æ±¾ ###
+### æ³¨æ„çœ‹æˆ‘çš„æ ‡é¢˜ï¼ï¼ï¼ï¼æˆ‘è¿™æ˜¯é’ˆå¯¹ WinSW v2.12.0 ç‰ˆæœ¬ ###
 
-## ÏÂÔØµØÖ·£º
+## ä¸‹è½½åœ°å€ï¼š
 
-> ÏÂÔØÖ®ºóÖ±½Ó·Åµ½ÏëÒª×¢²á³É·şÎñµÄÓ¦ÓÃµÄ°²×°Ä¿Â¼ÏÂ
+> ä¸‹è½½ä¹‹åç›´æ¥æ”¾åˆ°æƒ³è¦æ³¨å†ŒæˆæœåŠ¡çš„åº”ç”¨çš„å®‰è£…ç›®å½•ä¸‹
 
 [WinSW](https://github.com/winsw/winsw/releases/download/v2.12.0/WinSW-x64.exe)
 
-## ÅäÖÃÎÄ¼ş£º
+## é…ç½®æ–‡ä»¶ï¼š
 
-[ÅäÖÃÎÄ¼ş²Î¿¼](sample.xml)
+[é…ç½®æ–‡ä»¶å‚è€ƒ](sample.xml)
 
-## WinSW ÃüÁî
+## WinSW å‘½ä»¤
 
-|    ÃüÁî     | ÃèÊö            |          Ê¹ÓÃÊ¾Àı           |
+|    å‘½ä»¤     | æè¿°            |          ä½¿ç”¨ç¤ºä¾‹           |
 |:---------:|:--------------|:-----------------------:|
-|  install  | °²×°·şÎñ          |  WinSW-x64.exe install  |
-| uninstall | Ğ¶ÔØ·şÎñ          | WinSW-x64.exe uninstall |
-|   start   | Æô¶¯·şÎñ          |   WinSW-x64.exe start   |
-|   stop    | Í£Ö¹·şÎñ          |   WinSW-x64.exe stop    |
-|  restart  | ÖØÆô·şÎñ          |  WinSW-x64.exe restart  |
-|  status   | ¼ì²é·şÎñ×´Ì¬        |  WinSW-x64.exe status   |
-|  refresh  | Ë¢ĞÂ·şÎñÊôĞÔ¶ø²»ÊÇÖØĞÂ°²×° |  WinSW-x64.exe refresh  |
+|  install  | å®‰è£…æœåŠ¡          |  WinSW-x64.exe install  |
+| uninstall | å¸è½½æœåŠ¡          | WinSW-x64.exe uninstall |
+|   start   | å¯åŠ¨æœåŠ¡          |   WinSW-x64.exe start   |
+|   stop    | åœæ­¢æœåŠ¡          |   WinSW-x64.exe stop    |
+|  restart  | é‡å¯æœåŠ¡          |  WinSW-x64.exe restart  |
+|  status   | æ£€æŸ¥æœåŠ¡çŠ¶æ€        |  WinSW-x64.exe status   |
+|  refresh  | åˆ·æ–°æœåŠ¡å±æ€§è€Œä¸æ˜¯é‡æ–°å®‰è£… |  WinSW-x64.exe refresh  |
 
-## Ê¾Àı 
+## ç¤ºä¾‹
 
-[1¡¢FPR Windows ¿Í»§¶Ë ×¢²áÎª·şÎñ ×ÔÆô¶¯](FRP-Client.md)
+[1ã€FPR Windows å®¢æˆ·ç«¯ æ³¨å†Œä¸ºæœåŠ¡ è‡ªå¯åŠ¨](FRP-Client.md)
