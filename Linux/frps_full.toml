@@ -1,0 +1,161 @@
+# IPv6的文字地址或主机名必须包含在内
+# 方括号中，如“[：：1]：80”、“[ipv6-host]：http”或“[ipv6host%zone]：80”
+# 对于单个“bindAddr”字段，不需要方括号，如`bindAddr=“：：”`。
+bindAddr = "0.0.0.0"
+bindPort = 7000
+
+# 用于kcp协议的udp端口，它可以与“bindPort”相同。
+# 如果未设置，则在frp中禁用kcp。
+kcpBindPort = 7000
+
+# 用于quic协议的udp端口。
+# 如果未设置，则在frps中禁用quic。
+# quicBindPort = 7002
+
+# 指定代理将侦听的地址，默认值与bind_addr相同
+# proxyBindAddr = "127.0.0.1"
+
+# quic 协议选项
+# transport.quic.keepalivePeriod = 10
+# transport.quic.maxIdleTimeout = 30
+# transport.quic.maxIncomingStreams = 100000
+
+# 心跳配置，不建议修改默认值
+# heartbeatTimeout的默认值为90。设置负值以禁用它。
+# transport.heartbeatTimeout = 90
+
+# 每个代理中的池计数将保持不超过maxPoolCount。
+transport.maxPoolCount = 5
+
+# 如果使用tcp流复用，则默认值为true
+# transport.tcpMux = true
+
+# 指定tcp mux的保持活动间隔。
+# 仅当tcpMux为true时有效。
+# transport.tcpMuxKeepaliveInterval = 60
+
+# tcpKeepalive指定frpc和frps之间活动网络连接的保持活动探测之间的间隔。
+# 如果为负数，则禁用保活探针。
+# transport.tcpKeepalive = 7200
+
+# transport.tls.force指定是否只接受tls加密的连接。默认情况下，该值为false。
+tls.force = false
+
+# transport.tls.certFile = "server.crt"
+# transport.tls.keyFile = "server.key"
+# transport.tls.trustedCaFile = "ca.crt"
+
+# 如果要支持虚拟主机，则必须设置用于侦听的http端口（可选）
+# 注意：http端口和https端口可以与bindPort相同
+vhostHTTPPort = 80
+vhostHTTPSPort = 443
+
+# vhosthttp服务器的响应标头超时（秒），默认值为60s
+# vhostHTTPTimeout = 60
+
+# tcpmuxHTTPConnectPort指定服务器侦听TCP的端口
+# HTTP CONNECT请求。如果该值为0，则服务器将不会多路传输TCP 请求。如果不是，它将侦听
+# HTTP CONNECT请求。默认情况下，此值为0。
+# tcpmuxHTTPConnectPort = 1337
+
+# 如果tcpmuxPassthrough为true，则frps不会对流量进行任何更新。
+# tcpmuxPassthrough = false
+
+# 配置web服务器以启用frps的仪表板。
+# 只有在设置了webServer.port时，仪表板才可用。
+webServer.addr = "127.0.0.1"
+webServer.port = 7500
+webServer.user = "admin"
+webServer.password = "admin"
+# webServer.tls.certFile = "server.crt"
+# webServer.tls.keyFile = "server.key"
+# 仪表板资产目录（仅适用于调试模式）
+# webServer.assetsDir = "./static"
+
+# 在仪表板侦听器中启用golang-prof处理程序。
+# 必须首先设置仪表板端口
+webServer.pprofEnable = false
+
+# enablePrometheus将在/metrics-api中导出webServer上的prometheus度量。
+enablePrometheus = true
+
+# 控制台或真实的logFile路径类似 ./frps.log
+log.to = "./frps.log"
+# trace, debug, info, warn, error （跟踪、调试、信息、警告、错误）
+log.level = "info"
+# 日志保留天数
+log.maxDays = 3
+# 当log_file为控制台时禁用日志颜色，默认值为false
+log.disablePrintColor = false
+
+# DetailedErrorsToClient 定义是否将特定错误（带有调试信息）发送到客户端。默认情况下，此值为true。
+detailedErrorsToClient = true
+
+# authentication_method指定使用何种身份验证方法将frpc与frps进行身份验证。
+# 如果指定了“token”，则token将被读取到登录消息中。
+# 如果指定了“oidc”-将使用oidc设置颁发oidc（Open ID Connect）令牌。默认情况下，此值为“token”。
+auth.method = "token"
+
+#auth.additionalScopes指定要包含身份验证信息的其他作用域。
+#可选值为 HeartBeats、NewWorkConns。
+# auth.additionalScopes = ["HeartBeats", "NewWorkConns"]
+
+# 鉴权使用的 Token 值，客户端需要设置一样的值才能鉴权通过
+auth.token = "12345678"
+
+# oidc_issuer 指定用于验证OIDC令牌的颁发者。
+# 默认情况下，此值为 ""
+auth.oidc.issuer = ""
+# oidc_audience 指定验证时OIDC令牌应包含的访问群体。
+# 默认情况下，此值为 ""
+auth.oidc.audience = ""
+# oidc_skip_expiry_check 指定是否跳过检查OIDC令牌是否已过期。
+# 默认情况下，此值为 false
+auth.oidc.skipExpiryCheck = false
+# oidc_skip_issuer_check 指定是否跳过检查OIDC令牌的颁发者声明是否与OidcIssuer中指定的颁发者匹配。
+# 默认情况下，此值为 false
+auth.oidc.skipIssuerCheck = false
+
+# userConnTimeout 配置，用户建立连接后等待客户端响应的超时时间。不建议修改默认值
+# 默认值是 10
+# userConnTimeout = 10
+
+# 只允许frpc绑定您列出的端口。默认情况下，不会有任何限制。
+allowPorts = [
+    { start = 2000, end = 3000 },
+    { single = 3001 },
+    { single = 3003 },
+    { start = 4000, end = 50000 }
+]
+
+# 限制单个客户端最大同时存在的代理数，0 表示没有限制
+maxPortsPerClient = 0
+
+# 如果 subdomainhost 不为空，则可以在 frpc 的配置文件中设置类型为 http 或 https 时的子域
+# 子域为test时，路由使用的主机为test.frps.com
+# 二级域名后缀
+subDomainHost = "frps.com"
+
+# HTTP 请求自定义 404 错误页面地址
+# custom404Page = "/path/to/404.html"
+
+# 指定udp数据包大小，单位为字节。如果未设置，则默认值为1500。
+# 客户端和服务器之间的此参数应该相同。
+# 它会影响udp和sudp代理。
+# 代理 UDP 服务时支持的最大包长度，默认值1500，服务端和客户端的值需要一致
+udpPacketSize = 1500
+
+# 打洞策略数据的保留时间（小时）
+natholeAnalysisDataReserveHours = 168
+
+[[httpPlugins]]
+name = "user-manager"
+addr = "127.0.0.1:9000"
+path = "/handler"
+ops = ["Login"]
+
+[[httpPlugins]]
+name = "port-manager"
+addr = "127.0.0.1:9001"
+path = "/handler"
+ops = ["NewProxy"]

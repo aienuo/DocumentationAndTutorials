@@ -97,6 +97,14 @@ cp /usr/local/frp_0.51.2_linux_amd64/frps /usr/local/frp_linux_amd64
 
 ## 三、配置环境变量 ###
 
+> 从 V0.52.0 版本开始，FRP 开始支持 TOML、YAML 和 JSON 作为配置文件格式。
+>
+> V0.52.0 以前的版本 参考 [frps_full.ini](frps_full.ini) 文件
+>
+> V0.52.0 以后的版本 参考 [frps_full.toml](frps_full.toml) 文件
+
+### A、 V0.52.0 以前版本 ###
+
 #### 1、创建配置文件 ####
 
 ```shell
@@ -104,8 +112,6 @@ touch /usr/local/frp_linux_amd64/frps.ini
 ```
 
 #### 2、编辑配置文件 ####
-
-> 参考 [frps_full.ini](frps_full.ini) 文件
 
 ```shell
 vim /usr/local/frp_linux_amd64/frps.ini
@@ -115,14 +121,13 @@ vim /usr/local/frp_linux_amd64/frps.ini
 
 #### 3、输入以下内容： ####
 
-```shell
+```ini
 [common]
 bind_addr = 0.0.0.0
 bind_port = 7000
 kcp_bind_port = 7000
 
-vhost_http_port = 80
-vhost_https_port = 443
+vhost_http_port = 7000
 
 dashboard_addr = 0.0.0.0
 dashboard_port = 7500
@@ -133,17 +138,72 @@ enable_prometheus = true
 
 log_file = /usr/local/frp_linux_amd64/frps.log
 # trace, debug, info, warn, error （跟踪、调试、信息、警告、错误）
-log_level = error
+log_level = debug
 log_max_days = 3
 
 authentication_timeout = 0
+
+# 开启toke认证
+authentication_method = token
+authenticate_heartbeats = true
+authenticate_new_work_conns = true
+# 鉴权使用的 Token 值，客户端需要设置一样的值才能鉴权通过
+token = FC1D0DA5E1AC71CEC4BFA05448B7AC1B
 ```
 
 ##### 按一下`esc`键 退出编辑 #####
 
 ##### `:wq` 保存退出 #####
 
-### 四、启动测试 ###
+### B、 V0.52.0 以后版本 ###
+
+#### 1、创建配置文件 ####
+
+```shell
+touch /usr/local/frp_linux_amd64/frps.toml
+```
+
+#### 2、编辑配置文件 ####
+
+```shell
+vim /usr/local/frp_linux_amd64/frps.toml
+```
+
+##### 按一下键盘字母`i`进行编辑 #####
+
+#### 3、输入以下内容： ####
+
+```toml
+bindAddr = "0.0.0.0"
+bindPort = 7000
+kcpBindPort = 7000
+
+vhostHTTPPort = 7000
+
+webServer.addr = "127.0.0.1"
+webServer.port = 7500
+webServer.user = "admin"
+webServer.password = "admin@12345"
+
+enablePrometheus = true
+
+log.to = "/usr/local/frp_linux_amd64/frps.log"
+# trace, debug, info, warn, error （跟踪、调试、信息、警告、错误）
+log.level = "error"
+log.maxDays = 3
+
+# 开启toke认证
+auth.method = "token"
+auth.additionalScopes = ["HeartBeats", "NewWorkConns"]
+# 鉴权使用的 Token 值，客户端需要设置一样的值才能鉴权通过
+auth.token = "FC1D0DA5E1AC71CEC4BFA05448B7AC1B"
+```
+
+##### 按一下`esc`键 退出编辑 #####
+
+##### `:wq` 保存退出 #####
+
+## 四、启动测试 ##
 
 #### 后台静默启动 ####
 
