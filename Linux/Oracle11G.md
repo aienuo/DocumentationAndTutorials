@@ -1,21 +1,21 @@
-# Centos8 »·¾³ÏÂ Oracle 11 G µÄ°²×°ÅäÖÃ #
-### ×¢Òâ¿´ÎÒµÄ±êÌâ£¡£¡£¡£¡ÎÒÕâÊÇÕë¶Ô Oracle Database 11g µÚ 2 °æ (11.2.0.1.0) °æ±¾ ###
-## Ò»¡¢¼ì²é±¾µØÊÇ·ñ°²×° ##
-### 1¡¢ÏµÍ³ÅäÖÃ¼ì²é ###
-> ##### ÎïÀíÄÚ´æ²»Ğ¡ÓÚ1G: ²é¿´·½Ê½: #####
+# Centos8 ç¯å¢ƒä¸‹ Oracle 11 G çš„å®‰è£…é…ç½® #
+### æ³¨æ„çœ‹æˆ‘çš„æ ‡é¢˜ï¼ï¼ï¼ï¼æˆ‘è¿™æ˜¯é’ˆå¯¹ Oracle Database 11g ç¬¬ 2 ç‰ˆ (11.2.0.1.0) ç‰ˆæœ¬ ###
+## ä¸€ã€æ£€æŸ¥æœ¬åœ°æ˜¯å¦å®‰è£… ##
+### 1ã€ç³»ç»Ÿé…ç½®æ£€æŸ¥ ###
+> ##### ç‰©ç†å†…å­˜ä¸å°äº1G: æŸ¥çœ‹æ–¹å¼: #####
     grep MemTotal /proc/meminfo
-> ##### ¿ÉÓÃÓ²ÅÌ²»Ğ¡ÓÚ8G: ²é¿´·½Ê½: #####
+> ##### å¯ç”¨ç¡¬ç›˜ä¸å°äº8G: æŸ¥çœ‹æ–¹å¼: #####
     df
-> ##### Swap·ÖÇø¿Õ¼ä²»Ğ¡ÓÚ2G: ²é¿´·½Ê½: #####
+> ##### Swapåˆ†åŒºç©ºé—´ä¸å°äº2G: æŸ¥çœ‹æ–¹å¼: #####
     grep SwapTotal /proc/meminfo
-![ÅäÖÃ¼ì²é](image/33.png)
-### 2¡¢ ĞŞ¸Ä `CentOS` ÏµÍ³±êÊ¶ £¨ `Oracle` Ä¬ÈÏ²»Ö§³Ö `CentOS`£©  ###
+![é…ç½®æ£€æŸ¥](image/33.png)
+### 2ã€ ä¿®æ”¹ `CentOS` ç³»ç»Ÿæ ‡è¯† ï¼ˆ `Oracle` é»˜è®¤ä¸æ”¯æŒ `CentOS`ï¼‰  ###
     vim /etc/redhat-release
-> ĞŞ¸ÄÎª `redhat-8` 
+> ä¿®æ”¹ä¸º `redhat-8`
 
-### 3¡¢ĞŞ¸ÄÄÚºË²ÎÊı ###
+### 3ã€ä¿®æ”¹å†…æ ¸å‚æ•° ###
     vim /etc/sysctl.conf
-> ×·¼ÓÒÔÏÂÄÚÈİ
+> è¿½åŠ ä»¥ä¸‹å†…å®¹
 ```
 fs.aio-max-nr = 1048576
 fs.file-max = 6815744
@@ -31,18 +31,18 @@ net.core.rmem_max= 4194304
 net.core.wmem_default= 262144
 net.core.wmem_max= 1048576
 ```
-> ĞŞ¸ÄÍêºó,ÆôÓÃĞÂµÄÅäÖÃ:
+> ä¿®æ”¹å®Œå,å¯ç”¨æ–°çš„é…ç½®:
 ```
 sysctl -p
 ```
-![ĞŞ¸Ä `CentOS` ÏµÍ³±êÊ¶ ÒÔ¼° ÄÚºË²ÎÊı](image/34.png)
-### 4¡¢°²×°±ØĞëµÄÒÀÀµ ###
-> °²×° epel Ô´
+![ä¿®æ”¹ `CentOS` ç³»ç»Ÿæ ‡è¯† ä»¥åŠ å†…æ ¸å‚æ•°](image/34.png)
+### 4ã€å®‰è£…å¿…é¡»çš„ä¾èµ– ###
+> å®‰è£… epel æº
 ```shell
 yum install epel-release
 ```
 
-> °²×°ÒÀÀµ×é¼ş
+> å®‰è£…ä¾èµ–ç»„ä»¶
 ```shell
 yum -y install libnsl
 ```
@@ -51,63 +51,63 @@ yum -y install libnsl
 yum -y install binutils* compat-libcap1 compat-libstdc++-33 gcc* gcc-c++* glibc* glibc-devel* ksh* libaio* libaio-devel* libgcc* libstdc++* libstdc++-devel* libXi* libXtst* make* sysstat* elfutils* unixODBC* unzip lrzsz
 ```
 
-## ¶ş¡¢ÏÂÔØ ##
-### 1¡¢ÏÂÔØµØÖ· ###
+## äºŒã€ä¸‹è½½ ##
+### 1ã€ä¸‹è½½åœ°å€ ###
     https://www.oracle.com/cn/database/enterprise-edition/downloads/oracle-db11g-linux.html
-##### ×¢ÒâĞèÒªµÇÂ¼ Oracle ÕÊºÅ£¬ ÏÂÔØÍê³ÉÖ®ºóÉÏ´« Centos #####
-## Èı¡¢½âÑ¹²Ù×÷ÎÄ¼ş ##
-### 1¡¢ÇĞ»»µ½ `/usr/local/` ÎÄ¼ş¼ĞÏÂ
+##### æ³¨æ„éœ€è¦ç™»å½• Oracle å¸å·ï¼Œ ä¸‹è½½å®Œæˆä¹‹åä¸Šä¼  Centos #####
+## ä¸‰ã€è§£å‹æ“ä½œæ–‡ä»¶ ##
+### 1ã€åˆ‡æ¢åˆ° `/usr/local/` æ–‡ä»¶å¤¹ä¸‹
 ```shell
 cd /usr/local/
 ```
-> ½«Á½¸öÊı¾İ¿âÎÄ¼şÑ¹Ëõ°üÉÏ´«µ½´ËÄ¿Â¼ÏÂ
-### 2¡¢½âÑ¹ ###
+> å°†ä¸¤ä¸ªæ•°æ®åº“æ–‡ä»¶å‹ç¼©åŒ…ä¸Šä¼ åˆ°æ­¤ç›®å½•ä¸‹
+### 2ã€è§£å‹ ###
 ```shell
 unzip -d /usr/local/ linux.x64_11gR2_database_1of2.zip
 unzip -d /usr/local/ linux.x64_11gR2_database_2of2.zip
 ```
-### 3¡¢´´½¨ÓÃ»§×é¡¢ÓÃ»§ ###
-#### ´´½¨°²×° `Oracle` ³ÌĞòÓÃ»§×é ####
+### 3ã€åˆ›å»ºç”¨æˆ·ç»„ã€ç”¨æˆ· ###
+#### åˆ›å»ºå®‰è£… `Oracle` ç¨‹åºç”¨æˆ·ç»„ ####
 ```shell
 groupadd oinstall
 ```
-#### ´´½¨ `DBA` ÓÃ»§×é
+#### åˆ›å»º `DBA` ç”¨æˆ·ç»„
 ```shell
 groupadd dba
 ```
-#### ´´½¨ `oracle` ÓÃ»§²¢¼ÓÈë 'DBA' ÓÃ»§×é
+#### åˆ›å»º `oracle` ç”¨æˆ·å¹¶åŠ å…¥ 'DBA' ç”¨æˆ·ç»„
 ```shell
 useradd -g dba -m oracle
 ```
-#### ½«ÓÃ»§ `oracle` ¼ÓÈëµ½  `oinstall` ×é ####
+#### å°†ç”¨æˆ· `oracle` åŠ å…¥åˆ°  `oinstall` ç»„ ####
 ```shell
 usermod -a -G oinstall oracle
 ```
-#### ĞŞ¸ÄÓÃ»§ `oracle` µÄÃÜÂë ####
+#### ä¿®æ”¹ç”¨æˆ· `oracle` çš„å¯†ç  ####
 ```shell
 passwd oracle
 ```
-#### ĞŞ¸ÄÄ¿Â¼È¨ÏŞ ####
+#### ä¿®æ”¹ç›®å½•æƒé™ ####
 ```shell
 chown -R oracle:oinstall /usr/local/database
 chown -R oracle:oinstall /usr/local/oracle
 ```
-#### ĞŞ¸Ä `oracle` ÓÃ»§µÄ°²È«ĞÔÄÜÉèÖÃ ####
+#### ä¿®æ”¹ `oracle` ç”¨æˆ·çš„å®‰å…¨æ€§èƒ½è®¾ç½® ####
 ```shell
 vim /etc/security/limits.conf
 ```
-> ÔÚ×îºóÒ»ĞĞÇ°×·¼ÓÒÔÏÂÄÚÈİ£º
+> åœ¨æœ€åä¸€è¡Œå‰è¿½åŠ ä»¥ä¸‹å†…å®¹ï¼š
 ```shell
 oracle soft nproc 2047
 oracle hard nproc 16384
 oracle soft nofile 1024
 oracle hard nofile 65536
 ```
-#### ĞŞ¸ÄÓÃ»§»·¾³±äÁ¿ #### **************
+#### ä¿®æ”¹ç”¨æˆ·ç¯å¢ƒå˜é‡ #### **************
 ```shell
 vim /home/oracle/.bashrc
 ```
-> ×·¼ÓÒÔÏÂÄÚÈİ
+> è¿½åŠ ä»¥ä¸‹å†…å®¹
 ```shell
 export PATH
 export ORACLE_BASE=/usr/local/oracle
@@ -119,51 +119,51 @@ export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib
 export LANG=C0
 export NLS_LANG=AMERICAN_AMERICA.AL32UTF8
 ```
-> ĞŞ¸ÄÍêºóÁ¢¼´ÆôÓÃ:
+> ä¿®æ”¹å®Œåç«‹å³å¯ç”¨:
 ```shell
 source /home/oracle/.bashrc
 ```
-#### ¹Ø±Õ `selinux` ####
+#### å…³é—­ `selinux` ####
 ```shell
 /etc/selinux/config
 ```
-> ĞŞ¸ÄÒÔÏÂÄÚÈİ
+> ä¿®æ”¹ä»¥ä¸‹å†…å®¹
 ```shell
 # This file controls the state of SELinux on the system.
 # SELINUX= can take one of these three values:
 #     enforcing - SELinux security policy is enforced.
 #     permissive - SELinux prints warnings instead of enforcing.
 #     disabled - No SELinux policy is loaded.
-SELINUX=disabled      # ********ĞŞ¸Ä´ËĞĞ******
+SELINUX=disabled      # ********ä¿®æ”¹æ­¤è¡Œ******
 # SELINUXTYPE= can take one of three two values:
 #     targeted - Targeted processes are protected,
 #     minimum - Modification of targeted policy. Only selected processes are protected. 
 #     mls - Multi Level Security protection.
 SELINUXTYPE=targeted
 ```
-> ±£´æºóĞèÒªÖØÆô»úÆ÷
+> ä¿å­˜åéœ€è¦é‡å¯æœºå™¨
 ```shell
 reboot
 ```
 
 
 
-### 2¡¢·À»ğÇ½¶Ë¿Ú¿ª·Å ###
-#### ½â¾ö ####
-##### 1¡¢²é¿´·À»ğÇ½×´Ì¬ #####
+### 2ã€é˜²ç«å¢™ç«¯å£å¼€æ”¾ ###
+#### è§£å†³ ####
+##### 1ã€æŸ¥çœ‹é˜²ç«å¢™çŠ¶æ€ #####
 	firewall-cmd --state
-##### 2¡¢¹Ø±Õ·À»ğÇ½ #####
+##### 2ã€å…³é—­é˜²ç«å¢™ #####
 	systemctl stop firewalld.service
-##### 3¡¢½ûÖ¹·À»ğÇ½¿ª»ú×ÔÆô #####
+##### 3ã€ç¦æ­¢é˜²ç«å¢™å¼€æœºè‡ªå¯ #####
 	systemctl disable firewalld.service
-##### 4¡¢¿ªÆô·À»ğÇ½ #####
+##### 4ã€å¼€å¯é˜²ç«å¢™ #####
 	systemctl start firewalld.service
-##### 5¡¢Add Ìí¼Ó¿ª·Å¶Ë¿Ú #####
+##### 5ã€Add æ·»åŠ å¼€æ”¾ç«¯å£ #####
 	firewall-cmd --permanent --zone=public --add-port=3306/tcp
-##### 6¡¢Reload ÖØĞÂ¼ÓÔØ #####
+##### 6ã€Reload é‡æ–°åŠ è½½ #####
 	firewall-cmd --reload
-##### 7¡¢¼ì²éÊÇ·ñÉúĞ§ ######
+##### 7ã€æ£€æŸ¥æ˜¯å¦ç”Ÿæ•ˆ ######
 	firewall-cmd --zone=public --query-port=3306/tcp
-##### 8¡¢É¾³ı¿ª·Å¶Ë¿Ú ######
+##### 8ã€åˆ é™¤å¼€æ”¾ç«¯å£ ######
     firewall-cmd --zone=public --remove-port=8088/tcp --permanent
-### 3¡¢`temporary failure in name resolution` ÎÊÌâ£¬»òÕßÊÇ·şÎñÕı³£Æô¶¯£¬·ÃÎÊĞ§ÂÊÌØ±ğÂı£¨ÊÊÓÃÓÚMySQL\MyCat\TomCat£© ###
+### 3ã€`temporary failure in name resolution` é—®é¢˜ï¼Œæˆ–è€…æ˜¯æœåŠ¡æ­£å¸¸å¯åŠ¨ï¼Œè®¿é—®æ•ˆç‡ç‰¹åˆ«æ…¢ï¼ˆé€‚ç”¨äºMySQL\MyCat\TomCatï¼‰ ###
