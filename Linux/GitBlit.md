@@ -11,7 +11,7 @@
 ## 二、解压操作文件 ##
 ### 下载并上传到 /usr/local/ 文件夹下
 #### 下载地址 ####
-    http://gitblit.github.io/gitblit/
+    https://github.com/gitblit-org/gitblit/
 ### 解压（找到压缩文件） ###
 	tar -zxvf gitblit-1.9.1.tar.gz -C /usr/local/
 #### 切换到解压目录下 ####

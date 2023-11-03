@@ -44,6 +44,8 @@ wget https://github.com/fatedier/frp/releases/download/v0.51.2/frp_0.51.2_linux_
 
 ### 解压（找到压缩文件） ###
 
+> 下面的是 `v0.51.2` 版本下载地址，需要下载最新的 请手动调整版本号
+
 ```shell
 tar -zxvf frp_0.51.2_linux_amd64.tar.gz -C /usr/local/
 ```
@@ -67,6 +69,8 @@ ll
 
 #### 切换到目录下 ####
 
+> 下面的是 `v0.51.2` 版本下载地址，需要下载最新的 请手动调整版本号
+
 ```shell
 cd /usr/local/frp_0.51.2_linux_amd64/
 ```
@@ -77,19 +81,39 @@ cd /usr/local/frp_0.51.2_linux_amd64/
 rm -f  rm *frpc*
 ```
 
-## 三、配置环境变量 ###
-
-#### 1、修改配置文件 ####
-
-> 参考 `/usr/local/frp_0.51.2_linux_amd64/frps_full.ini` 或者 [frps_full.ini](frps_full.ini) 文件
+### 创建主目录 ###
 
 ```shell
-vim /usr/local/frp_0.51.2_linux_amd64/frps.ini
+mkdir -p /usr/local/frp_linux_amd64
+```
+
+### 复制服务文件到主目录 ### 
+
+> 下面的是 `v0.51.2` 版本下载地址，需要下载最新的 请手动调整版本号
+
+```shell
+cp /usr/local/frp_0.51.2_linux_amd64/frps /usr/local/frp_linux_amd64
+```
+
+## 三、配置环境变量 ###
+
+#### 1、创建配置文件 ####
+
+```shell
+touch /usr/local/frp_linux_amd64/frps.ini
+```
+
+#### 2、编辑配置文件 ####
+
+> 参考 [frps_full.ini](frps_full.ini) 文件
+
+```shell
+vim /usr/local/frp_linux_amd64/frps.ini
 ```
 
 ##### 按一下键盘字母`i`进行编辑 #####
 
-#### 2、输入以下内容： ####
+#### 3、输入以下内容： ####
 
 ```shell
 [common]
@@ -155,7 +179,7 @@ After=systemd-user-sessions.service
 After=network-online.target
 
 [Service]
-ExecStart=/usr/local/frp_0.51.2_linux_amd64/frps -c /usr/local/frp_0.51.2_linux_amd64/frps.ini
+ExecStart=/usr/local/frp_linux_amd64/frps -c /usr/local/frp_linux_amd64/frps.ini
 
 [Install]
 WantedBy=multi-user.target
