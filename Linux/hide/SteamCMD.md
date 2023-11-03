@@ -115,11 +115,16 @@ mkdir -p ~/".local/share/Arma 3" && mkdir -p ~/".local/share/Arma 3 - Other Prof
 // todo
 ```
 ## 五、Arma3 Server 运营 ##
-### 1、创建模组存放文件夹 `mods` ###
+### 1、切换用户登录 ###
+```shell
+su - steam
+```
+### 2、切换到 Aram3 目录下 ###
 ```shell
 cd /home/steam/Steam/steamapps/common/Arma\ 3\ Server/
 ```
-### 2、任务运行脚本 ###
+### 3、任务运行脚本 ###
+PS：待完善
 ```shell
 ./arma_server.exe -cfg=/cfg/arma3server.network.cfg -config=/cfg/arma3server.server.cfg -profiles="D:\Documents and Settings\%UserName%\My Documents\ArmA" -mod=@mod1;@mod2
 ```
@@ -164,6 +169,11 @@ done
 #### Ⅲ、按一下`esc`键 退出编辑 ####
 #### Ⅳ、`:wq` 保存退出 ####
 #### Ⅴ、执行 `lowercase.sh` 脚本 ####
+> 先赋权
+```shell
+chmod 777 lowercase.sh
+```
+> 再执行
 ```shell
 ./lowercase.sh
 ```

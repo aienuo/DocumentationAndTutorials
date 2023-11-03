@@ -131,7 +131,7 @@ dashboard_pwd = admin@12345
 dashboard_tls_mode = false
 enable_prometheus = true
 
-log_file = ./frps.log
+log_file = /usr/local/frp_linux_amd64/frps.log
 # trace, debug, info, warn, error （跟踪、调试、信息、警告、错误）
 log_level = error
 log_max_days = 3
