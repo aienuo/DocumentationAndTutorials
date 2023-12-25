@@ -207,6 +207,8 @@ auth.token = "FC1D0DA5E1AC71CEC4BFA05448B7AC1B"
 
 #### 后台静默启动 ####
 
+> 注意修改配置文件的后缀名 `frps.ini` 和 `frps.toml`
+
 ```shell
 nohup ./frps -c ./frps.ini &
 ```
@@ -230,6 +232,8 @@ sudo vim /etc/systemd/system/frp.service
 ##### 按一下键盘字母`i`进行编辑 #####
 
 #### 2、输入以下内容： ####
+
+> 注意修改配置文件的后缀名 `frps.ini` 和 `frps.toml`
 
 ```shell
 [Unit]

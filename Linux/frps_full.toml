@@ -148,6 +148,13 @@ udpPacketSize = 1500
 # 打洞策略数据的保留时间（小时）
 natholeAnalysisDataReserveHours = 168
 
+# SSH 隧道网关
+# 如果要启用此功能，则bindPort参数是必需的，而其他参数是可选的。默认情况下，此功能处于禁用状态。如果bindPort大于0，它将被启用。
+# sshTunnelGateway.bindPort = 2200
+# sshTunnelGateway.privateKeyFile = "/home/frp-user/.ssh/id_rsa"
+# sshTunnelGateway.autoGenPrivateKeyPath = ""
+# sshTunnelGateway.authorizedKeysFile = "/home/frp-user/.ssh/authorized_keys"
+
 [[httpPlugins]]
 name = "user-manager"
 addr = "127.0.0.1:9000"

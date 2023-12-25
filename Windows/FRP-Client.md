@@ -89,6 +89,10 @@ remote_port = 6001
 
 ### 2、新建 WinSW 配置文件 `FRP-Client.xml` 添加如下内容
 
+> 从 V0.52.0 版本开始，FRP 开始支持 TOML、YAML 和 JSON 作为配置文件格式。
+> 
+> 注意配置文件内 `arguments` 参数的后缀名 `frps.ini` 和 `frps.toml`
+
 ```xml
 
 <service>
