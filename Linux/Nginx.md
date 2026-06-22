@@ -1,5 +1,5 @@
 # Centos8 环境下 Nginx 安装配置 #
-### 注意看我的标题！！！！我这是针对 1.20.2 版本 ###
+### 注意看我的标题！！！！我这是针对 1.28.0 版本 ###
 > 偶数版本-稳定版本（两个稳定版本之间的跨越时间越长、补丁发布频率越少），奇数版本-开发、测试版本
 ## 一、检查本地是否安装 ##
 ### 1、检查 ###
@@ -16,17 +16,17 @@ cd /usr/local/
 ```
 ### 3、下载 ###
 ```shell
-wget https://nginx.org/download/nginx-1.20.2.tar.gz
+wget https://nginx.org/download/nginx-1.28.0.tar.gz
 ```
 ### 4、解压（找到压缩文件） ###
 ```shell
-tar -zxvf nginx-1.20.2.tar.gz  -C /usr/local/
+tar -zxvf nginx-1.28.0.tar.gz  -C /usr/local/
 ```
 ## 二、Nginx 调优 ##
 > 修改源代码文件
 ### 1、隐藏版本信息 ###
 ```shell
-vim /usr/local/nginx-1.20.2/src/core/nginx.h
+vim /usr/local/nginx-1.28.0/src/core/nginx.h
 ```
 #### 按一下键盘字母`i`进行编辑 ####
 #### 修改以下内容（13行 显示的版本号） ####
@@ -35,37 +35,37 @@ vim /usr/local/nginx-1.20.2/src/core/nginx.h
 ```
 #### 修改以下内容（14行 显示的软件名） ####
 ```shell
-#define NGINX_VER          "www.lau.xin/" NGINX_VERSION
+#define NGINX_VER          "www.aienuo.com" NGINX_VERSION
 ```
 #### 修改以下内容（22行 显示的软件名） ####
 ```shell
-#define NGINX_VAR          "www.lau.xin"
+#define NGINX_VAR          "www.aienuo.com"
 ```
 #### 按一下`esc`键 退出编辑 ####
 #### `:wq` 保存退出 ####
 ### 2、隐藏软件名 ###
 ```shell
-vim /usr/local/nginx-1.20.2/src/http/ngx_http_header_filter_module.c
+vim /usr/local/nginx-1.28.0/src/http/ngx_http_header_filter_module.c
 ```
 #### 按一下键盘字母`i`进行编辑 ####
 #### 修改以下内容（49行 修改为想要显示的软件名） ####
 ```shell
-static u_char ngx_http_server_string[] = "Server: www.lau.xin" CRLF;
+static u_char ngx_http_server_string[] = "Server: www.aienuo.com" CRLF;
 ```
 #### 按一下`esc`键 退出编辑 ####
 #### `:wq` 保存退出 ####
 ### 3、定义对外展示内容 ###
 ```shell
-vim /usr/local/nginx-1.20.2/src/http/ngx_http_special_response.c
+vim /usr/local/nginx-1.28.0/src/http/ngx_http_special_response.c
 ```
 #### 按一下键盘字母`i`进行编辑 ####
 #### 修改以下内容（22行 此行定义对外展示的内容） ####
 ```shell
-"<hr><center>" NGINX_VER "(www.lau.xin)</center>" CRLF
+"<hr><center>www.aienuo.com</center>" CRLF
 ```
 #### 修改以下内容（36行 此行定义对外展示的软件名） ####
 ```shell
-"<hr><center>www.lau.xin</center>" CRLF
+"<hr><center>www.aienuo.com</center>" CRLF
 ```
 #### 按一下`esc`键 退出编辑 ####
 #### `:wq` 保存退出 ####
@@ -117,7 +117,7 @@ yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel pcre p
 ```
 ### 2、切换到解压目录下 ###
 ```shell
-cd /usr/local/nginx-1.20.2
+cd /usr/local/nginx-1.28.0
 ```
 ### 3、运行./configure 进行初始化配置 [参考](image/configure.md) ###
 ```shell
@@ -229,24 +229,33 @@ vim /usr/lib/systemd/system/nginx.service
 ### 2、输入以下内容 ###
 ```shell
 [Unit]
-Description=nginx
+Description=The Nginx Server
 After=network.target
 
 [Service]
 Type=forking
+ExecStartPre=/usr/local/nginx/sbin/nginx -t
 ExecStart=/usr/local/nginx/sbin/nginx
 ExecReload=/usr/local/nginx/sbin/nginx -s reload
 ExecStop=/usr/local/nginx/sbin/nginx -s quit
-PrivateTmp=true
+KillMode=process
+Restart=on-failure
+RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
 ```
 #### 按一下`esc`键 退出编辑 ####
 #### `:wq` 保存退出 ####
+
+#### 重载配置 ####
+```shell
+sudo systemctl daemon-reload 
+```
+
 ### 3、设置开机自启动 ###
 ```shell
-systemctl enable nginx.service
+sudo systemctl enable nginx.service
 ```
 ### 4、重启计算机 ###
 ```shell
@@ -260,7 +269,43 @@ systemctl status nginx.service
 ```shell
 ps -ef | grep nginx
 ```
+
+### 7、服务操作命令 ###
+
+> 启动服务
+
+```shell
+sudo systemctl start nginx
+```
+
+> 查看状态
+
+```shell
+sudo systemctl status nginx
+```
+
+> 停止服务
+
+```shell
+sudo systemctl stop nginx
+```
+
+> 重启服务（硬重启）
+
+```shell
+sudo systemctl restart nginx
+```
+
+> 重载配置（软重启）
+
+```shell
+sudo systemctl reload nginx 
+```
+
 ## 七、配置 域名 与 HTTPS ##
+
+> [域名证书自动更新配置](域名证书自动更新.md)
+
 ### 1、上传 SSL 证书 ###
 #### ① 切换到 Nginx 目录下 ####
 ```shell

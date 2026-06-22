@@ -118,6 +118,8 @@ Description=nacos
 After=network.target
 
 [Service]
+# 添加java的环境变量，在systemctl中它不会读取.bash_profile中的环境变量的，必须明确指定
+Environment="JAVA_HOME=/home/software/jdk/jdk1.8.0_192"
 Type=forking
 ExecStart=/usr/local/nacos/bin/startup.sh -m standalone
 ExecReload=/usr/local/nacos/bin/shutdown.sh
@@ -154,6 +156,8 @@ systemctl stop nacos.service
 ### 1、Add 添加开放端口 ###
 ```shell
 firewall-cmd --permanent --zone=public --add-port=8848/tcp
+firewall-cmd --permanent --zone=public --add-port=9848/tcp
+firewall-cmd --permanent --zone=public --add-port=9849/tcp
 ```
 ### 2、Reload 重新加载 ###
 ```shell
@@ -163,6 +167,11 @@ firewall-cmd --reload
 ```shell
 firewall-cmd --zone=public --query-port=8848/tcp
 ```
+
+```shell
+firewall-cmd --zone=public --list-ports
+```
+
 ### 4、重启计算机 ###
 ```shell
 shutdown -r now

@@ -8,7 +8,7 @@
 2. ##### [Linux操作命令参考](Linux/Linux操作命令参考.md) #####
 3. ##### [JDK-1.8](Linux/JDK-1.8.md) #####
 4. ##### [Maven](Linux/Maven.md) #####
-5. ##### [MySQL](Linux/MySQL.md) #####
+5. ##### [MySQL](Linux/MySQ-8.4.5-Linux.md) #####
 6. ##### [TomCat](Linux/TomCat.md)  #####
 7. ##### [Nginx](Linux/Nginx.md) #####
 8. ##### [Redis](Linux/Redis.md) #####
@@ -23,12 +23,15 @@
 17. ##### [SpringBoot自动部署脚本](Linux/SpringBoot自动部署脚本.md) #####
 18. ##### [Nginx-Rtmp](Linux/Nginx-Rtmp.md) #####
 19. ##### [FPR 内网穿透工具服务端配置](Linux/FRP.md) #####
+20. ##### [Ollama配置](Linux/Ollama.md) #####
+21. ##### [DM8安装](Linux/DM8-离线安装.md) #####
+22. ##### [Docker安装](Linux/Docker-离线安装.md) #####
 
 ## Windows： ##
 
 1. ##### [JDK配置](Windows/JDK.md) #####
 2. ##### [Maven配置](Windows/Maven.md) #####
-3. ##### [MySQL配置](Windows/MySQL.md) #####
+3. ##### [MySQL配置](Windows/MySQL-8.4.5-Windows.md) #####
 4. ##### [MySQL备份bat](Windows/MySQL备份bat.md)  #####
 5. ##### [Navicat Premium 无限使用脚本](Windows/NavicatPremium无限试用脚本.md)  #####
 6. ##### [Navicat Premium 中记录的密码破解](Windows/NavicatPremium中记录的密码破解.md)  #####
@@ -37,3 +40,6 @@
 9. ##### [手动添加jar包进入本地仓库](Windows/手动添加jar包进入本地仓库.md) #####
 10. ##### [使用kettle实现多表数据全量抽取](Windows/使用kettle实现多表数据全量抽取/readMe.md) #####
 11. ##### [WinSW 工具进行服务的安装](Windows/WinSW.md) #####
+12. ##### [Windows 环境下 FRP 客户端安装配置](Windows/FRP-Client.md) #####
+13. ##### [Bat脚本创建共享文件夹](Windows/Bat脚本创建共享文件夹.md) #####
+

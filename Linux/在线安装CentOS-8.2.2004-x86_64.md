@@ -207,9 +207,17 @@ vi ifcfg-ens33
 :wq 保存退出
 
 
-service network restart 重启网络
+重载网卡配置
 
- 或者  systemctl restart network
+nmcli c reload
+
+重启网络（3选1）
+
+service network restart 
+
+systemctl restart network
+
+systemctl restart NetworkManager
 
 
 ```
@@ -221,10 +229,10 @@ service network restart 重启网络
 vim /etc/sysconfig/network-scripts/ifcfg-ens33 
 
 
-TYPE=Ethernet					#网络类型：因特网
-PROXY_METHOD=none				#代理方式：关闭状态
+TYPE=Ethernet					# 网络类型：因特网
+PROXY_METHOD=none				#  代理方式：关闭状态
 BROWSER_ONLY=no					#只是浏览器：否
-BOOTPROTO=dhcp 改成 static      #网卡的引导协议：DHCP[中文名称: 动态主机配置协议],static：静态ip
+BOOTPROTO=dhcp 改成 static      # 网卡的引导协议：DHCP[中文名称: 动态主机配置协议],static：静态ip
 DEFROUTE=yes					# 默认路由：是,不明白的可以百度关键词 `默认路由` 
 IPV4_FAILURE_FATAL=no			# 是否开启IPV4致命错误检测：否
 IPV6INIT=yes					# IPV6是否自动初始化: 是[不会有任何影响, 现在还没用到IPV6]
@@ -237,12 +245,13 @@ UUID=b1081c3a-9c31-41c2-81ea-937945a3f6ee		# 通用唯一识别码, 每一个网
 DEVICE=ens33					# 网卡设备名称, 必须和 `NAME` 值一样
 ONBOOT=no 改成 yes	            # 是否开机启动， 要想网卡开机就启动或通过 `systemctl restart network`控制网卡,必须设置为 `yes` 
 #以下为新添值
-IPADDR=192.168.1.101			#设置本机固定ip地址【0-255】
-NETMASK=255.255.255.0			#子网掩码
-GATEWAY=192.168.1.1				#默认网关    
+IPADDR=192.168.1.101			# 设置本机固定ip地址【0-255】
+NETMASK=255.255.255.0			# 子网掩码
+GATEWAY=192.168.1.1				# 默认网关    
 DNS1=192.168.1.1
-DNS2=114.114.114.114            #中国三网 DNS
-DNS3=8.8.8.8                    #Google DNS            
+DNS2=114.114.114.114            # 中国三网 DNS
+DNS3=8.8.8.8                    # Google DNS            
+NM_CONTROLLED=yes               # NetworkManager 托管
 
 ```
 

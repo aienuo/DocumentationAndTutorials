@@ -1,4 +1,4 @@
-# Centos8 `AMD64` 环境下 `FRP` (内网穿透工具)服务端安装配置 #
+# Centos8 `AMD64` 环境下 `FRP` (内网穿透工具)客户端安装配置 #
 
 ### 注意看我的标题！！！！我这是针对 `AMD64`  ###
 
@@ -64,9 +64,9 @@ ls -a
 ll
 ```
 
-### 删除客户端文件（可忽略步骤） ###
+### 删除服务端文件（可忽略步骤） ###
 
-> 压缩包内的文件包括客户端跟服务端的文件，我们这里是部署服务器端，所以只需保留服务端文件（`frps` 开头文件）其他删掉即可。
+> 压缩包内的文件包括客户端跟服务端的文件，我们这里是部署客户端，所以只需保留服务端文件（`frpc` 开头文件）其他删掉即可。
 
 #### 切换到目录下 ####
 
@@ -76,10 +76,10 @@ ll
 cd /usr/local/frp_0.61.1_linux_amd64/
 ```
 
-#### 删除客户端文件 ####
+#### 删除服务端文件 ####
 
 ```shell
-rm -f  rm *frpc*
+rm -f  rm *frps*
 ```
 
 ### 创建主目录 ###
@@ -93,111 +93,71 @@ mkdir -p /usr/local/frp_linux_amd64
 > 下面的是 `v0.61.1` 版本的脚本，请依据自己下载的版本手动调整版本号
 
 ```shell
-cp /usr/local/frp_0.61.1_linux_amd64/frps /usr/local/frp_linux_amd64
+cp /usr/local/frp_0.61.1_linux_amd64/frpc /usr/local/frp_linux_amd64
 ```
 
 ## 三、配置环境变量 ###
 
 > 从 V0.52.0 版本开始，FRP 开始支持 TOML、YAML 和 JSON 作为配置文件格式。
->
-> V0.52.0 以前的版本 参考 [frps_full.ini](frps_full.ini) 文件
->
-> V0.52.0 以后的版本 参考 [frps_full.toml](frps_full.toml) 文件
-
-### A、 V0.52.0 以前版本 ###
 
 #### 1、创建配置文件 ####
 
 ```shell
-touch /usr/local/frp_linux_amd64/frps.ini
+touch /usr/local/frp_linux_amd64/frpc.toml
 ```
 
 #### 2、编辑配置文件 ####
 
 ```shell
-vim /usr/local/frp_linux_amd64/frps.ini
+vim /usr/local/frp_linux_amd64/frpc.toml
 ```
 
 ##### 按一下键盘字母`i`进行编辑 #####
 
 #### 3、输入以下内容： ####
 
-```ini
-[common]
-bind_addr = 0.0.0.0
-bind_port = 7000
-kcp_bind_port = 7000
-
-vhost_http_port = 7000
-
-dashboard_addr = 0.0.0.0
-dashboard_port = 7500
-dashboard_user = admin
-dashboard_pwd = admin@12345
-dashboard_tls_mode = false
-enable_prometheus = true
-
-log_file = /usr/local/frp_linux_amd64/frps.log
-# trace, debug, info, warn, error （跟踪、调试、信息、警告、错误）
-log_level = debug
-log_max_days = 3
-
-authentication_timeout = 0
-
-# 开启toke认证
-authentication_method = token
-authenticate_heartbeats = true
-authenticate_new_work_conns = true
-# 鉴权使用的 Token 值，客户端需要设置一样的值才能鉴权通过
-token = FC1D0DA5E1AC71CEC4BFA05448B7AC1B
-```
-
-##### 按一下`esc`键 退出编辑 #####
-
-##### `:wq` 保存退出 #####
-
-### B、 V0.52.0 以后版本 ###
-
-#### 1、创建配置文件 ####
-
-```shell
-touch /usr/local/frp_linux_amd64/frps.toml
-```
-
-#### 2、编辑配置文件 ####
-
-```shell
-vim /usr/local/frp_linux_amd64/frps.toml
-```
-
-##### 按一下键盘字母`i`进行编辑 #####
-
-#### 3、输入以下内容： ####
+> 注意修改 `server_addr` `server_port` `token` 
 
 ```toml
-bindAddr = "0.0.0.0"
-bindPort = 7000
-kcpBindPort = 7000
+# [common] 整体部分
+[common]
+# 服务端地址
+server_addr = 0.0.0.0
+# 服务端注册端口 
+server_port = 7000
+# 控制台或真实日志文件路径
+log_file = ./frpc.log
+# 日志级别 trace, debug, info, warn, error
+log_level = info
+# 日志保留时间
+log_max_days = 3
+# 指定使用何种身份验证方法将 客户端 与 服务端 进行身份验证。
+authentication_method = token
+# 否在发送给 服务端 的心跳中包含身份验证令牌
+authenticate_heartbeats = true
+# 是否在发送到 服务端 的新工作连接中包含身份验证令牌
+authenticate_new_work_conns = true
+# token 值 由服务端提供
+token = 12345678
 
-vhostHTTPPort = 7000
-
-webServer.addr = "127.0.0.1"
-webServer.port = 7500
-webServer.user = "admin"
-webServer.password = "admin@12345"
-
-enablePrometheus = true
-
-log.to = "/usr/local/frp_linux_amd64/frps.log"
-# trace, debug, info, warn, error （跟踪、调试、信息、警告、错误）
-log.level = "error"
-log.maxDays = 3
-
-# 开启toke认证
-auth.method = "token"
-auth.additionalScopes = ["HeartBeats", "NewWorkConns"]
-# 鉴权使用的 Token 值，客户端需要设置一样的值才能鉴权通过
-auth.token = "FC1D0DA5E1AC71CEC4BFA05448B7AC1B"
+# 自定义代理名称
+[ssh]
+# tcp | udp | http | https | stcp | xtcp
+type = tcp
+# 需要代理的 本地地址
+local_ip = 127.0.0.1
+# 需要代理的 本地端口
+local_port = 22
+# 此代理限制带宽，单位为KB和MB
+bandwidth_limit = 1MB
+# 限制带宽的位置，可选 'client' 客户端或者 'server' 服务端
+bandwidth_limit_mode = client
+# 客户端与服务端之间的消息是否加密
+use_encryption = false
+# 消息是否压缩
+use_compression = false
+# 服务端 远程端口监听
+remote_port = 6001
 ```
 
 ##### 按一下`esc`键 退出编辑 #####
@@ -208,43 +168,35 @@ auth.token = "FC1D0DA5E1AC71CEC4BFA05448B7AC1B"
 
 #### 后台静默启动 ####
 
-> 注意修改配置文件的后缀名 `frps.ini` 和 `frps.toml`
-
 ```shell
-nohup ./frps -c ./frps.ini &
+nohup ./frpc -c ./frpc.toml &
 ```
 
 #### 关闭服务 ####
 
 > 如要关闭，使用 `ps aux` 查看进程号，使用 `kill` 即可关闭
 
-#### 查看服务端可视化面板 ####
-
-> 服务开启后，在任意浏览器访问 URL: `http://服务端公网IP:7500`，输入用户名和密码，即可打开可视化面板
-
 ## 五、设置`FRP`开机自启 ###
 
 #### 1、 创建 `FRP` 服务文件： ####
 
 ```shell
-sudo vim /etc/systemd/system/frp.service
+sudo vim /etc/systemd/system/frpc.service
 ```
 
 ##### 按一下键盘字母`i`进行编辑 #####
 
 #### 2、输入以下内容： ####
 
-> 注意修改配置文件的后缀名 `frps.ini` 和 `frps.toml`
-
 ```shell
 [Unit]
-Description= FRP startup script（启动脚本）
+Description= FRPC startup script（客户端启动脚本）
 After=network.target
 After=systemd-user-sessions.service
 After=network-online.target
 
 [Service]
-ExecStart=/usr/local/frp_linux_amd64/frps -c /usr/local/frp_linux_amd64/frps.ini
+ExecStart=/usr/local/frp_linux_amd64/frpc -c /usr/local/frp_linux_amd64/frpc.toml
 
 [Install]
 WantedBy=multi-user.target
@@ -257,52 +209,52 @@ WantedBy=multi-user.target
 #### 3、设置其权限为 `775` ####
 
 ```shell
-sudo chmod 775 /etc/systemd/system/frp.service
+sudo chmod 775 /etc/systemd/system/frpc.service
 ```
 
-#### 4、输入如下命令使`FRP`服务开机启动  ####
+#### 4、输入如下命令使`FRPC`服务开机启动  ####
 
 ```shell
-sudo systemctl enable --now frp
+sudo systemctl enable --now frpc
 ```
 
-## 六、运维 `FRP` 
+## 六、运维 `FRPC` 
 
 ### 1、常用指令
 
-> 启动 `FRP` 
+> 启动 `FRPC` 
 
 ```shell
-sudo systemctl start frp
+sudo systemctl start frpc
 ```
 
-> 停止 `FRP` 
+> 停止 `FRPC` 
 
 ```shell
-sudo systemctl stop frp
+sudo systemctl stop frpc
 ```
 
-> 重启 `FRP` 
+> 重启 `FRPC` 
 
 ```shell
-sudo systemctl restart frp
+sudo systemctl restart frpc
 ```
 
-> 查看 `FRP` 状态
+> 查看 `FRPC` 状态
 
 ```shell
-sudo systemctl status frp
+sudo systemctl status frpc
 ```
 
 ### 2、版本更新
 
-#### ①、 停止 `FRP` 服务： ####
+#### ①、 停止 `FRPC` 服务： ####
 
 ```shell
-sudo systemctl stop frp
+sudo systemctl stop frpc
 ```
 
-#### ②、下载最新版本 `FRP` 服务： ####
+#### ②、下载最新版本 `FRPC` 服务： ####
 
 > [寻找最新版本安装包](https://github.com/fatedier/frp/releases)
 
@@ -321,22 +273,22 @@ tar -zxvf frp_版本号_linux_amd64.tar.gz -C /usr/local/
 > 复制服务文件到主目录，请依据自己下载的版本手动调整版本号
 
 ```shell
-cp /usr/local/frp_版本号_linux_amd64/frps /usr/local/frp_linux_amd64
+cp /usr/local/frp_版本号_linux_amd64/frpc /usr/local/frp_linux_amd64
 ```
 
-#### ③、启动 `FRP` 服务： ####
+#### ③、启动 `FRPC` 服务： ####
 
 ```shell
-sudo systemctl start frp
+sudo systemctl start frpc
 ```
 
-#### ④、查看 `FRP` 服务状态： ####
+#### ④、查看 `FRPC` 服务状态： ####
 
 ```shell
-sudo systemctl status frp
+sudo systemctl status frpc
 ```
 
-#### ④、删除 `FRP` 安装包： ####
+#### ④、删除 `FRPC` 安装包： ####
 
 > 删除解压后文件
 

@@ -395,6 +395,10 @@ mvn install:install-file -Dfile=C:\Users\liuxin\Desktop\jbarcode-0.2.8.jar -Dgro
 
 ```shell
 @echo off
+REM 
+chcp 65001
+CLS
+echo
 echo @describe 找出所有 lastUpdated文件，并删除它。
 echo @author XinLau
 echo @date 2020年6月4日
@@ -416,6 +420,17 @@ for /f "delims=" %%i in ('dir /b /s "%REPOSITORY_PATH%\*.repositories*"') do (
     del /s /q "%%i"
 )
 echo 过期文件删除成功.
+
+echo 删除空文件夹
+for /d %d in ("%REPOSITORY_PATH%\*") do (
+  if not "%~d"=="." (
+    dir /a:d /b "%~d" | find /c ":" > nul
+    if %errorlevel% EQU 0 (
+      rmdir /s "%~d"
+    )
+  )
+)
+
 pause;
 
 ```

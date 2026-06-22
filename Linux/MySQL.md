@@ -1,5 +1,5 @@
 # Centos8 环境下 MySql-5.7.27 的安装配置 #
-### 注意看我的标题！！！！我这是针对5.7.27版本 ###
+### 注意看我的标题！！！！我这是针对5.7.27 `[版本](https://dev.mysql.com/downloads/mysql/)`  ###
 ## 一、检查本地是否安装 ##
 ### 1、检查 ###
     rpm -qa | grep mysql
@@ -131,17 +131,27 @@ port = 3306
 ### 1、进入bin目录 ###
     cd /usr/local/mysql-5.7.27/bin/
 ### 2、初始化数据库 ###
-    ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql-5.7.27 --datadir=/usr/local/mysql-5.7.27/data
+
+```shell
+./mysqld --defaults-file=/usr/local/mysql-5.7.27/my.cnf --basedir=/usr/local/mysql-5.7.27/ --datadir=/usr/local/mysql-5.7.27/data/ --user=mysql --initialize-insecure
+```
+
 ### 3、安全启动 ###
-    ./mysqld_safe --user=mysql &
+
+```shell
+./mysqld_safe --defaults-file=/usr/local/mysql-5.7.27/my.cnf &
+```
+
 ### 4、验证是否安全启动 ###
     ps -ef | grep mysql
 ## 六、登录 ##
 ### 1、进入bin目录 ###
     cd /usr/local/mysql-5.7.27/bin/
 ### 2、登录 ###
-    ./mysql -u root -p	
-##### PS:密码在 `/usr/local/mysql-5.7.27/logs/errlog/master-error.log` 大约八行左右
+
+```shell
+./mysql -u root --skip-password	
+```
 
 #### 报错
 	./mysql: error while loading shared libraries: libncurses.so.5: cannot open shared object file: No such file or directory
@@ -153,6 +163,11 @@ port = 3306
      set password=password("root");
 ### 4、设置远程登录权限 ###
     grant all privileges on *.* to 'root'@'%' identified by 'root';
+
+```sql
+GRANT ALL ON *.* TO 'root'@'%';
+```
+
 ### 5、立即生效 ###
     flush privileges;
 ### 6、退出登录 ###

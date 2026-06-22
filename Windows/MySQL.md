@@ -1,9 +1,13 @@
 # Windows 环境下 MySQL5.7.36 安装配置 #
 ### 注意看我的标题！！！！我这是针对5.7.36版本 ###
 
+[版本查询地址](https://dev.mysql.com/downloads/mysql/)
+
 ## MySQL 下载地址：
 
 [MySQL5.7.36](https://dev.mysql.com/downloads/file/?id=507350)
+
+[MySQL8.0.39](https://dev.mysql.com/downloads/file/?id=532285)
 
 ![MySQL 下载](image/mysql_download.png)
 
@@ -70,7 +74,9 @@ max_connect_errors = 10
 # 添加默认数据引擎项
 default-storage-engine = InnoDB
 # 添加字符集参数
-character-set-server = utf8
+character-set-server = utf8mb4
+# 字符集的校对规则
+collation-server = utf8mb4_general_ci
 # 添加不区分表/字段大小写项
 lower_case_table_names = 1
 
@@ -104,13 +110,13 @@ sql_mode = NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
 
 [mysql]
 # 添加默认字符集参数
-default-character-set = utf8
+default-character-set = utf8mb4
 # 修改MYSQL端口号，默认为3306，建议不要用默认的，请配置为其他端口号，例如：3369、6033等
 port = 3306
 
 [client]
 # 添加默认字符集参数
-default-character-set = utf8
+default-character-set = utf8mb4
 # 修改MYSQL端口号，默认为3306，建议不要用默认的，请配置为其他端口号，例如：3369、6033等
 port = 3306
 
@@ -127,7 +133,7 @@ port = 3306
 > 以管理员身份打开 cmd 命令行工具，切换目录：
 
 ```shell
-cd D:\mysql-5.7.36-winx64\bin\
+cd /dD:\mysql-5.7.36-winx64\bin\
 ```
 
 > 初始化数据库：
@@ -139,7 +145,7 @@ mysqld --initialize-insecure --console
 ## 安装 MySQL
 
 ```shell
-mysqld install
+mysqld install MySQL5_7_36 --defaults-file="D:\mysql-5.7.36-winx64\my.ini"
 ```
 
 ## 配置 root 用户密码

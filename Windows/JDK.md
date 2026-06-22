@@ -5,7 +5,7 @@
 
 ## Java 下载地址：
 
-[JDK 8u202及更早版本](https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html)
+[JDK 8u202及更早版本](https://repo.huaweicloud.com/java/jdk)
 
 > 下载完成之后 直接右键管理员身份运行 `jdk-8u202-windows-x64.exe`，一直点击下一步直到完成
 
