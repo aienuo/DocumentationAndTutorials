@@ -4,6 +4,7 @@
 
 ```shell
 #!/bin/bash
+# check_system_load.sh - 监控CPU负载信息脚本
 
 # --- 配置 ---
 THRESHOLD=5  # 固定阈值，或者可以根据核心数动态计算
@@ -36,6 +37,7 @@ fi
 
 ```shell
 #!/bin/bash
+# check_memory.sh - 监控内存使用情况脚本
 
 # --- 1. 获取数据 ---
 # 使用 free 命令获取 Mem 行数据
@@ -78,6 +80,7 @@ fi
 
 ```shell
 #!/bin/bash
+# check_disk.sh - 监控磁盘使用情况脚本
 
 echo "=== 检查根分区磁盘使用情况 ==="
 
@@ -104,6 +107,7 @@ fi
 
 ```shell
 #!/bin/bash
+# check_io.sh - 监控I/O情况脚本
 
 # --- 1. 自动检测磁盘名称 ---
 # 尝试获取第一个物理磁盘 (sda, vda, nvme0n1 等)
@@ -171,4 +175,97 @@ else
     echo "✅ $(date '+%Y-%m-%d %H:%M:%S') 磁盘负载正常"
 fi
 
+```
+
+### 5、服务器端口情况 ###
+
+> 服务器端口安全是防御的第一道门，定期自查比事后补救成本低100倍
+
+```shell
+#!/bin/bash
+# check_port.sh - 端口巡检脚本
+
+set -euo pipefail
+
+# 颜色定义
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+NC='\033[0m'
+
+# 白名单端口（按需增减）
+WHITELIST="22|80|443|3306"
+
+# 定义列名和宽度（便于统一调整）
+COL1="ADDRESS"
+COL2="PROCESS"
+COL3="PID"
+WIDTH1=21
+WIDTH2=15
+WIDTH3=8
+
+# 打印表头（带颜色）
+print_header() {
+    printf "${YELLOW}%-${WIDTH1}s %-${WIDTH2}s %-${WIDTH3}s${NC}\n" "$COL1" "$COL2" "$COL3"
+}
+
+echo -e "${GREEN}=== 端口巡检 $(date '+%Y-%m-%d %H:%M:%S') ===${NC}\n"
+
+# 1. 显示所有监听端口
+echo -e "${YELLOW}【监听端口】${NC}"
+print_header
+ss -tlnp | awk 'NR>1 {
+    addr = $4
+    if (match($6, /users:\(\("([^"]+)",pid=([0-9]+)/, arr)) {
+        name = arr[1]
+        pid = arr[2]
+    } else {
+        name = "unknown"
+        pid = "-"
+    }
+    printf "%-21s %-15s %-8s\n", addr, name, pid
+}' | sort -t: -k2 -n
+
+echo
+
+# 2. 异常端口检查（排除白名单）
+echo -e "${YELLOW}【异常端口检查】${NC}"
+result=$(ss -tlnp | awk -v wl=":$WHITELIST$" 'NR>1 && $4 !~ wl {
+    addr = $4
+    if (match($6, /users:\(\("([^"]+)",pid=([0-9]+)/, arr)) {
+        name = arr[1]
+        pid = arr[2]
+    } else {
+        name = "unknown"
+        pid = "-"
+    }
+    printf "%-21s %-15s %-8s\n", addr, name, pid
+}' | sort -t: -k2 -n)
+
+if [ -z "$result" ]; then
+    echo -e "${GREEN}未发现非标准端口监听。${NC}"
+else
+    print_header
+    echo "$result"
+fi
+
+echo -e "\n${GREEN}巡检完成。${NC}"
+
+```
+
+> 发现可疑端口后的标准动作：
+
+```shell
+# 1. 确认进程归属
+systemctl status <进程名>
+
+# 2. 如果确认不需要，停掉服务
+systemctl stop <服务名>
+systemctl disable <服务名>
+
+# 3. 防火墙层面封堵（双保险）
+iptables -A INPUT -p tcp --dport <端口号> -j DROP
+
+# 4. 如果是必须对外开放的服务，限制IP白名单
+iptables -A INPUT -p tcp --dport <端口号> -s <信任IP> -j ACCEPT
+iptables -A INPUT -p tcp --dport <端口号> -j DROP
 ```
