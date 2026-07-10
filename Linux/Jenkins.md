@@ -416,13 +416,45 @@ shutdown -r now
 
 #### 示例 ####
 
+> 每行 <pluginId>:<version> 或仅 <pluginId>，不带版本号以获取最新版本(可能会偶发依赖冲突)
+
 ```text
-# 示例 pluginId:version
-git:latest
-workflow-aggregator:latest
-blueocean:latest
+# 基础安全与凭证管理
+credentials-binding
+
+# 流水线核心引擎（包含声明式、脚本式Pipeline及Stage View）
+workflow-aggregator
+
+# Git 版本控制集成（含Git客户端依赖）
+git
+git-client
+git-parameter
+
+# 任务文件夹管理（用于分类组织Job）
+cloudbees-folder
+
+# 构建超时控制（防止任务卡死）
+build-timeout
+
+# 构建前后自动清理工作空间（避免旧文件污染）
+ws-cleanup
+
+# 控制台输出添加时间戳（便于排查耗时点）
+timestamper
+
+# 简体中文本地化（提升团队使用体验）
+localization-zh-cn
+
+# Maven 构建支持 (Pipeline Maven Integration)
+maven-plugin
+pipeline-maven-api
+pipeline-maven-database
+
+# Node.js 构建支持
+nodejs
 ```
 
+* 在生产环境中，建议将 `latest` 替换为明确的版本号
 * 在生产环境中，建议将 `latest` 替换为明确的版本号
 
 ### 3、创建一个 `download-plugins.bat` 插件离线下载脚本 ###
@@ -495,11 +527,16 @@ if errorlevel 1 (
 )
 
 :: 统计下载的 .hpi 文件数量
-set count=0
-for /f %%f in ('dir /b "%OUTPUT_DIR%\*.hpi" 2^>nul') do set /a count+=1
+set count_hpi=0
+for /f %%f in ('dir /b "%OUTPUT_DIR%\*.hpi" 2^>nul') do set /a count_hpi+=1
+
+:: 统计下载的 .jpi 文件数量
+set count_jpi=0
+for /f %%f in ('dir /b "%OUTPUT_DIR%\*.jpi" 2^>nul') do set /a count_jpi+=1
 
 echo.
-echo [成功] 插件下载完成，共 %count% 个 .hpi 文件存放在目录: %OUTPUT_DIR%
+echo [成功] 插件下载完成，共 %count_hpi% 个 .hpi 文件，%count_jpi% 个 .jpi 文件
+echo [提示] 文件存放目录: %OUTPUT_DIR%
 echo [提示] 请将此目录内容复制到 Linux 服务器的 JENKINS_HOME/plugins 目录下，然后重启 Jenkins。
 pause
 ```
@@ -509,7 +546,7 @@ pause
 * 使用 [windows Terminal 工具](https://apps.microsoft.com/detail/9n8g5rfz9xk3?hl=zh-CN&gl=CN)。 语法： scp 【本地文件地址】 【服务器账号】@【服务器IP地址】:/usr/local
 
 ```shell
-scp D:/Downloads/offline-plugins.zip root@100.110.111.114:/usr/local/jenkins/
+scp D:/Downloads/jenkins/offline-plugins.zip root@100.110.111.114:/usr/local/jenkins/
 ```
 
 ### 5、远程登录服务器 ###
@@ -527,13 +564,19 @@ cd /usr/local/jenkins/
 ```
 
 ```shell
-unzip offline-plugins.zip -C /usr/local/jenkins/
+unzip offline-plugins.zip
 ```
 
 ### 7、将文件夹内的插件文件 移动到 `plugins` 目录下 ###
 
 ```shell
 mv /usr/local/jenkins/offline-plugins/*.{hpi,jpi} $JENKINS_HOME/plugins/
+```
+
+* 删除文件：
+
+```shell
+rm -rf /usr/local/jenkins/offline-plugins
 ```
 
 * 切换到插件文件夹：
