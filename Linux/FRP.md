@@ -37,11 +37,10 @@ arch
 #### 下载地址 ####
 
 > 下面的是 `0.61.1` 版本下载地址，需要下载最新的 请手动调整版本号
- 
+
 ```shell
 wget https://github.com/fatedier/frp/releases/download/v0.61.1/frp_0.61.1_linux_arm64.tar.gz
 ```
-
 
 ### 解压（找到压缩文件） ###
 
@@ -266,23 +265,23 @@ sudo chmod 775 /etc/systemd/system/frp.service
 sudo systemctl enable --now frp
 ```
 
-## 六、运维 `FRP` 
+## 六、运维 `FRP`
 
 ### 1、常用指令
 
-> 启动 `FRP` 
+> 启动 `FRP`
 
 ```shell
 sudo systemctl start frp
 ```
 
-> 停止 `FRP` 
+> 停止 `FRP`
 
 ```shell
 sudo systemctl stop frp
 ```
 
-> 重启 `FRP` 
+> 重启 `FRP`
 
 ```shell
 sudo systemctl restart frp
@@ -307,7 +306,7 @@ sudo systemctl stop frp
 > [寻找最新版本安装包](https://github.com/fatedier/frp/releases)
 
 > 载最新安装包 请手动调整版本号
- 
+
 ```shell
 wget https://github.com/fatedier/frp/releases/download/v版本号/frp_版本号_linux_arm64.tar.gz
 ```

@@ -1,232 +1,365 @@
 # Centos8 环境下 Nginx 安装配置 #
+
 ### 注意看我的标题！！！！我这是针对 1.28.0 版本 ###
+
 > 偶数版本-稳定版本（两个稳定版本之间的跨越时间越长、补丁发布频率越少），奇数版本-开发、测试版本
+
 ## 一、检查本地是否安装 ##
+
 ### 1、检查 ###
+
 ```shell
 rpm -qa | grep nginx
 ```
+
 ### 2、卸载 ###
+
 ```shell
 rpm -e 已经存在的Nginx全名
 ```
+
 #### 切换到下载目录下 ####
+
 ```shell
 cd /usr/local/
 ```
+
 ### 3、下载 ###
+
 ```shell
 wget https://nginx.org/download/nginx-1.28.0.tar.gz
 ```
+
 ### 4、解压（找到压缩文件） ###
+
 ```shell
 tar -zxvf nginx-1.28.0.tar.gz  -C /usr/local/
 ```
+
 ## 二、Nginx 调优 ##
+
 > 修改源代码文件
+
 ### 1、隐藏版本信息 ###
+
 ```shell
 vim /usr/local/nginx-1.28.0/src/core/nginx.h
 ```
+
 #### 按一下键盘字母`i`进行编辑 ####
+
 #### 修改以下内容（13行 显示的版本号） ####
+
 ```shell
 #define NGINX_VERSION      "996"
 ```
+
 #### 修改以下内容（14行 显示的软件名） ####
+
 ```shell
 #define NGINX_VER          "www.aienuo.com" NGINX_VERSION
 ```
+
 #### 修改以下内容（22行 显示的软件名） ####
+
 ```shell
 #define NGINX_VAR          "www.aienuo.com"
 ```
+
 #### 按一下`esc`键 退出编辑 ####
+
 #### `:wq` 保存退出 ####
+
 ### 2、隐藏软件名 ###
+
 ```shell
 vim /usr/local/nginx-1.28.0/src/http/ngx_http_header_filter_module.c
 ```
+
 #### 按一下键盘字母`i`进行编辑 ####
+
 #### 修改以下内容（49行 修改为想要显示的软件名） ####
+
 ```shell
 static u_char ngx_http_server_string[] = "Server: www.aienuo.com" CRLF;
 ```
+
 #### 按一下`esc`键 退出编辑 ####
+
 #### `:wq` 保存退出 ####
+
 ### 3、定义对外展示内容 ###
+
 ```shell
 vim /usr/local/nginx-1.28.0/src/http/ngx_http_special_response.c
 ```
+
 #### 按一下键盘字母`i`进行编辑 ####
+
 #### 修改以下内容（22行 此行定义对外展示的内容） ####
+
 ```shell
 "<hr><center>www.aienuo.com</center>" CRLF
 ```
+
 #### 修改以下内容（36行 此行定义对外展示的软件名） ####
+
 ```shell
 "<hr><center>www.aienuo.com</center>" CRLF
 ```
+
 #### 按一下`esc`键 退出编辑 ####
+
 #### `:wq` 保存退出 ####
+
 > 配置Linux系统参数
+
 ### 4、修改文件打开数限制 ###
+
 > 操作系统默认单进程最大打开文件数为1024
+
 ```shell
 vim /etc/security/limits.conf
 ```
+
 #### 按一下键盘字母`i`进行编辑 ####
+
 #### 新增以下内容 ####
->  *号表示所用用户
+
+> *号表示所用用户
+
 ```shell
 * soft nofile 65535
 * hard nofile 65535
 ```
+
 #### 按一下`esc`键 退出编辑 ####
+
 #### `:wq` 保存退出 ####
+
 ### 5、设置 login ###
+
 ```shell
 vim /etc/pam.d/login
 ```
+
 #### 按一下键盘字母`i`进行编辑 ####
+
 #### 新增以下内容 ####
+
 > /lib/security/pam_limits.so 这个路径根据实际情况填写，32位系统是 `/lib` 下 64位系统是 `/lib64` 下
+
 ```shell
 session    required     /lib/security/pam_limits.so
 ```
+
 #### 按一下`esc`键 退出编辑 ####
+
 #### `:wq` 保存退出 ####
+
 ### 6、设置 DNS缓存 ###
+
 > 开启 NSCD 服务，缓存 DNS，提高域名解析响应速度
+
 ```shell
 vim /etc/resolv.conf
 ```
+
 #### 按一下键盘字母`i`进行编辑 ####
+
 #### 新增以下内容 ####
+
 ```shell
 ststemetl start nscd.service    
 ststemetl enable nscd.service
 ```
+
 #### 按一下`esc`键 退出编辑 ####
+
 #### `:wq` 保存退出 ####
+
 ## 三、编译安装 ##
+
 ### 1、下载依赖 ###
-> 缺少 xxxlibrany，缺少.c.h文件 安装开发组包  xxx-devel
+
+> 缺少 xxxlibrany，缺少.c.h文件 安装开发组包 xxx-devel
+
 ```shell
 yum -y install make zlib zlib-devel gcc-c++ libtool openssl openssl-devel pcre pcre-devel
 ```
+
 ### 2、切换到解压目录下 ###
+
 ```shell
 cd /usr/local/nginx-1.28.0
 ```
+
 ### 3、运行./configure 进行初始化配置 [参考](image/configure.md) ###
+
 ```shell
 ./configure --prefix=/usr/local/nginx --user=nginx --group=nginx --pid-path=/usr/local/nginx/log/nginx.pid --error-log-path=/usr/local/nginx/log/error.log --http-log-path=/usr/local/nginx/log/access.log --with-http_gzip_static_module --http-client-body-temp-path=/usr/local/nginx/temp/client --http-proxy-temp-path=/usr/local/nginx/temp/proxy --http-fastcgi-temp-path=/usr/local/nginx/temp/fastcgi --http-uwsgi-temp-path=/usr/local/nginx/temp/uwsgi --http-scgi-temp-path=/usr/local/nginx/temp/scgi --with-http_ssl_module --with-http_v2_module --with-http_realip_module --with-http_gzip_static_module --with-http_addition_module --with-http_flv_module --with-http_mp4_module --with-http_stub_status_module --with-pcre --with-http_sub_module
 ```
+
 ### 4、执行编译操作 ###
+
 > -j8 多线程操作，加速编译
+
 ```shell
 make -j8
 ```
+
 ### 5、执行安装操作 ###
+
 ```shell
 make install -j8
 ```
+
 ### 6、创建临时文件存放路径 ###
+
 #### 进入安装路径 ####
+
 ```shell
 cd /usr/local/nginx
 ```
+
 #### 创建 一级 ####
+
 ```shell
 mkdir temp
 ```
+
 #### 进入 一级 路径 ####
+
 ```shell
 cd /usr/local/nginx/temp
 ```
+
 #### 创建 二级 ####
+
 ```shell
 mkdir client proxy fastcgi uwsgi scgi
 ```
+
 ### 7、创建 用户，用户组 ###
+
 #### 用户组 ####
+
 ```shell
 groupadd nginx
 ```
+
 #### 用户 ####
+
 ```shell
 useradd -g nginx nginx
 ```
+
 ## 四、Nginx 运行维护 ##
+
 ### 进入安装路径 ###
+
 ```shell
 cd /usr/local/nginx
 ```
+
 ### 启动 ###
+
 ```shell
 ./sbin/nginx
 ```
+
 ### 查看是否有 Nginx ###
+
 ```shell
 ps -ef | grep nginx
 ```
+
 ### 重载 ###
+
 ```shell
 ./sbin/nginx -s reload
 ```
+
 ### 关闭 ###
+
 ```shell
 ./sbin/nginx -s stop
 ```
+
 #### 优雅关闭（当请求被处理完成之后才关闭） ###
+
 ```shell
 ./sbin/nginx -s quit
 ```
+
 ## 五、防火墙端口开放 ##
+
 ##### 1、查看防火墙状态 #####
+
 ```shell
 firewall-cmd --state
 ```
+
 ##### 2、关闭防火墙 #####
+
 ```shell
 systemctl stop firewalld.service
 ```
+
 ##### 3、禁止防火墙开机自启 #####
+
 ```shell
 systemctl disable firewalld.service
 ```
+
 ##### 4、查看所有已开放的临时端口 #####
+
 ```shell
 firewall-cmd --list-ports
 ```
+
 ##### 5、开启防火墙 #####
+
 ```shell
 systemctl start firewalld.service
 ```
+
 ##### 6、Add 添加开放端口 #####
+
 ```shell
 firewall-cmd --permanent --zone=public --add-port=80/tcp
 ```
+
 ##### 7、Reload 重新加载 #####
+
 ```shell
 firewall-cmd --reload
 ```
+
 ##### 8、检查是否生效 ######
+
 ```shell
 firewall-cmd --zone=public --query-port=80/tcp
 ```
+
 ##### 9、删除开放端口 ######
+
 ```shell
 firewall-cmd --zone=public --remove-port=8088/tcp --permanent
 ```
+
 ## 六、开机自启配置 ##
+
 ### 1、在系统服务目录里创建`nginx.service`文件 ###
+
 ```shell
 vim /usr/lib/systemd/system/nginx.service
 ```
+
 #### 按一下键盘字母`i`进行编辑 ####
+
 ### 2、输入以下内容 ###
+
 ```shell
 [Unit]
 Description=The Nginx Server
@@ -245,27 +378,37 @@ RestartSec=5s
 [Install]
 WantedBy=multi-user.target
 ```
+
 #### 按一下`esc`键 退出编辑 ####
+
 #### `:wq` 保存退出 ####
 
 #### 重载配置 ####
+
 ```shell
 sudo systemctl daemon-reload 
 ```
 
 ### 3、设置开机自启动 ###
+
 ```shell
 sudo systemctl enable nginx.service
 ```
+
 ### 4、重启计算机 ###
+
 ```shell
 shutdown -r now
 ```
+
 ### 5、查看 Nginx 状态 ###
+
 ```shell
 systemctl status nginx.service
 ```
+
 ### 6、查看是否有 Nginx ###
+
 ```shell
 ps -ef | grep nginx
 ```
@@ -307,30 +450,45 @@ sudo systemctl reload nginx
 > [域名证书自动更新配置](域名证书自动更新.md)
 
 ### 1、上传 SSL 证书 ###
+
 #### ① 切换到 Nginx 目录下 ####
+
 ```shell
 cd /usr/local/nginx
 ```
+
 #### ② 新建 SSL 证书目录 ####
+
 ```shell
 mkdir cert
 ```
+
 ##### 将证书与key上传到此目录 #####
+
 ### 2、切换到安装目录的配置文件目录下 ###
+
 ```shell
 cd /usr/local/nginx/conf/
 ```
+
 ### 3、编辑默认配置文件 ###
+
 #### 查看CPU核数（记下来留作备用） ####
+
 ```shell
 grep -c processor /proc/cpuinfo
 ```
+
 #### 编辑 `nginx.conf` 配置文件 ####
+
 ```shell
 vim nginx.conf
 ```
+
 #### 按一下键盘字母`i`进行编辑 ####
+
 #### 修改为以下内容： ####
+
 ```shell
 # 1、指定Nginx服务的用户和用户组
 user nginx nginx;
@@ -437,21 +595,31 @@ http {
     error_page 404 /404.html;
 }
 ```
+
 ### 4、配置 server 配置 ###
+
 #### 创建 server 文件夹 ####
+
 ```shell
 mkdir server
 ```
+
 #### 进入 server 文件夹 ####
+
 ```shell
 cd /usr/local/nginx/conf/server/
 ```
+
 #### 创建 自定义的 server 配置文件 ####
+
 ```shell
 vim demo.conf
 ```
+
 #### 按一下键盘字母`i`进行编辑 ####
+
 #### 添加以下内容： ####
+
 ```shell
 # HTTPS
 server {
@@ -496,5 +664,7 @@ server {
     rewrite ^ https://$http_host$request_uri? permanent;
 }
 ```
+
 ##### 按一下`esc`键 退出编辑 #####
+
 ##### `:wq` 保存退出 #####

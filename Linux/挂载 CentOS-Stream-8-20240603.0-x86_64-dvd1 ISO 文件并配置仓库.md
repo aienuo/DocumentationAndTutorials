@@ -10,6 +10,8 @@ scp D:/Documents/CentOS-Stream-8-20240603.0-x86_64-dvd1.iso root@100.110.111.106
 
 ### 📀 挂载 ISO 镜像文件
 
+* 使用 [windows Terminal 工具](https://apps.microsoft.com/detail/9n8g5rfz9xk3?hl=zh-CN&gl=CN)。 语法： ssh 【服务器账号】@【服务器IP地址】
+
 1. **登录服务器**
 
 ```shell

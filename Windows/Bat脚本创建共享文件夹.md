@@ -6,7 +6,7 @@ chcp 65001
 
 @echo off
 
-set folder="D:\LiuXin\ProjectSharedFolder"
+set folder="D:\ProjectSharedFolder"
 
 echo 正在开启系统的网络发现和局域网文件共享防火墙权限。。。。。。
 rem 先开启系统的网络发现和局域网文件共享防火墙权限
