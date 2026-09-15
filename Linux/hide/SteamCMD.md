@@ -94,7 +94,7 @@ su - steam
 #### Ⅰ、安装包下载 ####
 
 ```shell
-cd ~/ && wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
+wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
 ```
 
 #### Ⅱ、安装包解压 ####

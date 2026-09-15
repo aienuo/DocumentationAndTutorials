@@ -623,46 +623,60 @@ vim demo.conf
 ```shell
 # HTTPS
 server {
-    # HTTPS 默认端口
-    listen 443 ssl;
-    # 填写绑定证书的域名
-    server_name www.lau.xin;
-    # 填写你的证书所在的位置
-    ssl_certificate /usr/local/nginx/cert/lauxin.pem;
-    # 填写你的key所在的位置
-    ssl_certificate_key /usr/local/nginx/cert/lauxin.key;
-    # 会话超时
-    ssl_session_timeout 5m;
-    # 按照这个协议配置
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    # 按照这个套件配置
-    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
-    ssl_prefer_server_ciphers on;
-    # 默认访问资源
-    location / {
-        # 填写你的你的站点目录
-        root html;
-        # 网站首页
-        index index.html index.htm;
-        # 限制单个IP的并发连接数为 1
-        limit_conn addr 1;
-    }
-    # 缓存的对象
-    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css|ico)$ {
-        # 缓存的时间，30天 当用户第一次访问这些内容时，会把这些内容存储在用户浏览器本地，这样用户第二次及以后继续访问该网站时，浏览器会检查加载已经缓存在用户浏览器本地的内容，就不会去服务器下载了，直到缓存的内容过期或被清除为止
-        expires 30d;
-        # 不记录访问日志
-        access_log off;
-    }
+	# HTTPS 默认端口
+	listen 443 ssl;
+	# 填写绑定证书的域名
+	server_name www.aienuo.com;
+	# 填写你的证书所在的位置
+	ssl_certificate /usr/local/nginx/cert/aienuo.com_chain.pem;
+	# 填写你的key所在的位置
+	ssl_certificate_key /usr/local/nginx/cert/aienuo.com_private.key;
+	# 会话超时
+	ssl_session_timeout 5m;
+	# 按照这个协议配置
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+	# 按照这个套件配置
+	ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+	ssl_prefer_server_ciphers on;
+	# 默认访问资源
+	location / {
+		# 填写你的你的站点目录
+		root html;
+		# 网站首页
+		index index.html index.htm;
+		# 限制单个IP的并发连接数为 1
+		limit_conn addr 1;
+		# 重定向跳转 防止页面刷新 404
+        try_files $uri $uri/ /index.html;
+	}
+	# 缓存的对象
+	location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|js|css|ico)$ {
+		# 缓存的时间，30天 当用户第一次访问这些内容时，会把这些内容存储在用户浏览器本地，这样用户第二次及以后继续访问该网站时，浏览器会检查加载已经缓存在用户浏览器本地的内容，就不会去服务器下载了，直到缓存的内容过期或被清除为止
+		expires 30d;
+		# 不记录访问日志
+		access_log off;
+	}
+	
+	# 防止爬虫抓取
+	if ($http_user_agent ~* "360Spider|JikeSpider|Spider|spider|bot|Bot|2345Explorer|curl|wget|webZIP|qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot|NSPlayer|bingbot") {
+		return 403;
+	}
+	
+	# 全局拒绝所有 PHP 请求
+	location ~ \.php$ {
+		deny all;
+	}
 }
+
 server {
-    # Nginx 默认端口
-    listen 80;
-    # 填写绑定证书的域名
-    server_name lau.xin;
-    # 将 http 转到 https
-    rewrite ^ https://$http_host$request_uri? permanent;
+	# Nginx 默认端口
+	listen 80;
+	# 填写绑定证书的域名
+	server_name aienuo.com;
+	# 将 http 转到 https
+	rewrite ^ https://$http_host$request_uri? permanent;
 }
+
 ```
 
 ##### 按一下`esc`键 退出编辑 #####

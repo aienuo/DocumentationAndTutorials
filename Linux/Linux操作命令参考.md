@@ -1555,7 +1555,7 @@ restore -rf /tmp/home0.bak
 restore -if /tmp/home0.bak
 ```
 
-#### 4.  ####
+#### 4. 备份 ####
 
 ```shell
 rsync -rogpav --delete /home /tmp    #同步两边的目录

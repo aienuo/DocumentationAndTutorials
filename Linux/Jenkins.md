@@ -53,6 +53,7 @@ source /etc/profile
 #### 验证安装 ####
 
 ```shell
+
 java -version
 ```
 
