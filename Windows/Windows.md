@@ -1,32 +1,32 @@
 # Windows
 
-## ÃØÔ¿
+## ç§˜é’¥
 
-[²Î¿¼](https://learn.microsoft.com/zh-cn/windows-server/get-started/kms-client-activation-keys)
+[å‚è€ƒ](https://learn.microsoft.com/zh-cn/windows-server/get-started/kms-client-activation-keys)
 
 ### Windows 11
 
-#### ×¨Òµ¹¤×÷Õ¾°æ
+#### ä¸“ä¸šå·¥ä½œç«™ç‰ˆ
 
 ```text
 8D2T7-WN7YB-8M4X7-8WVY7-94VBX
 ```
 
-## ½Å±¾ 
+## è„šæœ¬
 
 ```text
 @echo off
 mode con cols=75 lines=25
-title ²×Ë®µÄKMS½Å±¾
+title KMSè„šæœ¬
 setlocal EnableDelayedExpansion&color 70 & cd /d "%~dp0"
 %1 %2
 ver|find "5."> NUL&&goto :start
 mshta vbscript:createobject("shell.application").shellexecute("%~s0","goto :start","","runas",1)(window.close)&goto :eof
 :start
-echo ±¾½Å±¾ÐèÒªÓÒ¼ü¹ÜÀíÔ±ÔËÐÐ
-echo ÌáÎÊ½¨ÒéÇëÁôÑÔhttp://kms.cangshui.net
-echo ¾èÔùÔÞÖúÇë·ÃÎÊhttp://shop.cangshui.net
-set /p xuanze=¡¾A¡¿KMS¼¤»îWindows   ¡¾B¡¿KMS¼¤»îOffice ¡¾C¡¿Çå³ýWindows KMS ¡¾D¡¿Çå³ýOffice KMS  ÇëÊäÈëÄãµÄÑ¡Ôñ:
+echo æœ¬è„šæœ¬éœ€è¦å³é”®ç®¡ç†å‘˜è¿è¡Œ
+echo æé—®å»ºè®®è¯·ç•™è¨€http://kms.cangshui.net
+echo æèµ èµžåŠ©è¯·è®¿é—®http://shop.cangshui.net
+set /p xuanze=ã€Aã€‘KMSæ¿€æ´»Windows   ã€Bã€‘KMSæ¿€æ´»Office ã€Cã€‘æ¸…é™¤Windows KMS ã€Dã€‘æ¸…é™¤Office KMS  è¯·è¾“å…¥ä½ çš„é€‰æ‹©:
 if /i "%xuanze%"=="a" cls&goto start1
 if /i "%xuanze%"=="b" cls&goto start2
 if /i "%xuanze%"=="c" cls&goto start3
@@ -35,24 +35,24 @@ if /i "%xuanze%"=="d" cls&goto start4
 :start2
 set KMS_Sev=kms.cangshui.net
 cls
-echo ÕýÔÚ¼ì²é±¾»úÍøÂç×´Ì¬...
+echo æ­£åœ¨æ£€æŸ¥æœ¬æœºç½‘ç»œçŠ¶æ€...
 echo.
-ping www.microsoft.com | find "³¬Ê±"  > NUL &&  goto fail
-ping www.microsoft.com | find "Ä¿±êÖ÷»ú"  > NUL &&  goto fail
-echo ±¾»úÍøÂçÁ¼ºÃ¡­¡­
+ping www.microsoft.com | find "è¶…æ—¶"  > NUL &&  goto fail
+ping www.microsoft.com | find "ç›®æ ‡ä¸»æœº"  > NUL &&  goto fail
+echo æœ¬æœºç½‘ç»œè‰¯å¥½â€¦â€¦
 goto office
 
 :office
-echo ¼ì²é°²×°µÄoffice¡­¡­
+echo æ£€æŸ¥å®‰è£…çš„officeâ€¦â€¦
 call :GetOfficePath 14 Office2010
 call :ActOffice 14 Office2010
 call :GetOfficePath 15 Office2013
 call :ActOffice 15 Office2013
 if exist "%ProgramFiles%\Microsoft Office\Office16\ospp.vbs" set _Office16Path=%ProgramFiles%\Microsoft Office\Office16
 if exist "%ProgramFiles(x86)%\Microsoft Office\Office16\ospp.vbs" set _Office16Path=%ProgramFiles(x86)%\Microsoft Office\Office16
-if DEFINED _Office16Path (echo.&echo ÒÑ·¢ÏÖ Office2016ÏµÁÐÈí¼þ[°üÀ¨2016/2019/365]
+if DEFINED _Office16Path (echo.&echo å·²å‘çŽ° Office2016ç³»åˆ—è½¯ä»¶[åŒ…æ‹¬2016/2019/365]
     call :ActOffice 16 Office2016
-  ) else (echo.&echo Î´·¢ÏÖ Office2016ÏµÁÐÈí¼þ[°üÀ¨2016/2019/365])
+  ) else (echo.&echo æœªå‘çŽ° Office2016ç³»åˆ—è½¯ä»¶[åŒ…æ‹¬2016/2019/365])
 
 
 echo.&pause
@@ -62,16 +62,16 @@ exit
 if DEFINED _Office%1Path (
     cd /d "!_Office%1Path!"
     if %1 EQU 16 call :Licens16
-    echo.&echo ³¢ÊÔ¼¤»îÄúµÄOffice ...&echo.
+    echo.&echo å°è¯•æ¿€æ´»æ‚¨çš„Office ...&echo.
 cscript //nologo ospp.vbs /sethst:kms.cangshui.net > NUL
 cscript //nologo ospp.vbs /act | find /i "successful" && (
-        echo.&echo ***** ¼¤»î³É¹¦ *****   & echo.) || (echo.&echo ***** ¼¤»îÊ§°Ü ***** & echo.)
+        echo.&echo ***** æ¿€æ´»æˆåŠŸ *****   & echo.) || (echo.&echo ***** æ¿€æ´»å¤±è´¥ ***** & echo.)
 )    
 cd /d "%~dp0"
 goto :EOF
 
 :GetOfficePath
-echo.&echo ÕýÔÚ¼ì²â %2 ÏµÁÐ²úÆ·µÄ°²×°Â·¾¶...
+echo.&echo æ­£åœ¨æ£€æµ‹ %2 ç³»åˆ—äº§å“çš„å®‰è£…è·¯å¾„...
 set _Office%1Path=
 set _Reg32=HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Office\%1.0\Common\InstallRoot
 set _Reg64=HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Office\%1.0\Common\InstallRoot
@@ -81,18 +81,18 @@ if DEFINED _OfficePath1 (if exist "%_OfficePath1%ospp.vbs" set _Office%1Path=!_O
 if DEFINED _OfficePath2 (if exist "%_OfficePath2%ospp.vbs" set _Office%1Path=!_OfficePath2!)
 set _OfficePath1=
 set _OfficePath2=
-if DEFINED _Office%1Path (echo.&echo ÒÑ·¢ÏÖ %2) else (echo.&echo Î´·¢ÏÖ %2)
+if DEFINED _Office%1Path (echo.&echo å·²å‘çŽ° %2) else (echo.&echo æœªå‘çŽ° %2)
 goto :EOF
 
 :Licens16
 
-set /p xuanze=¡¾A¡¿¼¤»îÎªOffice2019°æ±¾(½ö2019¡¢2021Óë365°æ±¾¿ÉÑ¡)   ¡¾B¡¿¼¤»îÎªOffice2016°æ±¾£¨Í¨ÓÃ£©
+set /p xuanze=ã€Aã€‘æ¿€æ´»ä¸ºOffice2019ç‰ˆæœ¬(ä»…2019ã€2021ä¸Ž365ç‰ˆæœ¬å¯é€‰)   ã€Bã€‘æ¿€æ´»ä¸ºOffice2016ç‰ˆæœ¬ï¼ˆé€šç”¨ï¼‰
 if /i "%xuanze%"=="a" cls&goto installOffice19
 if /i "%xuanze%"=="b" cls&goto installOffice16
 
 
 :installOffice19
-echo °²×°2019Ö¤Êé
+echo å®‰è£…2019è¯ä¹¦
 for /f %%x in ('dir /b ..\root\Licenses16\ProPlus2019VL_KMS_Client_AE-ppd.xrm-ms') do cscript ospp.vbs /inslic:"..\root\Licenses16\%%x" > NUL
 for /f %%x in ('dir /b ..\root\Licenses16\ProPlus2019VL_KMS_Client_AE-ul.xrm-ms') do cscript ospp.vbs /inslic:"..\root\Licenses16\%%x" > NUL
 for /f %%x in ('dir /b ..\root\Licenses16\ProPlus2019VL_KMS_Client_AE-ul-oob.xrm-ms') do cscript ospp.vbs /inslic:"..\root\Licenses16\%%x" > NUL
@@ -109,11 +109,11 @@ goto :EOF
 exit
 :fail
 cls
-echo ÎÞ·¨Á¬½Óµ½·þÎñÆ÷£¬¿É³¢ÊÔÖØÐÂÔËÐÐ½Å±¾......
+echo æ— æ³•è¿žæŽ¥åˆ°æœåŠ¡å™¨ï¼Œå¯å°è¯•é‡æ–°è¿è¡Œè„šæœ¬......
 pause
 
 :installOffice16
-echo °²×°2016Ö¤Êé
+echo å®‰è£…2016è¯ä¹¦
 for /f %%x in ('dir /b ..\root\Licenses16\project???vl_kms*.xrm-ms') do cscript ospp.vbs /inslic:"..\root\Licenses16\%%x" > NUL
 for /f %%x in ('dir /b ..\root\Licenses16\proplusvl_kms*.xrm-ms') do cscript ospp.vbs /inslic:"..\root\Licenses16\%%x" > NUL
 for /f %%x in ('dir /b ..\root\Licenses16\standardvl_kms*.xrm-ms') do cscript ospp.vbs /inslic:"..\root\Licenses16\%%x" > NUL
@@ -134,7 +134,7 @@ goto :EOF
 exit
 :fail
 cls
-echo ÎÞ·¨Á¬½Óµ½·þÎñÆ÷£¬¿É³¢ÊÔÖØÐÂÔËÐÐ½Å±¾......
+echo æ— æ³•è¿žæŽ¥åˆ°æœåŠ¡å™¨ï¼Œå¯å°è¯•é‡æ–°è¿è¡Œè„šæœ¬......
 pause
 
 
@@ -143,26 +143,26 @@ pause
 :start1
 set KMS_Sev=kms.cangshui.net
 cls
-echo ÌáÎÊ½¨ÒéÇëÁôÑÔhttp://kms.cangshui.net
-echo ¾èÔùÔÞÖúÇë·ÃÎÊhttp://shop.cangshui.net
-echo ÕýÔÚ¼ì²é±¾»úÍøÂç×´Ì¬...
+echo æé—®å»ºè®®è¯·ç•™è¨€http://kms.cangshui.net
+echo æèµ èµžåŠ©è¯·è®¿é—®http://shop.cangshui.net
+echo æ­£åœ¨æ£€æŸ¥æœ¬æœºç½‘ç»œçŠ¶æ€...
 echo.
-ping www.microsoft.com | find "³¬Ê±"  > NUL &&  goto fail
-ping www.microsoft.com | find "Ä¿±êÖ÷»ú"  > NUL &&  goto fail
-echo ±¾»úÍøÂçÁ¼ºÃ¡­¡­
+ping www.microsoft.com | find "è¶…æ—¶"  > NUL &&  goto fail
+ping www.microsoft.com | find "ç›®æ ‡ä¸»æœº"  > NUL &&  goto fail
+echo æœ¬æœºç½‘ç»œè‰¯å¥½â€¦â€¦
 
-echo =================================¼¤»îÐÅÏ¢==================================
+echo =================================æ¿€æ´»ä¿¡æ¯==================================
 
 ver | find "6.0." > NUL &&  goto winvista
 ver | find "6.1." > NUL &&  goto win7
 ver | find "6.2." > NUL &&  goto win8
 ver | find "6.3." > NUL &&  goto win81
 ver | find "10.0." > NUL &&  goto win10
-echo Î´ÕÒµ½ºÏÊÊµÄNT6ÏµÍ³£¬¿ÉÄÜÊÇWinXP»òWin2003¡£
+echo æœªæ‰¾åˆ°åˆé€‚çš„NT6ç³»ç»Ÿï¼Œå¯èƒ½æ˜¯WinXPæˆ–Win2003ã€‚
 goto office
 
 :winvista
-echo µ±Ç°ÎªWindows Vista/2008¡£
+echo å½“å‰ä¸ºWindows Vista/2008ã€‚
 set Business=YFKBB-PQJJV-G996G-VWGXY-2V3X8
 set BusinessN=HMBQG-8H2RH-C77VX-27R82-VMQBT
 set Enterprise=VKK3X-68KWM-X2YGT-QR4M6-4BWMV
@@ -179,7 +179,7 @@ set ServerEnterpriseIA64=4DWFP-JF3DJ-B7DTH-78FJB-PDRHK
 goto windowsstart
 
 :win7
-echo µ±Ç°ÎªWindows 7/2008 R2¡£
+echo å½“å‰ä¸ºWindows 7/2008 R2ã€‚
 set Professional=FJ82H-XT6CR-J8D7P-XQJJ2-GPDD4
 set ProfessionalN=MRPKT-YTG23-K7D7T-X2JMM-QY7MG
 set ProfessionalE=W82YF-2Q76Y-63HXB-FGJG9-GF7QX
@@ -194,7 +194,7 @@ set ServerDatacenter=74YFP-3QFB3-KQT8W-PMXWJ-7M648
 set ServerEnterpriseIA64=GT63C-RJFQ3-4GMB6-BRFB9-CB83V
 goto windowsstart
 :win8
-echo µ±Ç°ÎªWindows 8/2012¡£
+echo å½“å‰ä¸ºWindows 8/2012ã€‚
 set Professional=NG4HW-VH26C-733KW-K6F98-J8CK4
 set ProfessionalN=XCVCF-2NXM9-723PB-MHCB7-2RYQQ
 set Core=BN3D2-R7TKB-3YPBD-8DRP2-27GG4
@@ -209,7 +209,7 @@ set ServerStandard=XC9B7-NBPP2-83J2H-RHMBY-92BT4
 set ServerDatacenter=48HP8-DN98B-MYWDG-T2DCC-8W83P
 goto windowsstart
 :win81
-echo µ±Ç°ÎªWindows 8.1¡£
+echo å½“å‰ä¸ºWindows 8.1ã€‚
 set Professional=GCRJD-8NW9H-F2CDX-CCM8D-9D6T9
 set ProfessionalN=HMCNV-VVBFX-7HMBH-CTY9B-B4FXY
 set Enterprise=MHF9N-XY6XB-WVXMC-BTDCT-MKKG7
@@ -220,7 +220,7 @@ set ServerDatacenter=W3GGN-FT8W3-Y4M27-J84CP-Q3VJ9
 set EmbeddedIndustry=32JNW-9KQ84-P47T8-D8GGY-CWCK7
 goto windowsstart
 :win10
-echo µ±Ç°ÎªWindows 10/Server 2016-2019¡£
+echo å½“å‰ä¸ºWindows 10/Server 2016-2019ã€‚
 set Core=TX9XD-98N7V-6WMQ6-BX7FG-H8Q99
 set CoreCountrySpecific=PVMJN-6DFY6-9CCP6-7BKTT-D3WVR
 set CoreN=3KHY7-WNT83-DGQKR-F7HPR-844BM
@@ -252,21 +252,21 @@ goto windowsstart
 :windowsstart
 for /f "tokens=3 delims= " %%i in ('reg QUERY "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v "EditionID"') do set EditionID=%%i
 if defined %EditionID% (
-    echo °æ±¾IDÎª%EditionID%
+    echo ç‰ˆæœ¬IDä¸º%EditionID%
 	cscript //Nologo %windir%\system32\slmgr.vbs /ipk !%EditionID%!
 	cscript //Nologo %windir%\system32\slmgr.vbs /skms kms.cangshui.net
 	cscript //Nologo %windir%\system32\slmgr.vbs /ato
 ) else (
-	echo ÕÒ²»µ½ÐòÁÐºÅ£¬¿ÉÄÜÊÇÆì½¢°æÖ®ÀàµÄÏµÍ³¡­¡­
+	echo æ‰¾ä¸åˆ°åºåˆ—å·ï¼Œå¯èƒ½æ˜¯æ——èˆ°ç‰ˆä¹‹ç±»çš„ç³»ç»Ÿâ€¦â€¦
 )
 
-echo =================================¼¤»îÐÅÏ¢==================================
+echo =================================æ¿€æ´»ä¿¡æ¯==================================
 
 echo.&pause
 exit
 
 :start4
-set /p xuanze=ÊÇ·ñÕæµÄÒªÇå³ýOfficeµÄKMS¼¤»î£¿¡¾Y¡¿¼ÌÐø   ¡¾N¡¿¹Ø±Õ
+set /p xuanze=æ˜¯å¦çœŸçš„è¦æ¸…é™¤Officeçš„KMSæ¿€æ´»ï¼Ÿã€Yã€‘ç»§ç»­   ã€Nã€‘å…³é—­
 
 if /i "%xuanze%"=="y" goto nextun
 if /i "%xuanze%"=="n" exit
@@ -342,13 +342,13 @@ cscript "%ProgramFiles(x86)%\Microsoft Office\Office14\ospp.vbs" /unpkey:VMFTK
 ping 127.0.0.1 -n 1 > nul
 cscript "C:\Program Files\Microsoft Office\Office16\OSPP.VBS" /remhst
 cls
-echo Çå³ýÍê³É
+echo æ¸…é™¤å®Œæˆ
 ping 127.0.0.1 -n 10 > nul
 exit
 
 
 :start3
-set /p xuanze=ÊÇ·ñÕæµÄÒªÇå³ýWindowsµÄKMS£¿¡¾Y¡¿¼ÌÐø   ¡¾N¡¿¹Ø±Õ
+set /p xuanze=æ˜¯å¦çœŸçš„è¦æ¸…é™¤Windowsçš„KMSï¼Ÿã€Yã€‘ç»§ç»­   ã€Nã€‘å…³é—­
 if /i "%xuanze%"=="y" goto nextunw
 if /i "%xuanze%"=="n" exit
 :nextunw
@@ -356,7 +356,7 @@ slmgr /upk
 slmgr /ckms
 slmgr /rearm
 cls
-echo Çå³ýÍê³É£¬ÇëÖØÆôµçÄÔ
+echo æ¸…é™¤å®Œæˆï¼Œè¯·é‡å¯ç”µè„‘
 ping 127.0.0.1 -n 10 > nul
 
 
