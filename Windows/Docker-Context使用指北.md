@@ -1,6 +1,6 @@
 # `Docker Context` 使用指北 #
 
-> **Context（上下文）是 Docker 客户端用来决定"这条命令发给哪个 Docker 守护进程"的一套连接配置。**
+> **Context（上下文）是 Docker 客户端用来决定"这条命令发给哪个 Docker 守护进程"的一套连接配置**
 
 ## 一、`Context` 存在哪里 ##
 
@@ -28,7 +28,7 @@ contexts/
 ```
 
 > **重要**：用 `docker context create ... ca=... cert=... key=...` 创建时，Docker 会把证书 **复制一份**到 context
-> 目录里。所以原目录的证书删了也不影响，context 自带副本。
+> 目录里。所以原目录的证书删了也不影响，context 自带副本
 
 ## 二、查看所有 `Context` ##
 
@@ -59,7 +59,7 @@ docker context create docker-108 ^
 docker context inspect docker-108
 ```
 
-会显示完整的 `host`、`ca`、`cert`、`key` 路径。
+会显示完整的 `host`、`ca`、`cert`、`key` 路径
 
 ## 四、切换指定 `Context` ##
 
@@ -68,7 +68,7 @@ docker context use docker-108     # 切到远程
 docker context use default        # 切回本地
 ```
 
-切换后， **所有 `docker` 命令自动走对应端点**，不用再加 `-H` 或证书参数。
+切换后， **所有 `docker` 命令自动走对应端点**，不用再加 `-H` 或证书参数
 
 **临时用某个 context 执行一条命令**（不切换）：
 
@@ -109,9 +109,9 @@ docker context rm docker-108
   ```
   Cannot remove the context currently in use
   ```
-  先 `docker context use default`，再删。
+  先 `docker context use default`，再执行删除
 
-- 删除 context **不会删除远程主机上的任何东西**，只删本地配置。
+- 删除 context **不会删除远程主机上的任何东西**，只删本地配置
 
 ## 七、`Context` 常见问题 ##
 

@@ -22,7 +22,7 @@
 
 ### 3、进行破解
 
-#### 1️⃣ 打开 [网址](https://tool.lu/coderunner)
+#### 1️⃣ 打开 [网址](https://www.w3cschool.cn/tryrun/runcode?lang=php)
 
 #### 2️⃣ 复制以下 `PHP` 解密代码 到 刚才打开的那个网址
 
