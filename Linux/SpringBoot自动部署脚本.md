@@ -173,7 +173,7 @@ status_all() {
         return 1
     fi
 
-    echo "正在启动 ${#jar_files[@]} 个服务..."
+    echo "正在检查 ${#jar_files[@]} 个服务..."
     local count=0
     for jar in "${jar_files[@]}"; do
         ((count++))
