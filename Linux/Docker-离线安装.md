@@ -428,8 +428,7 @@ firewall-cmd --zone=public --query-port=6732/tcp
 
 #### 开黑窗口下载生成的密钥文件 ####
 
-* 使用 [windows Terminal 工具](https://apps.microsoft.com/detail/9n8g5rfz9xk3?hl=zh-CN&gl=CN)。 语法： scp
-  【服务器账号】@【服务器IP地址】:"【文件1】 【文件2】 【...】" 【本地目录】
+* 使用 [windows Terminal 工具](https://apps.microsoft.com/detail/9n8g5rfz9xk3?hl=zh-CN&gl=CN)。 语法： scp 【服务器账号】@【服务器IP地址】:【文件地址】 【本地目录】
 
 ```shell
 scp root@100.110.111.108:/usr/local/docker/cert/ca.pem D:\Downloads\
