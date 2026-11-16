@@ -110,7 +110,8 @@ vim /etc/docker/daemon.json
     "registry-mirrors": [
         "https://docker.1ms.run",
         "https://docker.xuanyuan.me",
-		"https://docker.mirrors.tuna.tsinghua.edu.cn"
+		"https://docker.mirrors.tuna.tsinghua.edu.cn",
+		"https://docker.m.daocloud.io"
     ],
 	"hosts": [
 		"unix:///var/run/docker.sock",
